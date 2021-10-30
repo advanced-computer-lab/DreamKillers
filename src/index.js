@@ -6,6 +6,7 @@ const config = require("config");
 //Application Variables
 const app = express();
 const port = config.get("server.port");
+const flightRouter = require("./Routes/flights.route");
 
 //DB Connection
 mongoose
@@ -15,6 +16,9 @@ mongoose
   })
   .then((result) => console.log("MongoDB is now connected"))
   .catch((err) => console.log(err));
+
+app.use(express.json());
+app.use("/flights", flightRouter);
 
 //Host app on localhost
 app.listen(port, () => {
