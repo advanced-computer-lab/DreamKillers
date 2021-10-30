@@ -6,8 +6,11 @@ const config = require("config");
 //Application Variables
 const app = express();
 const port = config.get("server.port");
+
 const flightSearchRouter = require('./Routes/flightSearch.route');
 const userRouter = require("./Routes/user.route");
+const flightRouter = require("./Routes/flights.route");
+
 
 //DB Connection
 mongoose
@@ -19,9 +22,12 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.json());
-//search for a flight router
-app.use('/search',flightSearchRouter);
+
+//Routing
 app.use('/user',userRouter);
+app.use("/flights", flightRouter);
+app.use("/search", flightSearchRouter);
+
 
 //Host app on localhost
 app.listen(port, () => {
