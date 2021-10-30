@@ -2,10 +2,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const config = require("config");
+
 //Application Variables
 const app = express();
 const port = config.get("server.port");
 const flightSearchRouter = require('./Routes/flightSearch.route');
+const userRouter = require("./Routes/user.route");
 
 //DB Connection
 mongoose
@@ -19,6 +21,7 @@ mongoose
 app.use(express.json());
 //search for a flight router
 app.use('/search',flightSearchRouter);
+app.use('/user',userRouter);
 
 //Host app on localhost
 app.listen(port, () => {
