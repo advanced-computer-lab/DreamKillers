@@ -2,19 +2,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const config = require("config");
+require("dotenv").config();
 
 //Application Variables
 const app = express();
 const port = config.get("server.port");
 
-const flightSearchRouter = require('./Routes/flightSearch.route');
 const userRouter = require("./Routes/user.route");
 const flightRouter = require("./Routes/flights.route");
-
+const adminRouter = require("./Routes/admin.route");
 
 //DB Connection
 mongoose
-  .connect(config.get("database.mongouri"), {
+  .connect(process.env.mongouri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -24,10 +24,9 @@ mongoose
 app.use(express.json());
 
 //Routing
-app.use('/user',userRouter);
+app.use("/user", userRouter);
 app.use("/flights", flightRouter);
-app.use("/search", flightSearchRouter);
-
+app.use("/admin", adminRouter);
 
 //Host app on localhost
 app.listen(port, () => {

@@ -2,10 +2,5 @@
   "server": {
     "host": "localhost",
     "port": 8000
-  },
-  "database": {
-    "mongouri": "mongodb+srv://dreamkillersuser:7kAWmvltLN4DxD8X@cluster0.45rki.mongodb.net/airline?retryWrites=true&w=majority"
-  },
-
-  "userAuthSecretKey": "userAuthSecretKey"
+  }
 }
