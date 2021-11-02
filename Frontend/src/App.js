@@ -1,6 +1,5 @@
 import logo from "./logo.svg";
 import "./App.css";
-import ButtonDK from "./Components/ButtonDK.component";
 
 function App() {
   return (
@@ -10,7 +9,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <ButtonDK buttonText="hello" />
+
         <a
           className="App-link"
           href="https://reactjs.org"

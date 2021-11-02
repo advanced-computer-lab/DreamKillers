@@ -1,0 +1,30 @@
+.Page {
+  background-color: white;
+  width: 20em;
+  height: 40em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin: 0 auto;
+}
+
+.SignInText {
+  text-align: center;
+  font-size: large;
+}
+
+.SignInTitle {
+  text-align: center;
+  font-size: xx-large;
+}
+
+.SignInButton {
+  padding: 0;
+  height: 10em;
+}
+
+.LockIcon {
+  font-size: xx-large;
+  padding-left: 4.5em;
+}
