@@ -1,11 +1,13 @@
 import logo from "./logo.svg";
 import "./App.css";
 import ButtonDK from "./Components/ButtonDK.component";
+import FlightContainer from "./Components/FlightContainer";
+//import { List } from "@mui/material";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -19,7 +21,8 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </header> */}
+    <FlightContainer style={{maxHeight: 20, overflow: 'auto'}}/>
     </div>
   );
 }
