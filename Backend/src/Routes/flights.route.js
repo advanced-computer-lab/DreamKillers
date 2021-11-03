@@ -5,7 +5,8 @@ const Flight = require("../Models/flight.model");
 router.patch("/:flightId", async (req, res) => {
   const departureTime = req.body.departureTime;
   const arrivalTime = req.body.arrivalTime;
-  const airportTerminal = req.body.airportTerminal;
+  const arrivalTerminal = req.body.arrivalTerminal;
+  const departureTerminal = req.body.departureTerminal;
 
   const flight = await Flight.findById(req.params.flightId);
 
@@ -13,7 +14,8 @@ router.patch("/:flightId", async (req, res) => {
 
   flight.departureTime = departureTime;
   flight.arrivalTime = arrivalTime;
-  flight.airportTerminal = airportTerminal;
+  flight.arrivalTerminal = arrivalTerminal;
+  flight.departureTerminal = departureTerminal;
 
   const response = await flight.save();
 
@@ -33,7 +35,8 @@ router.post("/", async (req, res) => {
   const arrivalTime = req.body.arrivalTime;
   const economySeats = req.body.economySeats;
   const businessSeats = req.body.businessSeats;
-  const airportTerminal = req.body.airportTerminal;
+  const arrivalTerminal = req.body.arrivalTerminal;
+  const departureTerminal = req.body.departureTerminal;
 
   const flight = new Flight({
     flightNumber: flightNumber,
@@ -41,7 +44,8 @@ router.post("/", async (req, res) => {
     arrivalTime: arrivalTime,
     economySeats: economySeats,
     businessSeats: businessSeats,
-    airportTerminal: airportTerminal,
+    arrivalTerminal: arrivalTerminal,
+    departureTerminal: departureTerminal,
   });
 
   const result = await flight.save();
