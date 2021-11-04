@@ -2,10 +2,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const config = require("config");
+const cors = require("cors");
 require("dotenv").config();
 
 //Application Variables
 const app = express();
+app.use(cors());
 const port = config.get("server.port");
 
 const userRouter = require("./Routes/user.route");
