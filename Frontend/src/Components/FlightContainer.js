@@ -27,18 +27,23 @@ export default function FlightContainer() {
   "businessSeats": 12,
   "arrivalTerminal": "CAI",
   "departureTerminal":"BUX"}
+
+  const flights = [flight1,flight2]
   return (
-    <Box sx={{ width: '100%', maxWidth: 360,maxHeight: 1000, overflow: 'auto', bgcolor: 'black' }}>
+     <Box sx={{ width: '100%', maxWidth: 380,maxHeight: 500, overflow: 'auto', bgcolor: 'black' }}>
       <nav aria-label="main mailbox folders">
         <List>
-          <ListItem disablePadding>
-            <FlightCard flight = {flight1}/>
-          </ListItem>
-          <ListItem disablePadding>
-            <FlightCard flight = {flight2}/>
-          </ListItem>
+          {flights.map((flight)=>{
+            return(
+              <div>
+                <ListItem disablePadding>
+                  <FlightCard flight = {flight}/>
+                </ListItem>
+              </div>
+            );
+          })}
         </List>
-      </nav>
+     </nav>
     </Box>
   );
 }
