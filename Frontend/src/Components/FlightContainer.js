@@ -10,28 +10,41 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import FlightCard from "./FlightCard/FlightCard";
 
+const axios = require("axios");
+
 export default function FlightContainer() {
-  const flight1 = {
-    flightNumber: 1,
-    departureTime: "23-12-2000",
-    arrivalTime: "23-12-2001",
-    economySeats: 21,
-    businessSeats: 12,
-    arrivalTerminal: "CAI",
-    departureTerminal: "RYD",
-  };
+  // const flight1 = {
+  //   flightNumber: 1,
+  //   departureTime: "23-12-2000",
+  //   arrivalTime: "23-12-2001",
+  //   economySeats: 21,
+  //   businessSeats: 12,
+  //   arrivalTerminal: "CAI",
+  //   departureTerminal: "RYD",
+  // };
 
-  const flight2 = {
-    flightNumber: 2,
-    departureTime: "23-12-2000",
-    arrivalTime: "23-12-2001",
-    economySeats: 21,
-    businessSeats: 12,
-    arrivalTerminal: "CAI",
-    departureTerminal: "BUX",
-  };
+  // const flight2 = {
+  //   flightNumber: 2,
+  //   departureTime: "23-12-2000",
+  //   arrivalTime: "23-12-2001",
+  //   economySeats: 21,
+  //   businessSeats: 12,
+  //   arrivalTerminal: "CAI",
+  //   departureTerminal: "BUX",
+  // };
 
-  const flights = [flight1, flight2];
+  const [flights, setFlights] = React.useState([]);
+
+  React.useEffect(() => {
+    axios
+      .get("http://localhost:8000/flights")
+      .then((res) => {
+        setFlights(res.data);
+        console.log(res.data);
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
   return (
     <Box
       sx={{
