@@ -1,0 +1,22 @@
+.Toolbar {
+  position: absolute;
+  width: 200px;
+  height: 1080px;
+  left: 0px;
+  top: 0px;
+
+  background: #158073;
+}
+
+.Flights {
+  position: absolute;
+  width: 1064px;
+  height: 672px;
+  left: calc(50% - 1064px / 2);
+  top: calc(50% - 672px / 2 + 13px);
+
+  background: #ffffff;
+  border: 0.2px solid #000000;
+  box-sizing: border-box;
+  border-radius: 5px;
+}

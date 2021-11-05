@@ -9,6 +9,7 @@ import Divider from "@mui/material/Divider";
 import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import FlightCard from "../FlightCard/FlightCard";
+import Styles from "./FlightContainer.module.css";
 
 const axios = require("axios");
 
@@ -46,36 +47,24 @@ export default function FlightContainer() {
   }, []);
 
   return (
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: 380,
-        maxHeight: 500,
-        overflow: "auto",
-        bgcolor: "black",
-      }}
-    >
-      <nav aria-label="main mailbox folders">
-        <List>
-          {flights.map((flight) => {
-            return (
-              <div>
-                <ListItem disablePadding>
-                  <FlightCard
-                    flightNumber={flight.flightNumber}
-                    departureTime={flight.departureTime}
-                    arrivalTime={flight.arrivalTime}
-                    economySeats={flight.economySeats}
-                    businessSeats={flight.businessSeats}
-                    arrivalTerminal={flight.arrivalTerminal}
-                    departureTerminal={flight.departureTerminal}
-                  />
-                </ListItem>
-              </div>
-            );
-          })}
-        </List>
-      </nav>
-    </Box>
+    <div className={Styles.Container}>
+      {flights.map((flight) => {
+        return (
+          <div>
+            <ListItem disablePadding>
+              <FlightCard
+                flightNumber={flight.flightNumber}
+                departureTime={flight.departureTime}
+                arrivalTime={flight.arrivalTime}
+                economySeats={flight.economySeats}
+                businessSeats={flight.businessSeats}
+                arrivalTerminal={flight.arrivalTerminal}
+                departureTerminal={flight.departureTerminal}
+              />
+            </ListItem>
+          </div>
+        );
+      })}
+    </div>
   );
 }

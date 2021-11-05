@@ -6,6 +6,10 @@
   text-align: center;
 }
 
+.FlightCardSummary {
+  width: max-content;
+}
+
 .ButtonsContainer {
   display: flex;
   flex-direction: row;
