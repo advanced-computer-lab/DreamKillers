@@ -13,10 +13,11 @@ const AdminPage = () => {
         <div className={Styles.ButtonsContainer}>
           <div className={Styles.Button}>
             <FlightEditModal
-              mainButtonText={"Add New Flight"}
+              mainButtonText={"Create New Flight"}
               mainButtonTextColor={"white"}
               mainButtonColor={"#1976D2"}
               mainButtonHoverColor={"#1564b3"}
+              acceptButtonText={"Create"}
             ></FlightEditModal>
           </div>
           <FlightSearchModal
@@ -24,6 +25,7 @@ const AdminPage = () => {
             mainButtonTextColor={"white"}
             mainButtonColor={"#1976D2"}
             mainButtonHoverColor={"#1564b3"}
+            acceptButtonText={"Search"}
           ></FlightSearchModal>
         </div>
         <FlightContainer></FlightContainer>

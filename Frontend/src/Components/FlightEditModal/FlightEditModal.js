@@ -21,7 +21,7 @@ export default function FlightEditModal({
   mainButtonTextColor,
   mainButtonColor,
   mainButtonHoverColor,
-
+  acceptButtonText,
   title,
   description,
 
@@ -84,7 +84,7 @@ export default function FlightEditModal({
         </DialogContent>
         <DialogActions>
           <ButtonDK buttonText="Cancel" onClick={handleClose} />
-          <ButtonDK buttonText="Edit" />
+          <ButtonDK buttonText={acceptButtonText} />
         </DialogActions>
       </Dialog>
     </div>
