@@ -63,6 +63,7 @@ export default function FlightCard({
                     mainButtonTextColor={"white"}
                     mainButtonHoverColor={"#1976D2"}
                     icon={<EditIcon />}
+                    acceptButtonText={"Edit"}
                   ></FlightEditModal>
 
                   <Modal
