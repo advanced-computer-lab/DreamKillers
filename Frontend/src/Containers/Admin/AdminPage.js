@@ -1,19 +1,31 @@
 import ButtonDK from "../../Components/ButtonDK/ButtonDK";
 import FlightContainer from "../../Components/FlightContainer/FlightContainer";
 import Styles from "./AdminPage.module.css";
-
+import FlightEditModal from "../../Components/FlightEditModal/FlightEditModal";
+import ToolBarDK from "../../Components/ToolBarDK/ToolBarDK";
+import FlightSearchModal from "../../Components/FlightSearchModal/FlightSearchModal";
 const AdminPage = () => {
   return (
     <div>
-      <div className={Styles.Toolbar}></div>
+      <ToolBarDK></ToolBarDK>
       <div className={Styles.Flights}>
         <br></br>
-        <ButtonDK
-          buttonText={"Add Flight"}
-          color={"#1976D2"}
-          hoverColor={"#1564b3"}
-          textColor={"white"}
-        />
+        <div className={Styles.ButtonsContainer}>
+          <div className={Styles.Button}>
+            <FlightEditModal
+              mainButtonText={"Add New Flight"}
+              mainButtonTextColor={"white"}
+              mainButtonColor={"#1976D2"}
+              mainButtonHoverColor={"#1564b3"}
+            ></FlightEditModal>
+          </div>
+          <FlightSearchModal
+            mainButtonText={"Search for a flight"}
+            mainButtonTextColor={"white"}
+            mainButtonColor={"#1976D2"}
+            mainButtonHoverColor={"#1564b3"}
+          ></FlightSearchModal>
+        </div>
         <FlightContainer></FlightContainer>
       </div>
     </div>
