@@ -22,11 +22,11 @@ const currencies = [
   },
 ];
 
-export default function DropDownDK() {
-  const [currency, setCurrency] = React.useState("EUR");
+export default function DropDownDK({ dropItems, helperText }) {
+  const [item, setItem] = React.useState("");
 
   const handleChange = (event) => {
-    setCurrency(event.target.value);
+    setItem(event.target.value);
   };
 
   return (
@@ -42,14 +42,13 @@ export default function DropDownDK() {
         <TextField
           id="outlined-select-currency"
           select
-          label="Select"
-          value={currency}
+          label={helperText}
+          value={item}
           onChange={handleChange}
-          helperText="Please select your currency"
         >
-          {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {dropItems.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
             </MenuItem>
           ))}
         </TextField>
