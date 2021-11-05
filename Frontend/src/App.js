@@ -1,6 +1,9 @@
 import logo from "./logo.svg";
 import "./App.css";
 import ButtonDK from "./Components/ButtonDK.component";
+import AirportTerminalDK from "./Components/AirportTerminalDK.component";
+import BasicDateTimePicker from "./Components/DateTimePickerDK.component";
+import FilterDK from "./Components/FilterDK.component";
 
 function App() {
   return (
@@ -11,6 +14,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <ButtonDK buttonText="hello" />
+        <FilterDK/>
         <a
           className="App-link"
           href="https://reactjs.org"
