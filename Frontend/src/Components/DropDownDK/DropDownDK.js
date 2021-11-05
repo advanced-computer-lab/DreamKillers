@@ -3,30 +3,12 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-const currencies = [
-  {
-    value: "USD",
-    label: "$",
-  },
-  {
-    value: "EUR",
-    label: "€",
-  },
-  {
-    value: "BTC",
-    label: "฿",
-  },
-  {
-    value: "JPY",
-    label: "¥",
-  },
-];
-
-export default function DropDownDK() {
-  const [currency, setCurrency] = React.useState("EUR");
+export default function DropDownDK({ dropItems, helperText, value }) {
+  const [item, setItem] = React.useState("");
+  const [DropValue, setDropValue] = React.useState(value || "");
 
   const handleChange = (event) => {
-    setCurrency(event.target.value);
+    setItem(event.target.value);
   };
 
   return (
@@ -42,14 +24,13 @@ export default function DropDownDK() {
         <TextField
           id="outlined-select-currency"
           select
-          label="Select"
-          value={currency}
+          label={helperText}
+          value={item}
           onChange={handleChange}
-          helperText="Please select your currency"
         >
-          {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {dropItems.map((dropItem) => (
+            <MenuItem key={dropItem} value={dropItem}>
+              {dropItem}
             </MenuItem>
           ))}
         </TextField>
