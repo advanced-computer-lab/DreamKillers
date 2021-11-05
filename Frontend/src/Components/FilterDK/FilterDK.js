@@ -1,15 +1,11 @@
-
-import AirportTerminalDK from "./AirportTerminalDK.component";
-import BasicDateTimePicker from "./DateTimePickerDK.component";
-
+import DateTimePicker from "../DateTimePickerDK/DateTimePickerDK";
+import DropDownDk from "../DropDownDK/DropDownDK";
 export default function FilterDK() {
-
-    return (
-        <div>
-        <AirportTerminalDK/>
-        <BasicDateTimePicker/>
-        <BasicDateTimePicker/>
-        </div>
-    );
-  }
-
+  return (
+    <div>
+      <DropDownDk />
+      <DateTimePicker />
+      <DateTimePicker />
+    </div>
+  );
+}

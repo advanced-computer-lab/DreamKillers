@@ -1,12 +1,11 @@
-import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
-import DateTimePicker from '@material-ui/lab/DateTimePicker';
+import * as React from "react";
+import TextField from "@mui/material/TextField";
+import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
+import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
+import DateTimePicker from "@material-ui/lab/DateTimePicker";
 
-export default function BasicDateTimePicker() {
+export default function DateTimePickerDK() {
   const [value, setValue] = React.useState(new Date());
-  
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
