@@ -1,17 +1,30 @@
 import logo from "./logo.svg";
 import "./App.css";
-import FlightContainer from "./Components/FlightContainer/FlightContainer";
-import FilterDK from "./Components/FilterDK/FilterDK";
-import AdminPage from "./Containers/Admin/AdminPage";
-import DropDownDK from "./Components/DropDownDK/DropDownDK";
-import FlightSearchModal from "./Components/FlightSearchModal/FlightSearchModal";
-import FlightEditModal from "./Components/FlightEditModal/FlightEditModal";
-
+import DashboardListItemDK from "./Components/DashboardListItemDK";
+import FlightIcon from '@material-ui/icons/Flight';
+import ToolBarDK from "./Components/ToolBarDK/ToolBarDK";
 
 function App() {
   return (
     <div className="App">
-      <AdminPage></AdminPage>
+      {/* <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <ButtonDK buttonText="hello" />
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header> */}
+      
+      <DashboardListItemDK listItemText="Flights" listItemIcon={<FlightIcon />} />
+      <ToolBarDK/>
     </div>
   );
 }
