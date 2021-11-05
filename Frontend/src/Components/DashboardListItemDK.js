@@ -10,15 +10,14 @@ import FlightIcon from '@material-ui/icons/Flight';
 import InboxIcon from '@material-ui/icons/Inbox';
 
 // Default Dashboard List
-const DashboardListDK = ({listItemText, listItemIcon}) => {
+const DashboardListItemDK = ({listItemText, listItemIcon}) => {
     const [selectedIndex, setSelectedIndex]  = React.useState(1);
 
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
     };
-
     return (
-        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        <Box sx={{ width: '100%', maxWidth: 200,color:'black'}}>
           <nav aria-label="main mailbox folders">
             <List>
               <ListItem disablePadding>
@@ -39,4 +38,4 @@ const DashboardListDK = ({listItemText, listItemIcon}) => {
       );
 }
 
-export default DashboardListDK;
+export default DashboardListItemDK;

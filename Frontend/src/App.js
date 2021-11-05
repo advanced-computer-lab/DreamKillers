@@ -1,9 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
-import ButtonDK from "./Components/ButtonDK.component";
-import DashboardListDK from "./Components/DashboardListItem";
+import DashboardListItemDK from "./Components/DashboardListItemDK";
 import FlightIcon from '@material-ui/icons/Flight';
-
+import ToolBarDK from "./Components/ToolBarDK/ToolBarDK";
 function App() {
   return (
     <div className="App">
@@ -23,7 +22,8 @@ function App() {
         </a>
       </header> */}
       
-      <DashboardListDK listItemText="Flights" listItemIcon={<FlightIcon />} />
+      <DashboardListItemDK listItemText="Flights" listItemIcon={<FlightIcon />} />
+      <ToolBarDK/>
     </div>
   );
 }
