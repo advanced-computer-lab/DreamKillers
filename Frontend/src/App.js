@@ -2,11 +2,21 @@ import logo from "./logo.svg";
 import "./App.css";
 import FlightContainer from "./Components/FlightContainer/FlightContainer";
 import FilterDK from "./Components/FilterDK/FilterDK";
+import DropDownDK from "./Components/DropDownDK/DropDownDK";
+import FlightSearchModal from "./Components/FlightSearchModal/FlightSearchModal";
 
 function App() {
   return (
     <div className="App">
-      <FilterDK></FilterDK>
+      <FlightSearchModal
+        mainButtonColor="red"
+        mainButtonText="hi"
+        mainButtonHoverColor="blue"
+        mainButtonTextColor="black"
+        terminals={["CAI", "NYC"]}
+        title="search"
+      />
+      <FlightContainer />
     </div>
   );
 }
