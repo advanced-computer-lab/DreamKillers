@@ -1,24 +1,17 @@
 import logo from "./logo.svg";
 import "./App.css";
+import FlightContainer from "./Components/FlightContainer/FlightContainer";
+import FilterDK from "./Components/FilterDK/FilterDK";
+import AdminPage from "./Containers/Admin/AdminPage";
+import DropDownDK from "./Components/DropDownDK/DropDownDK";
+import FlightSearchModal from "./Components/FlightSearchModal/FlightSearchModal";
+import FlightEditModal from "./Components/FlightEditModal/FlightEditModal";
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AdminPage></AdminPage>
     </div>
   );
 }

@@ -1,5 +1,9 @@
 .Page {
-  background-color: white;
+  background-image: url("https://wallpaperaccess.com/full/3919997.jpg");
+  height: 980px;
+}
+
+.PageItems {
   width: 20em;
   height: 40em;
   display: flex;
@@ -17,6 +21,7 @@
 .SignInTitle {
   text-align: center;
   font-size: xx-large;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .SignInButton {
@@ -27,4 +32,9 @@
 .LockIcon {
   font-size: xx-large;
   padding-left: 4.5em;
+}
+
+.AirPlaneImage {
+  width: 1920px;
+  height: 720px;
 }

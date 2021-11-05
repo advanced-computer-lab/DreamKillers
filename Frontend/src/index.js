@@ -2,12 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import LoginPage from "./Containers/Login/LoginPage";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <LoginPage />
+    <App></App>
   </React.StrictMode>,
   document.getElementById("root")
 );
