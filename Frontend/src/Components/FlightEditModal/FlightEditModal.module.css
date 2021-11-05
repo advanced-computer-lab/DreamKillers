@@ -3,3 +3,9 @@
   flex-direction: row;
   align-items: center;
 }
+
+.DatesContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}

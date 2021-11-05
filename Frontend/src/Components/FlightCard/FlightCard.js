@@ -10,6 +10,7 @@ import Styles from "./FlightCard.module.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import Modal from "../Modal/Modal";
+import FlightEditModal from "../FlightEditModal/FlightEditModal";
 
 export default function FlightCard({
   flightNumber,
@@ -25,7 +26,7 @@ export default function FlightCard({
   return (
     <div>
       <div className={Styles.FlightCardContainer}>
-        <Accordion sx={{ width: 360, bgcolor: "white", color: "black" }}>
+        <Accordion sx={{ width: "1000px", bgcolor: "white" }}>
           <AccordionSummary
             sx={{ color: "black" }}
             expandIcon={<ExpandMoreIcon />}
@@ -49,13 +50,20 @@ export default function FlightCard({
                 <div>Arrives On: {arrivalTime}</div>
                 <br></br>
                 <div className={Styles.ButtonsContainer}>
-                  <ButtonDK
+                  {/* <ButtonDK
                     buttonText="Edit"
                     icon={<EditIcon />}
                     hoverColor={"#1976D2"}
                     textColor="white"
                     color="#2682de"
-                  />
+                  /> */}
+                  <FlightEditModal
+                    mainButtonText={"Edit"}
+                    mainButtonColor={"#2682de"}
+                    mainButtonTextColor={"white"}
+                    mainButtonHoverColor={"#1976D2"}
+                    icon={<EditIcon />}
+                  ></FlightEditModal>
 
                   <Modal
                     modalTitle={"Are you sure you want to delete this flight?"}

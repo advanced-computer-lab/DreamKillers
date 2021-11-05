@@ -20,3 +20,13 @@
   box-sizing: border-box;
   border-radius: 5px;
 }
+
+.ButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.Button {
+  padding-right: 1em;
+}
