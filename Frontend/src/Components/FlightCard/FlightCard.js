@@ -13,6 +13,7 @@ import Modal from "../Modal/Modal";
 import FlightEditModal from "../FlightEditModal/FlightEditModal";
 
 export default function FlightCard({
+  flightID,
   flightNumber,
   departureTerminal,
   arrivalTerminal,
@@ -64,6 +65,7 @@ export default function FlightCard({
                     mainButtonHoverColor={"#1976D2"}
                     icon={<EditIcon />}
                     acceptButtonText={"Edit"}
+                    flightID={flightID}
                   ></FlightEditModal>
 
                   <Modal

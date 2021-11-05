@@ -53,6 +53,7 @@ export default function FlightContainer() {
           <div>
             <ListItem disablePadding>
               <FlightCard
+                flightID={flight._id}
                 flightNumber={flight.flightNumber}
                 departureTime={flight.departureTime}
                 arrivalTime={flight.arrivalTime}
