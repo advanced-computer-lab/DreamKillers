@@ -1,29 +1,29 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 
 const currencies = [
   {
-    value: 'USD',
-    label: '$',
+    value: "USD",
+    label: "$",
   },
   {
-    value: 'EUR',
-    label: '€',
+    value: "EUR",
+    label: "€",
   },
   {
-    value: 'BTC',
-    label: '฿',
+    value: "BTC",
+    label: "฿",
   },
   {
-    value: 'JPY',
-    label: '¥',
+    value: "JPY",
+    label: "¥",
   },
 ];
 
-export default function AirportTerminalDK() {
-  const [currency, setCurrency] = React.useState('EUR');
+export default function DropDownDK() {
+  const [currency, setCurrency] = React.useState("EUR");
 
   const handleChange = (event) => {
     setCurrency(event.target.value);
@@ -33,7 +33,7 @@ export default function AirportTerminalDK() {
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        "& .MuiTextField-root": { m: 1, width: "25ch" },
       }}
       noValidate
       autoComplete="off"

@@ -1,29 +1,11 @@
 import logo from "./logo.svg";
 import "./App.css";
-import ButtonDK from "./Components/ButtonDK.component";
-import AirportTerminalDK from "./Components/AirportTerminalDK.component";
-import BasicDateTimePicker from "./Components/DateTimePickerDK.component";
-import FilterDK from "./Components/FilterDK.component";
+import FlightContainer from "./Components/FlightContainer/FlightContainer";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <ButtonDK buttonText="hello" />
-        <FilterDK/>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <FlightContainer style={{ maxHeight: 20, overflow: "auto" }} />
     </div>
   );
 }
