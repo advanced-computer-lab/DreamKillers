@@ -67,11 +67,13 @@ export default function FlightEditModal({
           <DialogContentText id="alert-dialog-slide-description">
             {description}
           </DialogContentText>
+
           <div class={Styles.container}>
             <TextBoxDK
               text="Flight Number"
               onChange={onChangeFlightNumberHandler}
             />
+                
             <TextBoxDK text="Business Seats" />
             <TextBoxDK text="Economy Seats" />
             <DropDownDK
