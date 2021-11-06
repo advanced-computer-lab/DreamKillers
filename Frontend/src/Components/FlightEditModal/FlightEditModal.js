@@ -17,18 +17,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function FlightEditModal({
+  flightID,
   mainButtonText,
   mainButtonTextColor,
   mainButtonColor,
   mainButtonHoverColor,
-
+  acceptButtonText,
   title,
   description,
-
   terminals,
   icon,
 }) {
   const [open, setOpen] = React.useState(false);
+  const [flightNumber, setFlightNumber] = React.useState(-1);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,6 +37,10 @@ export default function FlightEditModal({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onChangeFlightNumberHandler = (e) => {
+    setFlightNumber(e.target.value);
   };
 
   return (
@@ -62,8 +67,13 @@ export default function FlightEditModal({
           <DialogContentText id="alert-dialog-slide-description">
             {description}
           </DialogContentText>
-          <div className={Styles.container}>
-            <TextBoxDK text="Flight Number" />
+
+          <div class={Styles.container}>
+            <TextBoxDK
+              text="Flight Number"
+              onChange={onChangeFlightNumberHandler}
+            />
+                
             <TextBoxDK text="Business Seats" />
             <TextBoxDK text="Economy Seats" />
             <DropDownDK
@@ -84,7 +94,7 @@ export default function FlightEditModal({
         </DialogContent>
         <DialogActions>
           <ButtonDK buttonText="Cancel" onClick={handleClose} />
-          <ButtonDK buttonText="Edit" />
+          <ButtonDK buttonText={acceptButtonText} />
         </DialogActions>
       </Dialog>
     </div>
