@@ -23,9 +23,8 @@ export default function FlightCard({
   arrivalTime,
   onAcceptAddOnClickHandler,
   onAcceptEditOnClickHandler,
+  deleteButtonOnClick,
 }) {
-  const deleteButtonOnClickHandler = () => {};
-
   return (
     <div>
       <div className={Styles.FlightCardContainer}>
@@ -53,13 +52,6 @@ export default function FlightCard({
                 <div>Arrives On: {arrivalTime}</div>
                 <br></br>
                 <div className={Styles.ButtonsContainer}>
-                  {/* <ButtonDK
-                    buttonText="Edit"
-                    icon={<EditIcon />}
-                    hoverColor={"#1976D2"}
-                    textColor="white"
-                    color="#2682de"
-                  /> */}
                   <FlightEditModal
                     mainButtonText={"Edit"}
                     mainButtonColor={"#2682de"}
@@ -89,7 +81,9 @@ export default function FlightCard({
                     acceptHoverColor={"#c91e1e"}
                     acceptTextColor={"white"}
                     acceptText={"Delete"}
-                    acceptButtonOnClickHandler={deleteButtonOnClickHandler}
+                    acceptButtonOnClickHandler={() =>
+                      deleteButtonOnClick(flightID)
+                    }
                   ></Modal>
                 </div>
               </Typography>

@@ -105,6 +105,7 @@ export default function FlightEditModal({
           <DialogContentText id="alert-dialog-slide-description">
             {description}
           </DialogContentText>
+
           <div class={Styles.container}>
             <TextBoxDK
               text="Flight Number"
@@ -146,7 +147,8 @@ export default function FlightEditModal({
           <ButtonDK buttonText="Cancel" onClick={handleClose} />
           <ButtonDK
             buttonText={acceptButtonText}
-            onClick={() =>
+            onClick={() => {
+              handleClose();
               onAcceptOnClickHandler(
                 flightID,
                 flightNumber,
@@ -156,7 +158,8 @@ export default function FlightEditModal({
                 arrivalTerminal,
                 arrivalTime,
                 departureTime
-              )
+              );
+            }
             }
           />
         </DialogActions>

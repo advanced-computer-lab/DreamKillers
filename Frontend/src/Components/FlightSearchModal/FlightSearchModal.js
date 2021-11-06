@@ -11,6 +11,7 @@ import TextBoxDK from "../TextBoxDK/TextBoxDK";
 import DropDownDK from "../DropDownDK/DropDownDK";
 import Styles from "./FlightSearchModal.module.css";
 import DateTimePickerDK from "../DateTimePickerDK/DateTimePickerDK";
+import moment from "moment";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -25,9 +26,37 @@ export default function FlightSearchModal({
   title,
   description,
 
-  terminals,
+  arrterminals,
+  depterminals,
+  searchFunc,
 }) {
   const [open, setOpen] = React.useState(false);
+
+  const [flightNumber, setFlightNumber] = React.useState(0);
+  const [depTerminal, setDepTerminal] = React.useState("");
+  const [arrTerminal, setArrTerminal] = React.useState("");
+  const [depTime, setDepTime] = React.useState("");
+  const [arrTime, setArrTime] = React.useState("");
+
+  const flightNumberChange = (e) => {
+    setFlightNumber(e.target.value);
+  };
+
+  const depTerminalChange = (e) => {
+    setDepTerminal(e);
+  };
+
+  const arrTerminalChange = (e) => {
+    setArrTerminal(e);
+  };
+
+  const depTimeChange = (e) => {
+    setDepTime(e);
+  };
+
+  const arrTimeChange = (e) => {
+    setArrTime(e);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,6 +65,21 @@ export default function FlightSearchModal({
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleChange = () => {
+    console.log("[" + arrTerminal + "]");
+    searchFunc({
+      flightNumber: flightNumber,
+      departureTime: depTime,
+      arrivalTime: arrTime,
+      departureTerminal: depTerminal,
+      arrivalTerminal: arrTerminal,
+    });
+    handleClose();
+  };
+  React.useEffect(() => {
+    console.log(arrterminals);
+  }, []);
 
   return (
     <div>
@@ -60,25 +104,29 @@ export default function FlightSearchModal({
           <DialogContentText id="alert-dialog-slide-description">
             {description}
           </DialogContentText>
-          <div class={Styles.container} sx={{ color: "yellow" }}>
-            <TextBoxDK text="Flight Number" />
+          <div className={Styles.container} sx={{ color: "yellow" }}>
+            <TextBoxDK text="Flight Number" onChange={flightNumberChange} />
             <DropDownDK
-              dropItems={["___"].concat(terminals)}
+              dropItems={["___"].concat(depterminals)}
               helperText="Departure Terminal"
-              value="departure"
+              value=""
+              onChange={depTerminalChange}
             />
             <DropDownDK
-              dropItems={["___"].concat(terminals)}
+              dropItems={["___"].concat(arrterminals)}
               helperText="Arrival Terminal"
-              value="arrival"
+              value=""
+              onChange={arrTerminalChange}
             />
           </div>
-          <DateTimePickerDK label="Departure Time" />
-          <DateTimePickerDK label="Arrival Time" />
+          <div className={Styles.container}>
+            <DateTimePickerDK label="Departure Time" onChange={depTimeChange} />
+            <DateTimePickerDK label="Arrival Time" onChange={arrTimeChange} />
+          </div>
         </DialogContent>
         <DialogActions>
           <ButtonDK buttonText="Cancel" onClick={handleClose} />
-          <ButtonDK buttonText="Search" />
+          <ButtonDK buttonText="Search" onClick={handleChange} />
         </DialogActions>
       </Dialog>
     </div>
