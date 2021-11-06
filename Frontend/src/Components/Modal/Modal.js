@@ -66,7 +66,10 @@ const Modal = ({
             textColor={acceptTextColor}
             color={acceptButtonColor}
             hoverColor={acceptHoverColor}
-            onClick={handleClickOpen}
+            onClick={() => {
+              handleClose();
+              acceptButtonOnClickHandler();
+            }}
           />
         </DialogActions>
       </Dialog>
