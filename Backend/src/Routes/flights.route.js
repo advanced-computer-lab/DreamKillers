@@ -26,7 +26,9 @@ router.delete("/:flightId", async (req, res) => {
   const flight = await Flight.findById(req.params.flightId);
   if (!flight) throw new Exception("Flight Not Found");
 
-  const response = await Flight.findOneAndDelete({ _id: flightId });
+  const response = await Flight.findOneAndDelete({ _id: req.params.flightId });
+
+  if (response) res.status(202).send();
 });
 
 router.post("/", async (req, res) => {
@@ -83,7 +85,7 @@ router.post("/search", async (req, res) => {
   if (departureTerminal != "" && departureTerminal != undefined)
     queryObj["departureTerminal"] = departureTerminal;
   if (arrivalTerminal != "" && arrivalTerminal != undefined)
-    queryObj["arrivalTerminal"] = arrivalTerminal;  
+    queryObj["arrivalTerminal"] = arrivalTerminal;
 
   const result = await Flight.find(queryObj);
 
