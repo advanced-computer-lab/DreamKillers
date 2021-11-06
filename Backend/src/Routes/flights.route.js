@@ -4,6 +4,9 @@ const router = express.Router();
 const Flight = require("../Models/flight.model");
 
 router.patch("/:flightId", async (req, res) => {
+  const flightNumber = req.body.flightNumber;
+  const businessSeats = req.body.businessSeats;
+  const economySeats = req.body.economySeats;
   const departureTime = req.body.departureTime;
   const arrivalTime = req.body.arrivalTime;
   const arrivalTerminal = req.body.arrivalTerminal;
@@ -13,10 +16,13 @@ router.patch("/:flightId", async (req, res) => {
 
   if (!flight) throw new Exception("Flight Not Found");
 
-  flight.departureTime = departureTime;
-  flight.arrivalTime = arrivalTime;
-  flight.arrivalTerminal = arrivalTerminal;
-  flight.departureTerminal = departureTerminal;
+  if (flight.departureTime) flight.departureTime = departureTime;
+  if (flight.arrivalTime) flight.arrivalTime = arrivalTime;
+  if (flight.arrivalTerminal) flight.arrivalTerminal = arrivalTerminal;
+  if (flight.departureTerminal) flight.departureTerminal = departureTerminal;
+  if (flight.flightNumber) flight.flightNumber = flightNumber;
+  if (flight.businessSeats) flight.businessSeats = businessSeats;
+  if (flight.economySeats) flight.economySeats = economySeats;
 
   const response = await flight.save();
 
@@ -87,6 +93,7 @@ router.post("/search", async (req, res) => {
     departureTerminal != "___"
   )
     queryObj["departureTerminal"] = departureTerminal;
+
   if (
     arrivalTerminal != "" &&
     arrivalTerminal != undefined &&

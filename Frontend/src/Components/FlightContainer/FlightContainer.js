@@ -13,7 +13,7 @@ import Styles from "./FlightContainer.module.css";
 import { margin } from "@mui/system";
 const axios = require("axios");
 
-export default function FlightContainer({ flights, deleteFlight }) {
+export default function FlightContainer({ flights, deleteFlight, onAcceptEditOnClickHandler }) {
   return (
     <div
       className={Styles.Container}
@@ -34,6 +34,7 @@ export default function FlightContainer({ flights, deleteFlight }) {
                   departureTerminal={flight.departureTerminal}
                   flightID={flight._id}
                   deleteButtonOnClick={deleteFlight}
+                  onAcceptEditOnClickHandler = {onAcceptEditOnClickHandler}
                 />
               </ListItem>
             </div>

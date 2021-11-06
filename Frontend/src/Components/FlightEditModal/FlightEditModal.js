@@ -18,6 +18,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function FlightEditModal({
   flightID,
+  flightNumberState,
+  departureTerminalState,
+  arrivalTerminalState,
+  economySeatsState,
+  businessSeatsState,
+  departureTimeState,
+  arrivalTimeState,
   mainButtonText,
   mainButtonTextColor,
   mainButtonColor,
@@ -27,9 +34,19 @@ export default function FlightEditModal({
   description,
   terminals,
   icon,
+  onAcceptOnClickHandler,
 }) {
   const [open, setOpen] = React.useState(false);
-  const [flightNumber, setFlightNumber] = React.useState(-1);
+  const [flightNumber, setFlightNumber] = React.useState(flightNumberState);
+  const [businessSeats, setBusinessSeats] = React.useState(businessSeatsState);
+  const [economySeats, setEconomySeats] = React.useState(economySeatsState);
+  const [departureTerminal, setDepartureTerminal] = React.useState(
+    departureTerminalState
+  );
+  const [arrivalTerminal, setArrivalTerminal] =
+    React.useState(arrivalTerminalState);
+  const [arrivalTime, setArrivalTime] = React.useState(arrivalTimeState);
+  const [departureTime, setDepartureTime] = React.useState(departureTimeState);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,9 +55,30 @@ export default function FlightEditModal({
   const handleClose = () => {
     setOpen(false);
   };
+  const handleEdit = () => {
+    setOpen(false);
+  };
 
   const onChangeFlightNumberHandler = (e) => {
     setFlightNumber(e.target.value);
+  };
+  const onChangeBusinessSeatsHandler = (e) => {
+    setBusinessSeats(e.target.value);
+  };
+  const onChangeEconomySeatsHandler = (e) => {
+    setEconomySeats(e.target.value);
+  };
+  const onChangeDepartureTerminalHandler = (e) => {
+    setDepartureTerminal(e.target.value);
+  };
+  const onChangeArrivalTerminalHandler = (e) => {
+    setArrivalTerminal(e.target.value);
+  };
+  const onChangeDepartureTimeHandler = (e) => {
+    setDepartureTime(e);
+  };
+  const onChangeArrivalTimeHandler = (e) => {
+    setArrivalTime(e);
   };
 
   return (
@@ -73,28 +111,57 @@ export default function FlightEditModal({
               text="Flight Number"
               onChange={onChangeFlightNumberHandler}
             />
-                
-            <TextBoxDK text="Business Seats" />
-            <TextBoxDK text="Economy Seats" />
+            <TextBoxDK
+              text="Business Seats"
+              onChange={onChangeBusinessSeatsHandler}
+            />
+            <TextBoxDK
+              text="Economy Seats"
+              onChange={onChangeEconomySeatsHandler}
+            />
             <DropDownDK
               dropItems={["___"].concat(terminals)}
               helperText="Departure Terminal"
               value="departure"
+              onChange={onChangeDepartureTerminalHandler}
             />
             <DropDownDK
               dropItems={["___"].concat(terminals)}
               helperText="Arrival Terminal"
               value="arrival"
+              onChange={onChangeArrivalTerminalHandler}
             />
           </div>
           <div className={Styles.DatesContainer}>
-            <DateTimePickerDK label="Departure Time" />
-            <DateTimePickerDK label="Arrival Time" />
+            <DateTimePickerDK
+              label="Departure Time"
+              onChange={onChangeDepartureTimeHandler}
+            />
+            <DateTimePickerDK
+              label="Arrival Time"
+              onChange={onChangeArrivalTimeHandler}
+            />
           </div>
         </DialogContent>
         <DialogActions>
           <ButtonDK buttonText="Cancel" onClick={handleClose} />
-          <ButtonDK buttonText={acceptButtonText} />
+          <ButtonDK
+            buttonText={acceptButtonText}
+            onClick={() => {
+              handleClose();
+              onAcceptOnClickHandler(
+                flightID,
+                flightNumber,
+                businessSeats,
+                economySeats,
+                departureTerminal,
+                arrivalTerminal,
+                arrivalTime,
+                departureTime
+              );
+            }
+            }
+          />
         </DialogActions>
       </Dialog>
     </div>

@@ -1,3 +1,4 @@
+import * as React from "react";
 import ButtonDK from "../../Components/ButtonDK/ButtonDK";
 import FlightContainer from "../../Components/FlightContainer/FlightContainer";
 import Styles from "./AdminPage.module.css";
@@ -17,6 +18,33 @@ const AdminPage = () => {
       setFlights(res.data);
       console.log(res.data);
     });
+  };
+
+  const onAcceptEditOnClickHandler = (
+    flightID,
+    flightNumber,
+    businessSeats,
+    economySeats,
+    departureTerminal,
+    arrivalTerminal,
+    arrivalTime,
+    departureTime
+  ) => {
+    axios
+      .patch(`http://localhost:8000/flights/${flightID}`, {
+        flightNumber: flightNumber,
+        departureTime: departureTime,
+        arrivalTime: arrivalTime,
+        departureTerminal: departureTerminal,
+        arrivalTerminal: arrivalTerminal,
+        businessSeats: businessSeats,
+        economySeats: economySeats,
+      })
+      .then((res) => {
+        console.log("Success");
+        getFlights();
+      })
+      .catch((e) => console.log(e));
   };
 
   const getFlights = () => {
@@ -83,6 +111,7 @@ const AdminPage = () => {
           />
         </div>
         <FlightContainer
+          onAcceptEditOnClickHandler={onAcceptEditOnClickHandler}
           flights={flights}
           deleteFlight={deleteFlight}
         ></FlightContainer>

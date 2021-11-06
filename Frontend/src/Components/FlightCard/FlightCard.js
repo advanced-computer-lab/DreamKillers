@@ -21,6 +21,8 @@ export default function FlightCard({
   businessSeats,
   departureTime,
   arrivalTime,
+  onAcceptAddOnClickHandler,
+  onAcceptEditOnClickHandler,
   deleteButtonOnClick,
 }) {
   return (
@@ -58,6 +60,14 @@ export default function FlightCard({
                     icon={<EditIcon />}
                     acceptButtonText={"Edit"}
                     flightID={flightID}
+                    onAcceptOnClickHandler={onAcceptEditOnClickHandler}
+                    flightNumberState={flightNumber}
+                    departureTerminalState={departureTerminal}
+                    arrivalTerminalState={arrivalTerminal}
+                    economySeatsState={economySeats}
+                    businessSeatsState={businessSeats}
+                    departureTimeState={departureTime}
+                    arrivalTimeState={arrivalTime}
                   ></FlightEditModal>
 
                   <Modal
