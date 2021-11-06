@@ -9,31 +9,31 @@ import FlightSearchModal from "../../Components/FlightSearchModal/FlightSearchMo
 const axios = require("axios");
 
 const AdminPage = () => {
-
-  const onAcceptEditOnClickHandler=(flightID,flightNumber,businessSeats,economySeats,departureTerminal,arrivalTerminal,arrivalTime,departureTime)=>
-  {
-     
-      axios.patch("http://localhost:8000/flights",{body:
-      {
-        flightID,
-        flightNumber,
-        businessSeats,
-        economySeats,
-        departureTerminal,
-        arrivalTerminal,
-        arrivalTime,
-        departureTime,
-
-      }}
-        )
-        .then((res) => {
-          
-          console.log("Success");
-        })
-        .catch((e) => console.log(e));
-    
-  }
-
+  const onAcceptEditOnClickHandler = (
+    flightID,
+    flightNumber,
+    businessSeats,
+    economySeats,
+    departureTerminal,
+    arrivalTerminal,
+    arrivalTime,
+    departureTime
+  ) => {
+    axios
+      .patch(`http://localhost:8000/flights/${flightID}`, {
+        flightNumber: flightNumber,
+        departureTime: departureTime,
+        arrivalTime: arrivalTime,
+        departureTerminal: departureTerminal,
+        arrivalTerminal: arrivalTerminal,
+        businessSeats: businessSeats,
+        economySeats: economySeats,
+      })
+      .then((res) => {
+        console.log("Success");
+      })
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div>
@@ -59,8 +59,7 @@ const AdminPage = () => {
           ></FlightSearchModal>
         </div>
         <FlightContainer
-        
-        onAcceptEditOnClickHandler = {onAcceptEditOnClickHandler}
+          onAcceptEditOnClickHandler={onAcceptEditOnClickHandler}
         ></FlightContainer>
       </div>
     </div>
