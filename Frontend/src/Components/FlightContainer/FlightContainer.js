@@ -10,10 +10,11 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import FlightCard from "../FlightCard/FlightCard";
 import Styles from "./FlightContainer.module.css";
+import { margin } from "@mui/system";
 
 const axios = require("axios");
 
-export default function FlightContainer() {
+export default function FlightContainer({ flights }) {
   // const flight1 = {
   //   flightNumber: 1,
   //   departureTime: "23-12-2000",
@@ -34,37 +35,30 @@ export default function FlightContainer() {
   //   departureTerminal: "BUX",
   // };
 
-  const [flights, setFlights] = React.useState([]);
-
-  React.useEffect(() => {
-    axios
-      .get("http://localhost:8000/flights")
-      .then((res) => {
-        setFlights(res.data);
-        console.log(res.data);
-      })
-      .catch((e) => console.log(e));
-  }, []);
-
   return (
-    <div className={Styles.Container}>
-      {flights.map((flight) => {
-        return (
-          <div>
-            <ListItem disablePadding>
-              <FlightCard
-                flightNumber={flight.flightNumber}
-                departureTime={flight.departureTime}
-                arrivalTime={flight.arrivalTime}
-                economySeats={flight.economySeats}
-                businessSeats={flight.businessSeats}
-                arrivalTerminal={flight.arrivalTerminal}
-                departureTerminal={flight.departureTerminal}
-              />
-            </ListItem>
-          </div>
-        );
-      })}
+    <div
+      className={Styles.Container}
+      style={{ maxHeight: 500, overflow: "auto" }}
+    >
+      <nav>
+        {flights.map((flight) => {
+          return (
+            <div>
+              <ListItem disablePadding>
+                <FlightCard
+                  flightNumber={flight.flightNumber}
+                  departureTime={flight.departureTime}
+                  arrivalTime={flight.arrivalTime}
+                  economySeats={flight.economySeats}
+                  businessSeats={flight.businessSeats}
+                  arrivalTerminal={flight.arrivalTerminal}
+                  departureTerminal={flight.departureTerminal}
+                />
+              </ListItem>
+            </div>
+          );
+        })}
+      </nav>
     </div>
   );
 }

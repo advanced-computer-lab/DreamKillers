@@ -62,7 +62,7 @@ export default function FlightEditModal({
           <DialogContentText id="alert-dialog-slide-description">
             {description}
           </DialogContentText>
-          <div class={Styles.container}>
+          <div className={Styles.container}>
             <TextBoxDK text="Flight Number" />
             <TextBoxDK text="Business Seats" />
             <TextBoxDK text="Economy Seats" />
