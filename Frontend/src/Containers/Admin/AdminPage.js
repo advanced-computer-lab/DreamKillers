@@ -36,6 +36,16 @@ const AdminPage = () => {
       .catch((e) => console.log(e));
   };
 
+  const deleteFlight = (flightID) => {
+    console.log(flightID);
+    axios.delete(`http://localhost:8000/flights/${flightID}`).then((res) => {
+      if (res.status == 202) {
+        console.log("Deleted");
+        getFlights();
+      } else console.log("Not deleted");
+    });
+  };
+
   useEffect(() => {
     getFlights();
   }, []);
@@ -60,7 +70,6 @@ const AdminPage = () => {
             mainButtonTextColor={"white"}
             mainButtonColor={"#1976D2"}
             mainButtonHoverColor={"#1564b3"}
-
             searchFunc={searchFunc}
             arrterminals={arrterminals}
             depterminals={depterminals}
@@ -73,7 +82,10 @@ const AdminPage = () => {
             onClick={getFlights}
           />
         </div>
-        <FlightContainer flights={flights}></FlightContainer>
+        <FlightContainer
+          flights={flights}
+          deleteFlight={deleteFlight}
+        ></FlightContainer>
       </div>
     </div>
   );

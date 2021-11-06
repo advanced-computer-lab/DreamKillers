@@ -13,28 +13,7 @@ import Styles from "./FlightContainer.module.css";
 import { margin } from "@mui/system";
 const axios = require("axios");
 
-export default function FlightContainer({ flights }) {
-  const [flights, setFlights] = React.useState([]);
-  const [loadPage, setLoadPage] = React.useState(false);
-
-  React.useEffect(() => {
-    axios
-      .get("http://localhost:8000/flights")
-      .then((res) => {
-        setFlights(res.data);
-      })
-      .catch((e) => console.log(e));
-  }, [loadPage]);
-
-  const deleteButtonOnClickHandler = (flightID) => {
-    axios.delete(`http://localhost:8000/flights/${flightID}`).then((res) => {
-      if (res.status == 202) {
-        console.log("Deleted");
-        setLoadPage(!loadPage);
-      } else console.log("Not deleted");
-    });
-  };
-  
+export default function FlightContainer({ flights, deleteFlight }) {
   return (
     <div
       className={Styles.Container}
@@ -53,7 +32,8 @@ export default function FlightContainer({ flights }) {
                   businessSeats={flight.businessSeats}
                   arrivalTerminal={flight.arrivalTerminal}
                   departureTerminal={flight.departureTerminal}
-                  deleteButtonOnClick={deleteButtonOnClickHandler}
+                  flightID={flight._id}
+                  deleteButtonOnClick={deleteFlight}
                 />
               </ListItem>
             </div>
