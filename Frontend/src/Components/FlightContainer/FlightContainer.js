@@ -52,7 +52,7 @@ export default function FlightContainer({ flights }) {
                   economySeats={flight.economySeats}
                   businessSeats={flight.businessSeats}
                   arrivalTerminal={flight.arrivalTerminal}
-                  departureTerminal={flight.departureTerminal
+                  departureTerminal={flight.departureTerminal}
                   deleteButtonOnClick={deleteButtonOnClickHandler}}
                 />
               </ListItem>
