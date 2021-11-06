@@ -53,7 +53,7 @@ export default function FlightContainer({ flights }) {
                   businessSeats={flight.businessSeats}
                   arrivalTerminal={flight.arrivalTerminal}
                   departureTerminal={flight.departureTerminal}
-                  deleteButtonOnClick={deleteButtonOnClickHandler}}
+                  deleteButtonOnClick={deleteButtonOnClickHandler}
                 />
               </ListItem>
             </div>
