@@ -13,7 +13,14 @@ import Styles from "./FlightContainer.module.css";
 
 const axios = require("axios");
 
-export default function FlightContainer() {
+export default function FlightContainer(
+{
+  onAcceptEditOnClickHandler,
+}
+
+
+
+) {
   // const flight1 = {
   //   flightNumber: 1,
   //   departureTime: "23-12-2000",
@@ -61,6 +68,7 @@ export default function FlightContainer() {
                 businessSeats={flight.businessSeats}
                 arrivalTerminal={flight.arrivalTerminal}
                 departureTerminal={flight.departureTerminal}
+                onAcceptEditOnClickHandler = {onAcceptEditOnClickHandler}
               />
             </ListItem>
           </div>

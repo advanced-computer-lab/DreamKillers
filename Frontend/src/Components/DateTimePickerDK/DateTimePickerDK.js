@@ -4,7 +4,7 @@ import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import DateTimePicker from "@material-ui/lab/DateTimePicker";
 
-export default function DateTimePickerDK({ label }) {
+export default function DateTimePickerDK({ label,onChange }) {
   const [value, setValue] = React.useState(new Date());
 
   return (
@@ -13,9 +13,7 @@ export default function DateTimePickerDK({ label }) {
         renderInput={(props) => <TextField {...props} />}
         label={label}
         value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
+        onChange={onChange}
       />
     </LocalizationProvider>
   );

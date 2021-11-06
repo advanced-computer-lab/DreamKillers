@@ -27,6 +27,8 @@ export default function FlightEditModal({
   description,
   terminals,
   icon,
+  onAcceptOnClickHandler,
+
 }) {
   const [open, setOpen] = React.useState(false);
   const [flightNumber, setFlightNumber] = React.useState(-1);
@@ -34,6 +36,8 @@ export default function FlightEditModal({
   const [economySeats, setEconomySeats] = React.useState(-1);
   const [departureTerminal, setDepartureTerminal] = React.useState(-1);
   const [arrivalTerminal, setArrivalTerminal] = React.useState(-1);
+  const [arrivalTime, setArrivalTime] = React.useState(-1);
+  const [departureTime, setDepartureTime] = React.useState(-1);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,6 +64,12 @@ export default function FlightEditModal({
   };
   const onChangeArrivalTerminalHandler = (e) => {
     setArrivalTerminal(e.target.value);
+  };
+  const onChangeDepartureTimeHandler = (e) => {
+    setDepartureTime(e.target.value);
+  };
+  const onChangeArrivalTimeHandler = (e) => {
+    setArrivalTime(e.target.value);
   };
 
   return (
@@ -113,13 +123,13 @@ export default function FlightEditModal({
             />
           </div>
           <div className={Styles.DatesContainer}>
-            <DateTimePickerDK label="Departure Time" />
-            <DateTimePickerDK label="Arrival Time" />
+            <DateTimePickerDK label="Departure Time"  onChange = {onChangeDepartureTimeHandler}/>
+            <DateTimePickerDK label="Arrival Time" onChange = {onChangeArrivalTimeHandler}/>
           </div>
         </DialogContent>
         <DialogActions>
           <ButtonDK buttonText="Cancel" onClick={handleClose} />
-          <ButtonDK buttonText={acceptButtonText} onClick={handleEdit} />
+          <ButtonDK buttonText={acceptButtonText} onClick={onAcceptOnClickHandler(flightID,flightNumber,businessSeats,economySeats,departureTerminal,arrivalTerminal,arrivalTime,departureTime)} />
         </DialogActions>
       </Dialog>
     </div>
