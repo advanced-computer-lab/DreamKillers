@@ -14,37 +14,26 @@ import Styles from "./FlightContainer.module.css";
 const axios = require("axios");
 
 export default function FlightContainer() {
-  // const flight1 = {
-  //   flightNumber: 1,
-  //   departureTime: "23-12-2000",
-  //   arrivalTime: "23-12-2001",
-  //   economySeats: 21,
-  //   businessSeats: 12,
-  //   arrivalTerminal: "CAI",
-  //   departureTerminal: "RYD",
-  // };
-
-  // const flight2 = {
-  //   flightNumber: 2,
-  //   departureTime: "23-12-2000",
-  //   arrivalTime: "23-12-2001",
-  //   economySeats: 21,
-  //   businessSeats: 12,
-  //   arrivalTerminal: "CAI",
-  //   departureTerminal: "BUX",
-  // };
-
   const [flights, setFlights] = React.useState([]);
+  const [loadPage, setLoadPage] = React.useState(false);
 
   React.useEffect(() => {
     axios
       .get("http://localhost:8000/flights")
       .then((res) => {
         setFlights(res.data);
-        console.log(res.data);
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [loadPage]);
+
+  const deleteButtonOnClickHandler = (flightID) => {
+    axios.delete(`http://localhost:8000/flights/${flightID}`).then((res) => {
+      if (res.status == 202) {
+        console.log("Deleted");
+        setLoadPage(!loadPage);
+      } else console.log("Not deleted");
+    });
+  };
 
   return (
     <div className={Styles.Container}>
@@ -61,6 +50,7 @@ export default function FlightContainer() {
                 businessSeats={flight.businessSeats}
                 arrivalTerminal={flight.arrivalTerminal}
                 departureTerminal={flight.departureTerminal}
+                deleteButtonOnClick={deleteButtonOnClickHandler}
               />
             </ListItem>
           </div>
