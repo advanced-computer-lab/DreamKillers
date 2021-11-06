@@ -67,7 +67,6 @@ export default function FlightSearchModal({
   };
 
   const handleChange = () => {
-    console.log("[" + arrTerminal + "]");
     searchFunc({
       flightNumber: flightNumber,
       departureTime: depTime,
@@ -77,9 +76,6 @@ export default function FlightSearchModal({
     });
     handleClose();
   };
-  React.useEffect(() => {
-    console.log(arrterminals);
-  }, []);
 
   return (
     <div>
