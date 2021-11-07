@@ -14,7 +14,7 @@ router.post("/login", async (req, res) => {
       user.authTokens.push(token);
       res.header("x-user-auth-token", token);
       res.status(200).send();
-    } else res.send("Error");
-  } else res.send("Error");
+    } else res.status(401).send("Error");
+  } else res.status(401).send("Error");
 });
 module.exports = router;
