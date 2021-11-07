@@ -7,6 +7,8 @@ import DashboardListItemDK from "../DashBoardListItemDK/DashboardListItemDK";
 import { maxWidth } from "@mui/system";
 import ListItem from "@mui/material/ListItem";
 import Styles from "./ToolBarDK.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlane } from "@fortawesome/free-solid-svg-icons";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -23,7 +25,7 @@ export default function ToolBarDK() {
     <div className={Styles.Toolbar}>
       <DashboardListItemDK
         listItemText="Flights"
-        listItemIcon={<FlightIcon />}
+        listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
       />
     </div>
   );

@@ -39,7 +39,6 @@ router.delete("/:flightId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  console.log("logged");
   const flightNumber = req.body.flightNumber;
   const departureTime = req.body.departureTime;
   const arrivalTime = req.body.arrivalTime;
@@ -59,7 +58,8 @@ router.post("/", async (req, res) => {
   });
 
   const result = await flight.save();
-  res.status(201).send(result);
+  if (result) res.status(201).send(result);
+  else res.status(400).send();
 });
 
 router.get("/", async (req, res) => {

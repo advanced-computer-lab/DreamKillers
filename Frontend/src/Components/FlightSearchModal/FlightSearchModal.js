@@ -32,11 +32,19 @@ export default function FlightSearchModal({
 }) {
   const [open, setOpen] = React.useState(false);
 
-  const [flightNumber, setFlightNumber] = React.useState(0);
+  const [flightNumber, setFlightNumber] = React.useState("");
   const [depTerminal, setDepTerminal] = React.useState("");
   const [arrTerminal, setArrTerminal] = React.useState("");
   const [depTime, setDepTime] = React.useState("");
   const [arrTime, setArrTime] = React.useState("");
+
+  const clearFlight = () => {
+    setFlightNumber("");
+    setDepTerminal("");
+    setArrTerminal("");
+    setDepTime("");
+    setArrTime("");
+  };
 
   const flightNumberChange = (e) => {
     setFlightNumber(e.target.value);
@@ -88,7 +96,6 @@ export default function FlightSearchModal({
       />
       <Dialog
         maxWidth={100}
-        fullWidth
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -101,17 +108,21 @@ export default function FlightSearchModal({
             {description}
           </DialogContentText>
           <div className={Styles.container} sx={{ color: "yellow" }}>
-            <TextBoxDK text="Flight Number" onChange={flightNumberChange} />
+            <TextBoxDK
+              text="Flight Number"
+              onChange={flightNumberChange}
+              value={flightNumber}
+            />
             <DropDownDK
               dropItems={["___"].concat(depterminals)}
               helperText="Departure Terminal"
-              value=""
+              value={depTerminal}
               onChange={depTerminalChange}
             />
             <DropDownDK
               dropItems={["___"].concat(arrterminals)}
               helperText="Arrival Terminal"
-              value=""
+              value={arrTerminal}
               onChange={arrTerminalChange}
             />
           </div>
@@ -121,8 +132,20 @@ export default function FlightSearchModal({
           </div>
         </DialogContent>
         <DialogActions>
-          <ButtonDK buttonText="Cancel" onClick={handleClose} />
-          <ButtonDK buttonText="Search" onClick={handleChange} />
+          <ButtonDK
+            buttonText="Cancel"
+            onClick={() => {
+              handleClose();
+              clearFlight();
+            }}
+          />
+          <ButtonDK
+            buttonText="Search"
+            onClick={() => {
+              handleChange();
+              clearFlight();
+            }}
+          />
         </DialogActions>
       </Dialog>
     </div>
