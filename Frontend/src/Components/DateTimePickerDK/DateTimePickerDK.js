@@ -4,6 +4,7 @@ import AdapterDateFns from "@material-ui/lab/AdapterDateFns";
 import LocalizationProvider from "@material-ui/lab/LocalizationProvider";
 import DateTimePicker from "@material-ui/lab/DateTimePicker";
 import ButtonDK from "../ButtonDK/ButtonDK";
+import Styles from "./DateTimePicker.module.css";
 
 export default function DateTimePickerDK({ label, onChange }) {
   const [value, setValue] = React.useState(null);
@@ -22,14 +23,15 @@ export default function DateTimePickerDK({ label, onChange }) {
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DateTimePicker
-        renderInput={(props) => <TextField {...props} />}
-        label={label}
-        value={value}
-        onChange={handleChange}
-      />
-      <br></br>
-      <ButtonDK buttonText="Reset" onClick={resetFunc} />
+      <div className={Styles.Container}>
+        <DateTimePicker
+          renderInput={(props) => <TextField {...props} />}
+          label={label}
+          value={value}
+          onChange={handleChange}
+        />
+        <ButtonDK buttonText="Reset" onClick={resetFunc} />
+      </div>
     </LocalizationProvider>
   );
 }

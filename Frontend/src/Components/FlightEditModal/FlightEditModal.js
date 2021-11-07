@@ -93,7 +93,6 @@ export default function FlightEditModal({
       />
       <Dialog
         maxWidth={100}
-        fullWidth
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -107,26 +106,36 @@ export default function FlightEditModal({
           </DialogContentText>
 
           <div class={Styles.container}>
-            <TextBoxDK
-              text="Flight Number"
-              onChange={onChangeFlightNumberHandler}
-            />
-            <TextBoxDK
-              text="Business Seats"
-              onChange={onChangeBusinessSeatsHandler}
-            />
-            <TextBoxDK
-              text="Economy Seats"
-              onChange={onChangeEconomySeatsHandler}
-            />
-            <TextBoxDK
-              text="Departure Terminal"
-              onChange={onChangeDepartureTerminalHandler}
-            />
-            <TextBoxDK
-              text="Arrival Terminal"
-              onChange={onChangeArrivalTerminalHandler}
-            />
+            <div className={Styles.TextBox}>
+              <TextBoxDK
+                text="Flight Number"
+                onChange={onChangeFlightNumberHandler}
+              />
+            </div>
+            <div className={Styles.TextBox}>
+              <TextBoxDK
+                text="Business Seats"
+                onChange={onChangeBusinessSeatsHandler}
+              />
+            </div>
+            <div className={Styles.TextBox}>
+              <TextBoxDK
+                text="Economy Seats"
+                onChange={onChangeEconomySeatsHandler}
+              />
+            </div>
+            <div className={Styles.TextBox}>
+              <TextBoxDK
+                text="Departure Terminal"
+                onChange={onChangeDepartureTerminalHandler}
+              />
+            </div>
+            <div className={Styles.TextBox}>
+              <TextBoxDK
+                text="Arrival Terminal"
+                onChange={onChangeArrivalTerminalHandler}
+              />
+            </div>
           </div>
           <div className={Styles.DatesContainer}>
             <DateTimePickerDK
