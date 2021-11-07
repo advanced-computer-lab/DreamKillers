@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import AppBrowserRouter from "./Navigators/AppBrowserRouter";
+import LoginPage from "./Containers/Login/LoginPage";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App></App>
+    <AppBrowserRouter />
   </React.StrictMode>,
   document.getElementById("root")
 );
