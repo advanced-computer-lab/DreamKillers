@@ -119,16 +119,12 @@ export default function FlightEditModal({
               text="Economy Seats"
               onChange={onChangeEconomySeatsHandler}
             />
-            <DropDownDK
-              dropItems={["___"].concat(terminals)}
-              helperText="Departure Terminal"
-              value="departure"
+            <TextBoxDK
+              text="Departure Terminal"
               onChange={onChangeDepartureTerminalHandler}
             />
-            <DropDownDK
-              dropItems={["___"].concat(terminals)}
-              helperText="Arrival Terminal"
-              value="arrival"
+            <TextBoxDK
+              text="Arrival Terminal"
               onChange={onChangeArrivalTerminalHandler}
             />
           </div>
@@ -159,8 +155,7 @@ export default function FlightEditModal({
                 arrivalTime,
                 departureTime
               );
-            }
-            }
+            }}
           />
         </DialogActions>
       </Dialog>

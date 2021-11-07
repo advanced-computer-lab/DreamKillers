@@ -39,6 +39,7 @@ router.delete("/:flightId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  console.log("logged");
   const flightNumber = req.body.flightNumber;
   const departureTime = req.body.departureTime;
   const arrivalTime = req.body.arrivalTime;
@@ -99,7 +100,6 @@ router.post("/search", async (req, res) => {
     arrivalTerminal != undefined &&
     arrivalTerminal != "___"
   )
-
     queryObj["arrivalTerminal"] = arrivalTerminal;
 
   const result = await Flight.find(queryObj);
