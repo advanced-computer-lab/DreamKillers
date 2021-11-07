@@ -121,6 +121,7 @@ const AdminPage = () => {
               mainButtonHoverColor={"#1564b3"}
               acceptButtonText={"Create"}
               onAcceptOnClickHandler={createFlight}
+              title={"Enter attributes of flight"}
             ></FlightEditModal>
           </div>
           <FlightSearchModal

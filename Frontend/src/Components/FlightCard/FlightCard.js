@@ -59,6 +59,7 @@ export default function FlightCard({
                     mainButtonHoverColor={"#1976D2"}
                     icon={<EditIcon />}
                     acceptButtonText={"Edit"}
+                    title={"Enter the attributes of flight you want to edit"}
                     flightID={flightID}
                     onAcceptOnClickHandler={onAcceptEditOnClickHandler}
                     flightNumberState={flightNumber}

@@ -1,11 +1,16 @@
 .container {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: space-evenly;
+  padding: 20px 24px;
 }
 
 .DatesContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+.TextBox {
+  margin: 5px;
 }
