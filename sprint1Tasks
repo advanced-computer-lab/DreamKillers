@@ -1,0 +1,10 @@
+Youssef Mohamed Mahmoud Algendy 46-11401
+Backend Tasks:
+  -Main server creation & mongodb connection
+  -Creating show all flights endpoint
+Frontend Tasks:
+  -Flights Page (container) Creation
+  -Login Page (container) Creation
+  -Routing
+  -Implemented delete flight feature
+  -Created dummy components (Modal, Textbox, button)
