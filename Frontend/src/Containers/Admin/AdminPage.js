@@ -74,6 +74,35 @@ const AdminPage = () => {
     });
   };
 
+  const createFlight = (
+    flightID,
+    flightNumber,
+    businessSeats,
+    economySeats,
+    departureTerminal,
+    arrivalTerminal,
+    arrivalTime,
+    departureTime
+  ) => {
+    let query = {
+      flightNumber: flightNumber,
+      departureTime: departureTime,
+      arrivalTime: arrivalTime,
+      departureTerminal: departureTerminal,
+      arrivalTerminal: arrivalTerminal,
+      businessSeats: businessSeats,
+      economySeats: economySeats,
+    };
+    console.log(query);
+    axios
+      .post(`http://localhost:8000/flights/`, query)
+      .then((res) => {
+        console.log(res.data);
+        getFlights();
+      })
+      .catch((e) => console.log("error", e));
+  };
+
   useEffect(() => {
     getFlights();
   }, []);
@@ -91,6 +120,7 @@ const AdminPage = () => {
               mainButtonColor={"#1976D2"}
               mainButtonHoverColor={"#1564b3"}
               acceptButtonText={"Create"}
+              onAcceptOnClickHandler={createFlight}
             ></FlightEditModal>
           </div>
           <FlightSearchModal
