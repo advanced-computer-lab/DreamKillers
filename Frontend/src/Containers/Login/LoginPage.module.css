@@ -1,16 +1,24 @@
 .Page {
-  background-image: url("https://wallpaperaccess.com/full/3919997.jpg");
-  height: 980px;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-content: center;
 }
 
 .PageItems {
+  /* background-image: url("https://wallpaperaccess.com/full/3919997.jpg"); */
+  height: 980px;
+  align-content: center;
   width: 20em;
-  height: 40em;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
-  margin: 0 auto;
+
+  padding: 1em 2em 1em 2em;
+  border-radius: 0.5em;
+  background-color: rgb(246, 246, 246);
 }
 
 .SignInText {
@@ -31,7 +39,7 @@
 
 .LockIcon {
   font-size: xx-large;
-  padding-left: 4.5em;
+  align-self: center;
 }
 
 .AirPlaneImage {

@@ -13,7 +13,7 @@ router.post("/login", async (req, res) => {
       const token = admin.generateAuthToken();
       res.header("x-admin-auth-token", token);
       res.status(200).send();
-    } else res.send("Error");
-  } else res.send("Error");
+    } else res.status(401).send("Error");
+  } else res.status(401).send("Error");
 });
 module.exports = router;
