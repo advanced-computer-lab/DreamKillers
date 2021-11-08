@@ -29,7 +29,7 @@ Backend Tasks:
   - Creating Flight Search Endpoint
 Frontend Task:
   -Created Search Flight component and feature
-  -Created "Add new Flight" & "Edit flight" components
+  -Created "Add new Flight" , "Edit flight" & "Flight Card" components
   -Connected Login Page to the back end
 
 Mohamed Hossameldin Khalifa 45-12309
