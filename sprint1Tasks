@@ -31,3 +31,10 @@ Frontend Task:
   -Created Search Flight component and feature
   -Created "Add new Flight" & "Edit flight" components
   -Connected Login Page to the back end
+
+Mohamed Hossameldin Khalifa 45-12309
+Backend Tasks:
+  - Creating Flight Deletion Endpoint
+  - Creating Flight Editing Endpoint
+Frontend Tasks:
+  - Created Dashboard List for Admin (currently dummy, includes flight)
