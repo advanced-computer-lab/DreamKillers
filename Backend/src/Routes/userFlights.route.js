@@ -114,4 +114,12 @@ router.post("/searchOnReturn", async (req, res) => {
   res.send(result);
 });
 
+router.get("/:flightId", async (req, res) => {
+  const flight = await Flight.findById(req.params.flightId);
+
+  if (!flight) throw new Exception("Flight Not Found");
+
+  res.status(200).send(flight);
+});
+
 module.exports = router;
