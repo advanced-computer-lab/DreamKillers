@@ -13,7 +13,7 @@ const port = config.get("server.port");
 const userRouter = require("./Routes/user.route");
 const flightRouter = require("./Routes/flights.route");
 const adminRouter = require("./Routes/admin.route");
-
+const userFlightsRouter = require("./Routes/userFlights.route");
 //DB Connection
 mongoose
   .connect(process.env.mongouri, {
@@ -29,6 +29,7 @@ app.use(express.json());
 app.use("/user", userRouter);
 app.use("/flights", flightRouter);
 app.use("/admin", adminRouter);
+app.use("/userFlights", userFlightsRouter);
 
 //Host app on localhost
 app.listen(port, () => {
