@@ -11,6 +11,7 @@ router.patch("/:flightId", async (req, res) => {
   const arrivalTime = req.body.arrivalTime;
   const arrivalTerminal = req.body.arrivalTerminal;
   const departureTerminal = req.body.departureTerminal;
+  const baggageAllowance = req.body.baggageAllowance;
 
   const flight = await Flight.findById(req.params.flightId);
 
@@ -23,6 +24,7 @@ router.patch("/:flightId", async (req, res) => {
   if (flight.flightNumber) flight.flightNumber = flightNumber;
   if (flight.businessSeats) flight.businessSeats = businessSeats;
   if (flight.economySeats) flight.economySeats = economySeats;
+  if (flight.baggageAllowance) flight.baggageAllowance = baggageAllowance;
 
   const response = await flight.save();
 
@@ -46,6 +48,7 @@ router.post("/", async (req, res) => {
   const businessSeats = req.body.businessSeats;
   const arrivalTerminal = req.body.arrivalTerminal;
   const departureTerminal = req.body.departureTerminal;
+  const baggageAllowance = req.body.baggageAllowance;
 
   const flight = new Flight({
     flightNumber: flightNumber,
@@ -55,6 +58,7 @@ router.post("/", async (req, res) => {
     businessSeats: businessSeats,
     arrivalTerminal: arrivalTerminal,
     departureTerminal: departureTerminal,
+    baggageAllowance: baggageAllowance,
   });
 
   const result = await flight.save();
@@ -76,6 +80,7 @@ router.post("/search", async (req, res) => {
   let businessSeats = req.body.businessSeats;
   let arrivalTerminal = req.body.arrivalTerminal;
   let departureTerminal = req.body.departureTerminal;
+
   let queryObj = {};
 
   if (flightNumber != "" && flightNumber != undefined)
