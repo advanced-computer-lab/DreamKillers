@@ -2,6 +2,7 @@ const { query } = require("express");
 const express = require("express");
 const router = express.Router();
 const Flight = require("../Models/flight.model");
+const FlightReservation = require("../Models/flightReservation.model");
 
 router.patch("/:flightId", async (req, res) => {
   const flightNumber = req.body.flightNumber;
@@ -105,6 +106,26 @@ router.post("/search", async (req, res) => {
   const result = await Flight.find(queryObj);
 
   res.send(result);
+});
+
+router.post("/reserve", async (req, res) => {
+  const depFlight = req.body.departureFlight;
+  const retFlight = req.body.returnFlight;
+  const cabinClass = req.body.cabinClass;
+  const passengersNumber = req.body.passengersNumber;
+  const price = req.body.price;
+  const userID = req.body.user;
+
+  const flightReservation = new FlightReservation({
+    departureFlight: depFlight,
+    returnFlight: retFlight,
+    user: userID,
+    cabinClass: cabinClass,
+    passengersNumber: passengersNumber,
+    price: price,
+  });
+  await flightReservation.save();
+  return res.status(201).send(flightReservation);
 });
 
 module.exports = router;
