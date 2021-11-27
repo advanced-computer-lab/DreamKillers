@@ -80,7 +80,7 @@ router.post("/search", async (req, res) => {
   let businessSeats = req.body.businessSeats;
   let arrivalTerminal = req.body.arrivalTerminal;
   let departureTerminal = req.body.departureTerminal;
-  let baggageAllowance = req.body.baggageAllowance;
+
   let queryObj = {};
 
   if (flightNumber != "" && flightNumber != undefined)
@@ -106,13 +106,6 @@ router.post("/search", async (req, res) => {
     arrivalTerminal != "___"
   )
     queryObj["arrivalTerminal"] = arrivalTerminal;
-
-  if(
-    baggageAllowance != "" && 
-    baggageAllowance!= undefined && 
-    baggageAllowance!= "__"
-  )
-  queryObj["baggageAllowance"] = baggageAllowance;
 
   const result = await Flight.find(queryObj);
 
