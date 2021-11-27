@@ -1,6 +1,4 @@
-const mongoose = require("mongoose"); //
-
-// call DB and connect
+const mongoose = require("mongoose");
 
 const flightSchema = new mongoose.Schema({
   flightNumber: { type: Number, required: true },
