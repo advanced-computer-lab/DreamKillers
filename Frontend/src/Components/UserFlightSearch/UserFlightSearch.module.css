@@ -1,0 +1,25 @@
+.componentHolder {
+  display: inline-block;
+}
+
+.dateComp {
+  padding-left: 7px;
+  display: inline-block;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+}
+
+.reset {
+  display: flex;
+}
+
+.padder {
+  margin-left: 550px;
+}
+
+.numbers {
+  padding-left: 85px;
+}
