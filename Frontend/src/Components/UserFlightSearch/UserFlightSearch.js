@@ -7,25 +7,25 @@ import DateTimePickerDK from "../DateTimePickerDK/DateTimePickerDK";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import RefreshIcon from "@mui/icons-material/Refresh";
-
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { CardActionArea } from "@mui/material";
+import { CardActionArea, TextField } from "@mui/material";
 import ButtonDK from "../ButtonDK/ButtonDK";
+import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 export default function UserFlightSearch() {
   //to be raised to higher component and changed to props
-  //(childrenNum,adultNum,depTerminal,arrTerminal, cabinClass, depterminals, arrterminals ,depDate, arrDate)
+  //(childrenNum,adultNum,depTerminal,arrTerminal, cabinClass, depterminals, arrterminals ,depDate, arrDate, searchFunc)
   const [childrenNum, setChildrenNum] = useState("");
   const [adultNum, setAdultNum] = useState("");
   const [depTerminal, setDepterminal] = useState("");
   const [arrTerminal, setArrTerminal] = useState("");
   const [cabinClass, setCabinClass] = useState("");
-  const [depDate, setDepDate] = useState("");
-  const [arrDate, setArrDate] = useState("");
-
-  let depterminals = ["CAI", "POL", "USA"];
-  let arrterminals = ["CAI", "POL", "USA"];
+  const [depDate, setDepDate] = useState(new Date());
+  const [arrDate, setArrDate] = useState(new Date());
+  let depterminals = ["CAI", "CAN", "RYA"];
+  let arrterminals = ["CAI", "RYA", "CAN"];
 
   const reset = () => {
     setChildrenNum("");
@@ -37,8 +37,29 @@ export default function UserFlightSearch() {
     setArrDate("");
   };
 
+  const searchFunc = () => {
+    axios
+      .post("http://localhost:8000/userFlights/searchOnDepart", {
+        noOfPassengers: adultNum,
+        dateOne: depDate,
+        dateTwo: arrDate,
+        cabinClass: cabinClass,
+        arrivalTerminal: arrTerminal,
+        departureTerminal: depTerminal,
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+
   return (
-    <nav>
+    <form
+      onSubmit={() => {
+        console.log("hoi");
+        searchFunc();
+      }}
+      autoComplete="off"
+    >
       <Card sx={{ maxWidth: 750, bgcolor: "snow" }}>
         <CardContent>
           <div className={Styles.container}>
@@ -51,6 +72,7 @@ export default function UserFlightSearch() {
                   onChange={(e) => {
                     setCabinClass(e);
                   }}
+                  isRequired={true}
                 />
               </div>
               <div className={Styles.componentHolder}>
@@ -61,6 +83,7 @@ export default function UserFlightSearch() {
                   onChange={(e) => {
                     setDepterminal(e);
                   }}
+                  isRequired={true}
                 />
               </div>
               <div className={Styles.componentHolder}>
@@ -71,6 +94,7 @@ export default function UserFlightSearch() {
                   onChange={(e) => {
                     setArrTerminal(e);
                   }}
+                  isRequired={true}
                 />
               </div>
               <br></br>
@@ -94,22 +118,24 @@ export default function UserFlightSearch() {
               <div className={Styles.numbers}>
                 <div className={Styles.componentHolder}>
                   <DropDownDK
-                    dropItems={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                    dropItems={[1, 2, 3, 4, 5, 6]}
                     helperText="Number of Adults"
                     value={adultNum}
                     onChange={(e) => {
                       setAdultNum(e);
                     }}
+                    isRequired={true}
                   />
                 </div>
                 <div className={Styles.componentHolder}>
                   <DropDownDK
-                    dropItems={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+                    dropItems={[0, 1, 2, 3]}
                     helperText="Number of Children"
                     value={childrenNum}
                     onChange={(e) => {
                       setChildrenNum(e);
                     }}
+                    isRequired={true}
                   />
                 </div>
               </div>
@@ -129,16 +155,19 @@ export default function UserFlightSearch() {
                 }}
               />
               <p className={Styles.padder}></p>
-              <ButtonDK
+              <Button
                 variant="contained"
-                onClick={() => {}}
-                textColor="White"
-                buttonText="Search"
-              />
+                sx={{
+                  color: "White",
+                }}
+                type="submit"
+              >
+                {"Search"}
+              </Button>
             </div>
           </div>
         </CardContent>
       </Card>
-    </nav>
+    </form>
   );
 }
