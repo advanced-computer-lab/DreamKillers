@@ -20,13 +20,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const tools = [];
 
-export default function ToolBarDK() {
+export default function ToolBarDK({children}) {
+
+  
   return (
     <div className={Styles.Toolbar}>
-      <DashboardListItemDK
-        listItemText="Flights"
-        listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
-      />
+     {children}
+      
     </div>
   );
 }
