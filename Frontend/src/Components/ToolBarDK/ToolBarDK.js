@@ -8,7 +8,7 @@ import { maxWidth } from "@mui/system";
 import ListItem from "@mui/material/ListItem";
 import Styles from "./ToolBarDK.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPlane, faUser, faBook } from "@fortawesome/free-solid-svg-icons";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -20,81 +20,47 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const tools = [];
 
-export default function ToolBarDK({children}) {
+export default function ToolBarDK({ dashboard, dashBoardItemOnClick }) {
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
-  
   return (
     <div className={Styles.Toolbar}>
-     {children}
-      
+      {dashboard != "user" ? (
+        <DashboardListItemDK
+          listItemText="Flights"
+          listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
+        />
+      ) : (
+        <>
+          <DashboardListItemDK
+            listItemText="Flights"
+            listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
+            selected={selectedIndex == 0}
+            onClickHandler={() => {
+              setSelectedIndex(0);
+              if (dashBoardItemOnClick) dashBoardItemOnClick();
+            }}
+          />
+          <DashboardListItemDK
+            listItemText="Reservations"
+            listItemIcon={<FontAwesomeIcon icon={faBook} color={"white"} />}
+            selected={selectedIndex == 1}
+            onClickHandler={() => {
+              setSelectedIndex(1);
+              if (dashBoardItemOnClick) dashBoardItemOnClick();
+            }}
+          />
+          <DashboardListItemDK
+            listItemText="Profile"
+            listItemIcon={<FontAwesomeIcon icon={faUser} color={"white"} />}
+            selected={selectedIndex == 2}
+            onClickHandler={() => {
+              setSelectedIndex(2);
+              if (dashBoardItemOnClick) dashBoardItemOnClick();
+            }}
+          />
+        </>
+      )}
     </div>
   );
 }
-
-// export default function FlightContainer() {
-//     // const flight1 = {
-//     //   flightNumber: 1,
-//     //   departureTime: "23-12-2000",
-//     //   arrivalTime: "23-12-2001",
-//     //   economySeats: 21,
-//     //   businessSeats: 12,
-//     //   arrivalTerminal: "CAI",
-//     //   departureTerminal: "RYD",
-//     // };
-
-//     // const flight2 = {
-//     //   flightNumber: 2,
-//     //   departureTime: "23-12-2000",
-//     //   arrivalTime: "23-12-2001",
-//     //   economySeats: 21,
-//     //   businessSeats: 12,
-//     //   arrivalTerminal: "CAI",
-//     //   departureTerminal: "BUX",
-//     // };
-
-//     const [flights, setFlights] = React.useState([]);
-
-//     React.useEffect(() => {
-//       axios
-//         .get("http://localhost:8000/flights")
-//         .then((res) => {
-//           setFlights(res.data);
-//           console.log(res.data);
-//         })
-//         .catch((e) => console.log(e));
-//     }, []);
-
-//     return (
-//       <Box
-//         sx={{
-//           width: "100%",
-//           maxWidth: 380,
-//           maxHeight: 500,
-//           overflow: "auto",
-//           bgcolor: "black",
-//         }}
-//       >
-//         <nav aria-label="main mailbox folders">
-//           <List>
-//             {flights.map((flight) => {
-//               return (
-//                 <div>
-//                   <ListItem disablePadding>
-//                     <FlightCard
-//                       flightNumber={flight.flightNumber}
-//                       departureTime={flight.departureTime}
-//                       arrivalTime={flight.arrivalTime}
-//                       economySeats={flight.economySeats}
-//                       businessSeats={flight.businessSeats}
-//                       arrivalTerminal={flight.arrivalTerminal}
-//                       departureTerminal={flight.departureTerminal}
-//                     />
-//                   </ListItem>
-//                 </div>
-//               );
-//             })}
-//           </List>
-//         </nav>
-//       </Box>
-//     );
-//   }
