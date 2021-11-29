@@ -8,7 +8,7 @@ import { maxWidth } from "@mui/system";
 import ListItem from "@mui/material/ListItem";
 import Styles from "./ToolBarDK.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPlane, faUser, faBook } from "@fortawesome/free-solid-svg-icons";
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -20,13 +20,47 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const tools = [];
 
-export default function ToolBarDK() {
+export default function ToolBarDK({ dashboard, dashBoardItemOnClick }) {
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
+
   return (
     <div className={Styles.Toolbar}>
-      <DashboardListItemDK
-        listItemText="Flights"
-        listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
-      />
+      {dashboard != "user" ? (
+        <DashboardListItemDK
+          listItemText="Flights"
+          listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
+        />
+      ) : (
+        <>
+          <DashboardListItemDK
+            listItemText="Flights"
+            listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
+            selected={selectedIndex == 0}
+            onClickHandler={() => {
+              setSelectedIndex(0);
+              if (dashBoardItemOnClick) dashBoardItemOnClick();
+            }}
+          />
+          <DashboardListItemDK
+            listItemText="Reservations"
+            listItemIcon={<FontAwesomeIcon icon={faBook} color={"white"} />}
+            selected={selectedIndex == 1}
+            onClickHandler={() => {
+              setSelectedIndex(1);
+              if (dashBoardItemOnClick) dashBoardItemOnClick();
+            }}
+          />
+          <DashboardListItemDK
+            listItemText="Profile"
+            listItemIcon={<FontAwesomeIcon icon={faUser} color={"white"} />}
+            selected={selectedIndex == 2}
+            onClickHandler={() => {
+              setSelectedIndex(2);
+              if (dashBoardItemOnClick) dashBoardItemOnClick();
+            }}
+          />
+        </>
+      )}
     </div>
   );
 }
