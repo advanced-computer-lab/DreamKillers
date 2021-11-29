@@ -17,4 +17,17 @@ router.post("/login", async (req, res) => {
     } else res.status(401).send("Error");
   } else res.status(401).send("Error");
 });
+
+router.patch('/edit', async (req, res) => {
+  const userEmail = req.body.Email;
+  const userPass = req.body.password;
+  const user = await User.findOne({email: userEmail});
+
+  user.userEmail = userEmail;
+  user.userPass = userPass;
+
+  const response = await user.save();
+  res.status(200).send(response);
+});
+
 module.exports = router;
