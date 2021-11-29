@@ -1,0 +1,18 @@
+.FlightCardContainer {
+  padding-bottom: 0.2em;
+  width: 375;
+}
+
+.FlightCardDescription {
+  text-align: center;
+}
+
+.FlightCardSummary {
+  width: 375;
+}
+
+.ButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
