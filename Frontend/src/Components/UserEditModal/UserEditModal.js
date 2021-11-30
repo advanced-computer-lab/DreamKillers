@@ -25,8 +25,6 @@ export default function UserEditModal({
   passportNumberState,
   AgeState,
   phoneNumberState,
-  //   departureTimeState,
-  //   arrivalTimeState,
   mainButtonText,
   mainButtonTextColor,
   mainButtonColor,
@@ -34,18 +32,16 @@ export default function UserEditModal({
   acceptButtonText,
   title,
   description,
-  //terminals,
   icon,
   onAcceptOnClickHandler,
 }) {
   const [open, setOpen] = React.useState(false);
-  const [userName, setUserName] = React.useState(userNameState);
-  const [Email, setEmail] = React.useState(EmailState);
-  const [Password, setPassword] = React.useState(PasswordState);
-  const [passportNumber, setPassportNumber] =
-    React.useState(passportNumberState);
-  const [Age, setAge] = React.useState(AgeState);
-  const [phoneNumber, setPhoneNumber] = React.useState(phoneNumberState);
+  const [userName, setUserName] = React.useState("");
+  const [Email, setEmail] = React.useState("");
+  const [Password, setPassword] = React.useState("");
+  const [passportNumber, setPassportNumber] = React.useState("");
+  const [Age, setAge] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
 
   const handleClickOpen = () => {
     setOpen(true);

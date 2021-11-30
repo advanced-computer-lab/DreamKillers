@@ -4,7 +4,6 @@ import FlightContainer from "../../Components/FlightContainer/FlightContainer";
 import Styles from "./UserPage.module.css";
 import FlightEditModal from "../../Components/FlightEditModal/FlightEditModal";
 import ToolBarDK from "../../Components/ToolBarDK/ToolBarDK";
-import UserProfileDK from "../../Components/UserProfileDK/UserProfileDK";
 import FlightSearchModal from "../../Components/FlightSearchModal/FlightSearchModal";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import axios from "axios";
@@ -22,6 +21,7 @@ import UserEditModal from "../../Components/UserEditModal/UserEditModal.js";
 import EditIcon from "@mui/icons-material/Edit";
 
 const UserPage = () => {
+  const [editTriggered, setEditTriggered] = React.useState(false);
   const onAcceptEditOnClickHandler = (
     userName,
     Email,
@@ -33,14 +33,16 @@ const UserPage = () => {
     axios
       .patch(`http://localhost:8000/user/edit`, {
         name: userName,
-        email: Email,
+        oldEmail: currentUser.email,
+        newEmail: Email,
         password: Password,
-        passportNumber: passportNumber,
-        phonenumber: phoneNumber,
+        newPassportNumber: passportNumber,
+        newPhoneNumber: phoneNumber,
         userAge: Age,
       })
       .then((res) => {
         console.log("Success");
+        setEditTriggered(!editTriggered);
       })
       .catch((e) => console.log(e));
   };
@@ -53,22 +55,26 @@ const UserPage = () => {
         fillUser();
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [editTriggered]);
   const fillUser = () => {
     setUserName(currentUser.name);
-    setEmail(currentUser.email);
+    setOldEmail(currentUser.email);
     setPassword(currentUser.password);
-    setPassportNumber(currentUser.passportNumber);
+    setOldPassportNumber(currentUser.passportNumber);
     setAge(currentUser.age);
-    setPhoneNumber(currentUser.phoneNumber);
+    setOldPhoneNumber(currentUser.phoneNumber);
   };
 
   const [userName, setUserName] = React.useState("");
+  const [oldEmail, setOldEmail] = React.useState("");
   const [Email, setEmail] = React.useState("");
   const [Password, setPassword] = React.useState("");
+  const [oldPassportNumber, setOldPassportNumber] = React.useState("");
   const [passportNumber, setPassportNumber] = React.useState("");
   const [Age, setAge] = React.useState("");
+  const [oldPhoneNumber, setOldPhoneNumber] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
+
   return (
     <div>
       <ToolBarDK dashboard={"user"}></ToolBarDK>
@@ -90,7 +96,7 @@ const UserPage = () => {
                 <EmailIcon fontSize="large" />
               </div>
               <p className={Styles.Text}> E-mail:</p>
-              <p className={Styles.ParText}> {Email}</p>
+              <p className={Styles.ParText}> {oldEmail}</p>
             </div>
 
             <div className={Styles.DisplayComponent}>
@@ -108,7 +114,7 @@ const UserPage = () => {
                 <AirplaneTicketIcon fontSize="large" />
               </div>
               <p className={Styles.Text}> Passport Number:</p>
-              <p className={Styles.ParText}> {passportNumber}</p>
+              <p className={Styles.ParText}> {oldPassportNumber}</p>
             </div>
 
             <div className={Styles.DisplayComponent}>
@@ -124,7 +130,7 @@ const UserPage = () => {
                 <PhoneIphoneIcon fontSize="large" />
               </div>
               <p className={Styles.Text}> Phone Number:</p>
-              <p className={Styles.ParText}> {phoneNumber}</p>
+              <p className={Styles.ParText}> {oldPhoneNumber}</p>
             </div>
           </div>
         </div>
