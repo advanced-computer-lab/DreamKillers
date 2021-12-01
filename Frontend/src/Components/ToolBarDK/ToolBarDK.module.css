@@ -1,9 +1,10 @@
 .Toolbar {
   position: absolute;
   width: 200px;
-  height: 1080px;
+  height: 753px;
   left: 0px;
   top: 0px;
-
+  overflow: auto;
+  height: 100%;
   background: #00a2ca;
 }
