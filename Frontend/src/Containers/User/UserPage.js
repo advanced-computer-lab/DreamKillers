@@ -19,6 +19,7 @@ import BadgeIcon from "@mui/icons-material/Badge";
 import UserEditModal from "../../Components/UserEditModal/UserEditModal.js";
 
 import EditIcon from "@mui/icons-material/Edit";
+import ReservationSummary from "../../Components/ReservationSummary/ReservationSummary";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
@@ -75,7 +76,7 @@ const UserPage = () => {
   const [oldPhoneNumber, setOldPhoneNumber] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState(0);
-  const [reservations, setReservations] = [];
+  const [reservations, setReservations] = React.useState([]);
 
   const getReservations = () => {
     axios
@@ -176,7 +177,24 @@ const UserPage = () => {
             </div>
           </>
         ) : selectedTab == 1 ? (
-          <></>
+          <>
+            {reservations.map((res, index) => {
+              return (
+                <ReservationSummary
+                  reservationID={index + 1}
+                  dfNumber={res.departureFlight.flightNumber}
+                  dfDateTime={res.departureFlight.departureTime}
+                  dfPrice={res.departureFlight.price}
+                  rfNumber={res.returnFlight.flightNumber}
+                  rfDateTime={res.returnFlight.departureTime}
+                  rfPrice={res.returnFlight.price}
+                  cabin={res.cabinClass}
+                  dfSeats={"A1 A2 A3"}
+                  rfSeats={"C2 C3 C4"}
+                ></ReservationSummary>
+              );
+            })}
+          </>
         ) : null}
       </div>
     </div>

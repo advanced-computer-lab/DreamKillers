@@ -64,7 +64,9 @@ router.patch("/edit", async (req, res) => {
 
 router.get("/reservations", async (req, res) => {
   const userID = "617dbe3c2f88f3eba1dd02bb";
-  const reservations = await FlightReservation.find({ user: userID });
+  const reservations = await FlightReservation.find({ user: userID }).populate(
+    "departureFlight returnFlight"
+  );
 
   if (!reservations) return res.status(404).send();
 

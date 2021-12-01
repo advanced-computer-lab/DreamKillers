@@ -40,9 +40,9 @@ const ReservationSummary = ({
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>{`Reservation ${
+          <Typography>{`Reservation #${
             reservationID != null ? reservationID : ""
-          }${rfNumber != null ? rfNumber : ""} Summary`}</Typography>
+          } Summary`}</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <div className={Styles.UserDisplay}>
