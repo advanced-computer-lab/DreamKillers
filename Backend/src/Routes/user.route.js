@@ -1,4 +1,5 @@
 const express = require("express");
+const FlightReservation = require("../Models/flightReservation.model");
 const router = express.Router();
 
 const User = require("../Models/user.model");
@@ -60,4 +61,14 @@ router.patch("/edit", async (req, res) => {
   const response = await user.save();
   res.status(200).send(response);
 });
+
+router.get("/reservations", async (req, res) => {
+  const userID = "617dbe3c2f88f3eba1dd02bb";
+  const reservations = await FlightReservation.find({ user: userID });
+
+  if (!reservations) return res.status(404).send();
+
+  return res.status(200).send(reservations);
+});
+
 module.exports = router;

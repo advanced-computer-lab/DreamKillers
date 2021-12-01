@@ -12,21 +12,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlane } from "@fortawesome/free-solid-svg-icons";
 
 // Default Dashboard List
-const DashboardListItemDK = ({ listItemText, listItemIcon }) => {
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+const DashboardListItemDK = ({
+  listItemText,
+  listItemIcon,
+  selected,
+  onClickHandler,
+}) => {
+  // const [isItemSelected, setIsItemSelected] = React.useState(0);
 
-  const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
+  // const handleListItemClick = (event, index) => {
+  //   setSelectedIndex(isItemSelected);
+  // };
   return (
     <Box sx={{ width: "100%", maxWidth: 200, color: "white" }}>
       <nav aria-label="main mailbox folders">
         <List>
           <ListItem disablePadding>
-            <ListItemButton
-              selected={selectedIndex == 0}
-              onClick={(event) => handleListItemClick(event, 0)}
-            >
+            <ListItemButton selected={selected} onClick={onClickHandler}>
               <ListItemIcon>{listItemIcon}</ListItemIcon>
               <ListItemText primary={listItemText} />
             </ListItemButton>

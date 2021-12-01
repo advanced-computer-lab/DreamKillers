@@ -74,84 +74,110 @@ const UserPage = () => {
   const [Age, setAge] = React.useState("");
   const [oldPhoneNumber, setOldPhoneNumber] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [selectedTab, setSelectedTab] = React.useState(0);
+  const [reservations, setReservations] = [];
+
+  const getReservations = () => {
+    axios
+      .get("http://localhost:8000/user/reservations")
+      .then((res) => {
+        setReservations(res.data);
+      })
+      .catch((e) => console.log(e));
+  };
+
+  useEffect(() => {
+    getReservations();
+  }, [selectedTab]);
 
   return (
     <div>
-      <ToolBarDK dashboard={"user"}></ToolBarDK>
+      <ToolBarDK
+        dashboard={"user"}
+        dashBoardItemOnClick={(index) => {
+          console.log(index);
+          setSelectedTab(index);
+        }}
+        selectedTab={selectedTab}
+      ></ToolBarDK>
       <div className={Styles.Flights}>
-        <br></br>
+        {selectedTab == 2 ? (
+          <>
+            <div className={Styles.UserDisplay}>
+              <div className={Styles.UserDetailsContainer}>
+                <div className={Styles.DisplayComponent}>
+                  <div className={Styles.Icon}>
+                    <FontAwesomeIcon icon={faUser} color={"black"} size="2x" />
+                  </div>
+                  <p className={Styles.Text}> User Name:</p>
+                  <p className={Styles.ParText}> {userName}</p>
+                </div>
 
-        <div className={Styles.UserDisplay}>
-          <div className={Styles.UserDetailsContainer}>
-            <div className={Styles.DisplayComponent}>
-              <div className={Styles.Icon}>
-                <FontAwesomeIcon icon={faUser} color={"black"} size="2x" />
-              </div>
-              <p className={Styles.Text}> User Name:</p>
-              <p className={Styles.ParText}> {userName}</p>
-            </div>
+                <div className={Styles.DisplayComponent}>
+                  <div className={Styles.Icon}>
+                    <EmailIcon fontSize="large" />
+                  </div>
+                  <p className={Styles.Text}> E-mail:</p>
+                  <p className={Styles.ParText}> {oldEmail}</p>
+                </div>
 
-            <div className={Styles.DisplayComponent}>
-              <div className={Styles.Icon}>
-                <EmailIcon fontSize="large" />
+                <div className={Styles.DisplayComponent}>
+                  <div className={Styles.Icon}>
+                    <VpnKeyIcon fontSize="large" />
+                  </div>
+                  <p className={Styles.Text}> Password:</p>
+                  <p className={Styles.ParText}> {Password}</p>
+                </div>
               </div>
-              <p className={Styles.Text}> E-mail:</p>
-              <p className={Styles.ParText}> {oldEmail}</p>
-            </div>
 
-            <div className={Styles.DisplayComponent}>
-              <div className={Styles.Icon}>
-                <VpnKeyIcon fontSize="large" />
-              </div>
-              <p className={Styles.Text}> Password:</p>
-              <p className={Styles.ParText}> {Password}</p>
-            </div>
-          </div>
+              <div className={Styles.UserDetailsContainer}>
+                <div className={Styles.DisplayComponent}>
+                  <div className={Styles.Icon}>
+                    <AirplaneTicketIcon fontSize="large" />
+                  </div>
+                  <p className={Styles.Text}> Passport Number:</p>
+                  <p className={Styles.ParText}> {oldPassportNumber}</p>
+                </div>
 
-          <div className={Styles.UserDetailsContainer}>
-            <div className={Styles.DisplayComponent}>
-              <div className={Styles.Icon}>
-                <AirplaneTicketIcon fontSize="large" />
-              </div>
-              <p className={Styles.Text}> Passport Number:</p>
-              <p className={Styles.ParText}> {oldPassportNumber}</p>
-            </div>
+                <div className={Styles.DisplayComponent}>
+                  <div className={Styles.Icon}>
+                    <BadgeIcon fontSize="large" />
+                  </div>
+                  <p className={Styles.Text}> Age:</p>
+                  <p className={Styles.ParText}> {Age}</p>
+                </div>
 
-            <div className={Styles.DisplayComponent}>
-              <div className={Styles.Icon}>
-                <BadgeIcon fontSize="large" />
+                <div className={Styles.DisplayComponent}>
+                  <div className={Styles.Icon}>
+                    <PhoneIphoneIcon fontSize="large" />
+                  </div>
+                  <p className={Styles.Text}> Phone Number:</p>
+                  <p className={Styles.ParText}> {oldPhoneNumber}</p>
+                </div>
               </div>
-              <p className={Styles.Text}> Age:</p>
-              <p className={Styles.ParText}> {Age}</p>
             </div>
-
-            <div className={Styles.DisplayComponent}>
-              <div className={Styles.Icon}>
-                <PhoneIphoneIcon fontSize="large" />
-              </div>
-              <p className={Styles.Text}> Phone Number:</p>
-              <p className={Styles.ParText}> {oldPhoneNumber}</p>
+            <div className={Styles.Edit}>
+              <UserEditModal
+                mainButtonText={"Edit"}
+                mainButtonColor={"#2682de"}
+                mainButtonTextColor={"white"}
+                mainButtonHoverColor={"#1976D2"}
+                icon={<EditIcon />}
+                acceptButtonText={"Edit"}
+                title={"Edit the attributes of profile you want to edit"}
+                userName={currentUser.name}
+                onAcceptOnClickHandler={onAcceptEditOnClickHandler}
+                Email={currentUser.email}
+                Password={currentUser.password}
+                passportNumber={currentUser.passportNumber}
+                Age={currentUser.age}
+                phoneNumber={currentUser.phoneNumber}
+              ></UserEditModal>
             </div>
-          </div>
-        </div>
-        <div className={Styles.Edit}>
-          <UserEditModal
-            mainButtonText={"Edit"}
-            mainButtonColor={"#2682de"}
-            mainButtonTextColor={"white"}
-            mainButtonHoverColor={"#1976D2"}
-            icon={<EditIcon />}
-            acceptButtonText={"Edit"}
-            title={"Edit the attributes of profile you want to edit"}
-            userName={currentUser.name}
-            onAcceptOnClickHandler={onAcceptEditOnClickHandler}
-            Email={currentUser.email}
-            Password={currentUser.password}
-            passportNumber={currentUser.passportNumber}
-            Age={currentUser.age}
-            phoneNumber={currentUser.phoneNumber}
-          ></UserEditModal>
-        </div>
+          </>
+        ) : selectedTab == 1 ? (
+          <></>
+        ) : null}
       </div>
     </div>
   );

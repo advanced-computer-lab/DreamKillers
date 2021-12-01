@@ -20,8 +20,12 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const tools = [];
 
-export default function ToolBarDK({ dashboard, dashBoardItemOnClick }) {
-  const [selectedIndex, setSelectedIndex] = React.useState(-1);
+export default function ToolBarDK({
+  dashboard,
+  dashBoardItemOnClick,
+  selectedTab,
+}) {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
     <div className={Styles.Toolbar}>
@@ -35,28 +39,31 @@ export default function ToolBarDK({ dashboard, dashBoardItemOnClick }) {
           <DashboardListItemDK
             listItemText="Flights"
             listItemIcon={<FontAwesomeIcon icon={faPlane} color={"white"} />}
-            selected={selectedIndex == 0}
+            selected={selectedTab == 0}
             onClickHandler={() => {
+              console.log("Chose 0");
               setSelectedIndex(0);
-              if (dashBoardItemOnClick) dashBoardItemOnClick();
+              if (dashBoardItemOnClick) dashBoardItemOnClick(0);
             }}
           />
           <DashboardListItemDK
             listItemText="Reservations"
             listItemIcon={<FontAwesomeIcon icon={faBook} color={"white"} />}
-            selected={selectedIndex == 1}
+            selected={selectedTab == 1}
             onClickHandler={() => {
+              console.log("Chose 1");
               setSelectedIndex(1);
-              if (dashBoardItemOnClick) dashBoardItemOnClick();
+              if (dashBoardItemOnClick) dashBoardItemOnClick(1);
             }}
           />
           <DashboardListItemDK
             listItemText="Profile"
             listItemIcon={<FontAwesomeIcon icon={faUser} color={"white"} />}
-            selected={selectedIndex == 2}
+            selected={selectedTab == 2}
             onClickHandler={() => {
+              console.log("Chose 2");
               setSelectedIndex(2);
-              if (dashBoardItemOnClick) dashBoardItemOnClick();
+              if (dashBoardItemOnClick) dashBoardItemOnClick(2);
             }}
           />
         </>
