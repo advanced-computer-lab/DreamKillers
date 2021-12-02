@@ -1,0 +1,68 @@
+.Toolbar {
+  position: absolute;
+  width: 200px;
+  height: 1080px;
+  left: 0px;
+  top: 0px;
+
+  background: #158073;
+}
+
+.Flights {
+  position: absolute;
+  width: 1064px;
+  height: 672px;
+  left: calc(50% - 1064px / 2);
+  top: calc(50% - 672px / 2 + 13px);
+
+  background: #ffffff;
+  border: 0.2px solid #000000;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.ButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.Button {
+  padding-right: 1em;
+}
+
+.UserDetailsContainer {
+  display: flex;
+  flex-direction: column;
+  padding-right: 7em;
+  padding-left: 5em;
+}
+.UserDisplay {
+  display: flex;
+  flex-direction: row;
+}
+.Text {
+  font-weight: bold;
+
+  padding-left: 1em;
+}
+.Icon {
+  padding-top: 0.5em;
+}
+.DisplayComponent {
+  display: flex;
+  flex-direction: row;
+  margin-top: 4em;
+  margin-right: 1em;
+}
+.Organizer {
+  display: flex;
+  flex-direction: column;
+}
+.ParText {
+  padding-left: 1em;
+}
+.Edit {
+  margin-left: 28em;
+  margin-top: 5em;
+}

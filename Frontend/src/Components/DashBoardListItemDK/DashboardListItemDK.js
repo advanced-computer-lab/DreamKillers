@@ -15,9 +15,14 @@ import { faPlane } from "@fortawesome/free-solid-svg-icons";
 const DashboardListItemDK = ({
   listItemText,
   listItemIcon,
-  onClickHandler,
   selected,
+  onClickHandler,
 }) => {
+  // const [isItemSelected, setIsItemSelected] = React.useState(0);
+
+  // const handleListItemClick = (event, index) => {
+  //   setSelectedIndex(isItemSelected);
+  // };
   return (
     <Box sx={{ width: "100%", maxWidth: 200, color: "white" }}>
       <nav aria-label="main mailbox folders">
