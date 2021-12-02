@@ -14,7 +14,7 @@ import ButtonDK from "../ButtonDK/ButtonDK";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 
-export default function UserFlightSearch() {
+export default function UserFlightSearch({ search, reset }) {
   //to be raised to higher component and changed to props
   //(childrenNum,adultNum,depTerminal,arrTerminal, cabinClass, depterminals, arrterminals ,depDate, arrDate, searchFunc)
   const [childrenNum, setChildrenNum] = useState("");
@@ -27,7 +27,7 @@ export default function UserFlightSearch() {
   let depterminals = ["CAI", "CAN", "RYA"];
   let arrterminals = ["CAI", "RYA", "CAN"];
 
-  const reset = () => {
+  const resetFunc = () => {
     setChildrenNum("");
     setAdultNum("");
     setDepterminal("");
@@ -48,14 +48,14 @@ export default function UserFlightSearch() {
         departureTerminal: depTerminal,
       })
       .then((res) => {
-        console.log(res.data);
+        search(res.data, adultNum, childrenNum, cabinClass);
       });
   };
 
   return (
     <form
-      onSubmit={() => {
-        console.log("hoi");
+      onSubmit={(event) => {
+        event.preventDefault();
         searchFunc();
       }}
       autoComplete="off"
@@ -100,7 +100,7 @@ export default function UserFlightSearch() {
               <br></br>
               <div className={Styles.dateComp}>
                 <DateTimePickerDK
-                  label="Departure Date"
+                  label="Departure Date *"
                   onChange={(e) => {
                     setDepDate(e);
                   }}
@@ -108,7 +108,7 @@ export default function UserFlightSearch() {
               </div>
               <div className={Styles.componentHolder}>
                 <DateTimePickerDK
-                  label="Arrival Date"
+                  label="Arrival Date *"
                   onChange={(e) => {
                     setArrDate(e);
                   }}
@@ -151,6 +151,7 @@ export default function UserFlightSearch() {
                 hoverColor="darkgreen"
                 icon={<RefreshIcon />}
                 onClick={() => {
+                  resetFunc();
                   reset();
                 }}
               />

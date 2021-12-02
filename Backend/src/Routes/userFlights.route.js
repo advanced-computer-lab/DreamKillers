@@ -32,7 +32,6 @@ router.post("/searchOnDepart", async (req, res) => {
 
   let dateOneObj = {};
   let dateTwoObj = {};
-  console.log(dateOne);
   if (dateOne != "" && dateOne != undefined) {
     dateOne = new Date(dateOne);
     dateOneObj = { $gte: dateOne };

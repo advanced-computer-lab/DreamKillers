@@ -1,7 +1,8 @@
 .Toolbar {
-  position: absolute;
+  position: fixed;
   width: 200px;
   height: 753px;
+  max-height: max-content;
   left: 0px;
   top: 0px;
   overflow: auto;
