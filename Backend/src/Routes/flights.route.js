@@ -133,4 +133,12 @@ router.post("/reserve", async (req, res) => {
   return res.status(201).send(flightReservation);
 });
 
+router.delete('/:reservationNumber', async (req, res) => {
+  const reservation = await FlightReservation.findById(req.params.reservationNumber);
+  if (!reservation) throw new Exception("Reservation Not Found");
+
+  const response = await FlightReservation.findOneAndDelete({ _id: req.params.reservationNumber });
+  if (response) res.status(200).send();
+});
+
 module.exports = router;
