@@ -48,7 +48,7 @@ export default function UserFlightSearch({ search, reset }) {
         departureTerminal: depTerminal,
       })
       .then((res) => {
-        search(res.data);
+        search(res.data, adultNum, childrenNum, cabinClass);
       });
   };
 
