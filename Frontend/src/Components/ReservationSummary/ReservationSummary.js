@@ -18,6 +18,9 @@ import LocalAtmIcon from "@mui/icons-material/LocalAtm";
 import AirlineSeatReclineExtraIcon from "@mui/icons-material/AirlineSeatReclineExtra";
 import AirlineSeatReclineNormalIcon from "@mui/icons-material/AirlineSeatReclineNormal";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+import ButtonDK from "../ButtonDK/ButtonDK";
+import { flexbox } from "@mui/system";
+import Modal from "../Modal/Modal";
 
 const ReservationSummary = ({
   reservationID,
@@ -60,7 +63,11 @@ const ReservationSummary = ({
                   <DateRangeIcon></DateRangeIcon>
                 </div>
                 <p className={Styles.Text}> Departure Flight Date:</p>
-                <p className={Styles.ParText}>{`${dfDateTime}`}</p>
+                <p className={Styles.ParText}>{`${new Date(
+                  dfDateTime
+                ).toDateString()} ${new Date(
+                  dfDateTime
+                ).toLocaleTimeString()}`}</p>
               </div>
 
               <div className={Styles.DisplayComponent}>
@@ -102,7 +109,11 @@ const ReservationSummary = ({
                   <DateRangeIcon></DateRangeIcon>
                 </div>
                 <p className={Styles.Text}> Return Flight Date:</p>
-                <p className={Styles.ParText}>{`${rfDateTime}`}</p>
+                <p className={Styles.ParText}>{`${new Date(
+                  rfDateTime
+                ).toDateString()} ${new Date(
+                  rfDateTime
+                ).toLocaleTimeString()}`}</p>
               </div>
 
               <div className={Styles.DisplayComponent}>
@@ -131,6 +142,21 @@ const ReservationSummary = ({
                 }`}</p>
               </div>
             </div>
+          </div>
+          <div className={Styles.CancelButton}>
+            <Modal
+              modalTitle="Cancel Reservation"
+              modalText="Are you sure you want to cancel this reservation? Your action is irreversible"
+              cancelText="Dismiss"
+              cancelTextColor="#FFFFFF"
+              cancelButtonColor="#00bcf5"
+              cancelHoverColor="#00bcf5"
+              acceptText="Confirm"
+              acceptTextColor="#FFFFFF"
+              acceptButtonColor="#e01d10"
+              acceptHoverColor="#FF0000"
+              modalButtonText="Cancel Reservation"
+            ></Modal>
           </div>
         </AccordionDetails>
       </Accordion>

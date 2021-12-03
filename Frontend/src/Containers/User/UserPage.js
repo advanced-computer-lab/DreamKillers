@@ -182,10 +182,16 @@ const UserPage = () => {
               return (
                 <ReservationSummary
                   reservationID={index + 1}
-                  dfNumber={res.departureFlight.flightNumber}
+                  dfNumber={
+                    res.departureFlight.flightNumber +
+                    ` (${res.departureFlight.departureTerminal} > ${res.departureFlight.arrivalTerminal})`
+                  }
                   dfDateTime={res.departureFlight.departureTime}
                   dfPrice={res.departureFlight.price}
-                  rfNumber={res.returnFlight.flightNumber}
+                  rfNumber={
+                    res.returnFlight.flightNumber +
+                    ` (${res.returnFlight.departureTerminal} > ${res.returnFlight.arrivalTerminal})`
+                  }
                   rfDateTime={res.returnFlight.departureTime}
                   rfPrice={res.returnFlight.price}
                   cabin={res.cabinClass}
