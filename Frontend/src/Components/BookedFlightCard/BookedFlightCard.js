@@ -13,15 +13,22 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 
-export default function FlightCardTwo({ flight, button, width, icon }) {
+export default function FlightCardTwo({
+  flight,
+  button,
+  width,
+  icon,
+  seats,
+  price,
+}) {
   return (
     <div>
       <div className={Styles.FlightCardContainer}>
         <Card sx={{ maxWidth: width, bgcolor: "snow" }}>
           <CardContent>
+            {icon}
             <Typography className={Styles.FlightCardDescription}>
-              {icon}
-              <div style={{ fontSize: 25 }}>
+              <div style={{ fontSize: 20 }}>
                 {flight.departureTerminal}
                 <ArrowRightAltOutlinedIcon />
                 {flight.arrivalTerminal}
@@ -42,7 +49,11 @@ export default function FlightCardTwo({ flight, button, width, icon }) {
                   new Date(flight.arrivalTime).toLocaleTimeString()}
               </div>
               <br></br>
-              <div className={Styles.ButtonsContainer}></div>
+              <div>
+                {" "}
+                Seats:{seats.toString()} Price: ${price}
+              </div>
+              <div> </div>
             </Typography>
           </CardContent>
           <CardActions>{button}</CardActions>
