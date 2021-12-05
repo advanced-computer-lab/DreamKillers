@@ -207,9 +207,9 @@ const GuestPage = () => {
               <div className={Styles.loginButton}>
                 <ButtonDK
                   buttonText="Login to Confirm"
-                  color="#1976D2"
-                  textColor="white"
-                  hoverColor="#1564b3"
+                  color="orange"
+                  textColor="black"
+                  hoverColor="orange"
                   onClick={() => {
                     window.location.href =
                       "http://localhost:3000/user/dashboard";
