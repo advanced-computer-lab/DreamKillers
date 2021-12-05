@@ -149,7 +149,7 @@ export default function UserFlightSearch({ search, reset }) {
                 textColor="White"
                 buttonText="Reset"
                 color="black"
-                hoverColor="black"
+                hoverColor="#545454"
                 icon={<RefreshIcon />}
                 onClick={() => {
                   resetFunc();

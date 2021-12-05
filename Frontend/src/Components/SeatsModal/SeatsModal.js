@@ -229,8 +229,8 @@ const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
       <ButtonDK
         buttonText={"Book"}
         textColor="white"
-        hoverColor="#1564b3"
-        color="#1976D2"
+        hoverColor="#545454"
+        color="black"
         onClick={handleClickOpen}
       />
       <Dialog
