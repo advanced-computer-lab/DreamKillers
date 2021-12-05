@@ -118,9 +118,9 @@ const GuestPage = () => {
                               button={
                                 <ButtonDK
                                   buttonText="Book"
-                                  color="#1976D2"
+                                  color="orange"
                                   textColor="white"
-                                  hoverColor="#1564b3"
+                                  hoverColor="orange"
                                   onClick={() => {
                                     bookDeparture(flight);
                                   }}

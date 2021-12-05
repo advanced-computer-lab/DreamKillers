@@ -77,7 +77,7 @@ export default function UserEditModal({
     <div>
       <ButtonDK
         buttonText={mainButtonText}
-        color={"#00bcf5"}
+        color={mainButtonColor}
         textColor={mainButtonTextColor}
         hoverColor={mainButtonHoverColor}
         onClick={handleClickOpen}
@@ -128,15 +128,15 @@ export default function UserEditModal({
           <ButtonDK
             buttonText="Cancel"
             onClick={handleClose}
-            color={"#00bcf5"}
-            textColor={"#FFFFFF"}
-            hoverColor={"#00bcff"}
+            color={"orange"}
+            textColor={"#000000"}
+            hoverColor={"orange"}
           />
           <ButtonDK
             buttonText={acceptButtonText}
-            color={"#00bcf5"}
-            textColor={"#FFFFFF"}
-            hoverColor={"#00bcff"}
+            color={"orange"}
+            textColor={"#000000"}
+            hoverColor={"orange"}
             onClick={() => {
               handleClose();
               onAcceptOnClickHandler(

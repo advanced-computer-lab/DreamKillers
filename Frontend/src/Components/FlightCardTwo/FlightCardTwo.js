@@ -46,7 +46,9 @@ export default function FlightCardTwo({ flight, button, width, icon }) {
               <div className={Styles.ButtonsContainer}></div>
             </Typography>
           </CardContent>
-          <CardActions>{button}</CardActions>
+          <CardActions style={{ backgroundColor: "orange" }}>
+            {button}
+          </CardActions>
         </Card>
       </div>
     </div>

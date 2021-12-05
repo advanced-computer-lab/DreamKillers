@@ -267,9 +267,9 @@ const UserPage = () => {
             <div className={Styles.Edit}>
               <UserEditModal
                 mainButtonText={"Edit"}
-                mainButtonColor={"#2682de"}
+                mainButtonColor={"orange"}
                 mainButtonTextColor={"black"}
-                mainButtonHoverColor={"#1976D2"}
+                mainButtonHoverColor={"orange"}
                 icon={<EditIcon />}
                 acceptButtonText={"Edit"}
                 title={"Edit the attributes of profile you want to edit"}
@@ -443,9 +443,9 @@ const UserPage = () => {
                   <div className={Styles.loginButton}>
                     <ButtonDK
                       buttonText="Reserve"
-                      color="#1976D2"
-                      textColor="white"
-                      hoverColor="#1564b3"
+                      color="orange"
+                      textColor="black"
+                      hoverColor="orange"
                       onClick={reserve}
                     />
                   </div>

@@ -148,8 +148,8 @@ export default function UserFlightSearch({ search, reset }) {
                 onClick={() => {}}
                 textColor="White"
                 buttonText="Reset"
-                color="green"
-                hoverColor="darkgreen"
+                color="black"
+                hoverColor="black"
                 icon={<RefreshIcon />}
                 onClick={() => {
                   resetFunc();
@@ -160,7 +160,9 @@ export default function UserFlightSearch({ search, reset }) {
               <Button
                 variant="contained"
                 sx={{
-                  color: "White",
+                  backgroundColor: "orange",
+                  color: "black",
+                  ":hover": { backgroundColor: "orange" },
                 }}
                 type="submit"
               >
