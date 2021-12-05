@@ -1,3 +1,15 @@
+.mainDiv {
+    width: 100vw;
+    height: 100vh;
+
+    /* background image setup */
+    background-image: url('AirplaneGuest.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    background-size: cover;
+}
+
 .Toolbar {
   position: absolute;
   width: 200px;
@@ -14,13 +26,18 @@
   height: 672px;
   max-height: 1000px;
   left: calc(60% - 1064px / 2);
-  top: calc(50% - 672px / 2 + 13px);
+  top: calc(50% - 870px / 2 + 13px);
 
   background: #ffffff;
+  opacity: .85;
   border: 0.2px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;
   overflow-y: scroll;
+}
+
+.Container::-webkit-scrollbar {
+  display: none;
 }
 
 .ButtonsContainer {
@@ -48,4 +65,17 @@
   display: flex;
   flex-direction: row-reverse;
   margin: 15px;
+}
+
+.page-wrap {
+  min-height: 100%;
+}
+
+.page-wrap:after {
+  content: "";
+  display: block;
+}
+
+.site-footer, .page-wrap:after {
+  height: 142px; 
 }

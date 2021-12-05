@@ -17,6 +17,7 @@ import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import BookedFlightCard from "../../Components/BookedFlightCard/BookedFlightCard";
 import AirplaneTicketOutlinedIcon from "@mui/icons-material/AirplaneTicketOutlined";
 import { Table, TableCell, TableRow } from "@mui/material";
+import Footer from "../../Components/Footer/Footer";
 
 const GuestPage = () => {
   const [flights, setFlights] = useState([]);
@@ -70,7 +71,7 @@ const GuestPage = () => {
   };
 
   return (
-    <div>
+    <div className={Styles.mainDiv}>
       <ToolBarDK>
         <DashboardListItemDK
           listItemText="Flights"
@@ -219,6 +220,7 @@ const GuestPage = () => {
           ) : null}
         </div>
       </div>
+      <Footer className="site-footer" />
     </div>
   );
 };

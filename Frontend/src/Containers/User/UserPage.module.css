@@ -1,3 +1,15 @@
+.mainDiv {
+  width: 100vw;
+  height: 100vh;
+
+  /* background image setup */
+  background-image: url('AirplaneUser.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  
+  background-size: cover;
+}
+
 .Toolbar {
   position: absolute;
   width: 200px;
@@ -5,7 +17,8 @@
   left: 0px;
   top: 0px;
 
-  background: #158073;
+  /* background: #158073; */
+  background: orange;
 }
 
 .Flights {
@@ -14,10 +27,11 @@
   width: 850px;
   height: 672px;
   left: calc(50% - 1064px / 2);
-  top: calc(50% - 672px / 2 + 13px);
+  top: calc(50% - 870px / 2 + 13px);
   overflow-y: scroll;
   overflow-x: hidden;
   background: #ffffff;
+  opacity: 0.95;
   border: 0.2px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;
@@ -69,7 +83,7 @@
   padding-left: 1em;
 }
 .Edit {
-  margin-left: 28em;
+  margin-left: 24em;
   margin-top: 5em;
 }
 

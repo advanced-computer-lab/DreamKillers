@@ -28,6 +28,7 @@ import { Alert, Table, TableCell, TableRow } from "@mui/material";
 import Modal from "../../Components/Modal/Modal";
 import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import SeatsModal from "../../Components/SeatsModal/SeatsModal";
+import Footer from "../../Components/Footer/Footer";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
@@ -198,7 +199,7 @@ const UserPage = () => {
   }, [selectedTab]);
 
   return (
-    <div>
+    <div className={Styles.mainDiv}>
       <ToolBarDK
         dashboard={"user"}
         dashBoardItemOnClick={(index) => {
@@ -267,7 +268,7 @@ const UserPage = () => {
               <UserEditModal
                 mainButtonText={"Edit"}
                 mainButtonColor={"#2682de"}
-                mainButtonTextColor={"white"}
+                mainButtonTextColor={"black"}
                 mainButtonHoverColor={"#1976D2"}
                 icon={<EditIcon />}
                 acceptButtonText={"Edit"}
@@ -458,6 +459,7 @@ const UserPage = () => {
           {snackBarText}
         </Alert>
       </Snackbar>
+      <Footer />
     </div>
   );
 };
