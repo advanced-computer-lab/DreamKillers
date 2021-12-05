@@ -31,7 +31,19 @@ import SeatsModal from "../../Components/SeatsModal/SeatsModal";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
+
+  const onClickCancelReservation = (reservationID) => {
+    axios
+      .delete(`http://localhost:8000/flights/reservations/${reservationID}`)
+      .then((res) => {
+        getReservations();
+        displaySnackBar("Your reservation was successfully cancelled");
+      })
+      .catch((e) => console.log(e));
+  };
+
   const [openSnack, setOpenSnack] = React.useState(false);
+  const [snackBarText, setSnackBarText] = React.useState();
 
   const handleClose = () => {
     setOpenSnack(false);
@@ -56,8 +68,8 @@ const UserPage = () => {
         userAge: Age,
       })
       .then((res) => {
-        console.log("Success");
         setEditTriggered(!editTriggered);
+        displaySnackBar("User information edited successfully");
       })
       .catch((e) => console.log(e));
   };
@@ -130,9 +142,15 @@ const UserPage = () => {
       })
       .then((res) => {
         console.log(res.status);
-        if (res.status == 201) setOpenSnack(true);
+        if (res.status == 201)
+          displaySnackBar("Your flight is successfully reserved");
       });
     reset();
+  };
+
+  const displaySnackBar = (message) => {
+    setSnackBarText(message);
+    setOpenSnack(true);
   };
 
   const reset = () => {
@@ -269,16 +287,25 @@ const UserPage = () => {
             {reservations.map((res, index) => {
               return (
                 <ReservationSummary
-                  reservationID={index + 1}
-                  dfNumber={res.departureFlight.flightNumber}
+                  key={index}
+                  reservationID={res._id}
+                  reservationNumber={index + 1}
+                  dfNumber={
+                    res.departureFlight.flightNumber +
+                    ` (${res.departureFlight.departureTerminal} > ${res.departureFlight.arrivalTerminal})`
+                  }
                   dfDateTime={res.departureFlight.departureTime}
                   dfPrice={res.departureFlight.price}
-                  rfNumber={res.returnFlight.flightNumber}
+                  rfNumber={
+                    res.returnFlight.flightNumber +
+                    ` (${res.returnFlight.departureTerminal} > ${res.returnFlight.arrivalTerminal})`
+                  }
                   rfDateTime={res.returnFlight.departureTime}
                   rfPrice={res.returnFlight.price}
                   cabin={res.cabinClass}
                   dfSeats={"A1 A2 A3"}
                   rfSeats={"C2 C3 C4"}
+                  acceptOnClickHandler={onClickCancelReservation}
                 ></ReservationSummary>
               );
             })}
@@ -428,7 +455,7 @@ const UserPage = () => {
       </div>
       <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          Flight Successfully Reserved
+          {snackBarText}
         </Alert>
       </Snackbar>
     </div>
