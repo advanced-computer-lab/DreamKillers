@@ -24,6 +24,7 @@ import Modal from "../Modal/Modal";
 
 const ReservationSummary = ({
   reservationID,
+  reservationNumber,
   dfNumber,
   dfDateTime,
   dfPrice,
@@ -34,6 +35,7 @@ const ReservationSummary = ({
   dfSeats,
   rfSeats,
   accordionDefaultOpen,
+  acceptOnClickHandler,
 }) => {
   return (
     <div>
@@ -44,7 +46,7 @@ const ReservationSummary = ({
           id="panel1a-header"
         >
           <Typography>{`Reservation #${
-            reservationID != null ? reservationID : ""
+            reservationNumber != null ? reservationNumber : ""
           } Summary`}</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -156,6 +158,9 @@ const ReservationSummary = ({
               acceptButtonColor="#e01d10"
               acceptHoverColor="#FF0000"
               modalButtonText="Cancel Reservation"
+              acceptButtonOnClickHandler={() =>
+                acceptOnClickHandler(reservationID)
+              }
             ></Modal>
           </div>
         </AccordionDetails>

@@ -23,6 +23,18 @@ import ReservationSummary from "../../Components/ReservationSummary/ReservationS
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
+
+  const onClickCancelReservation = (reservationID) => {
+    axios
+      .delete(`http://localhost:8000/flights/reservations/${reservationID}`)
+      .then((res) => {
+        getReservations();
+      })
+      .catch((e) => console.log(e));
+
+    console.log("Eshta");
+  };
+
   const onAcceptEditOnClickHandler = (
     userName,
     Email,
@@ -181,7 +193,9 @@ const UserPage = () => {
             {reservations.map((res, index) => {
               return (
                 <ReservationSummary
-                  reservationID={index + 1}
+                  key={index}
+                  reservationID={res._id}
+                  reservationNumber={index + 1}
                   dfNumber={
                     res.departureFlight.flightNumber +
                     ` (${res.departureFlight.departureTerminal} > ${res.departureFlight.arrivalTerminal})`
@@ -197,6 +211,7 @@ const UserPage = () => {
                   cabin={res.cabinClass}
                   dfSeats={"A1 A2 A3"}
                   rfSeats={"C2 C3 C4"}
+                  acceptOnClickHandler={onClickCancelReservation}
                 ></ReservationSummary>
               );
             })}
