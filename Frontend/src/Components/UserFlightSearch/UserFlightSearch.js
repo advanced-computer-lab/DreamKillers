@@ -22,7 +22,7 @@ export default function UserFlightSearch({ search, reset }) {
   const [depTerminal, setDepterminal] = useState("");
   const [arrTerminal, setArrTerminal] = useState("");
   const [cabinClass, setCabinClass] = useState("");
-  const [depDate, setDepDate] = useState(null);
+  const [depDate, setDepDate] = useState(new Date());
   const [arrDate, setArrDate] = useState(new Date());
   let depterminals = ["CAI", "CAN", "RYA"];
   let arrterminals = ["CAI", "RYA", "CAN"];
@@ -33,8 +33,8 @@ export default function UserFlightSearch({ search, reset }) {
     setDepterminal("");
     setArrTerminal("");
     setCabinClass("");
-    setDepDate(null);
-    setArrDate(null);
+    setDepDate(new Date());
+    setArrDate(new Date());
   };
 
   const searchFunc = () => {
