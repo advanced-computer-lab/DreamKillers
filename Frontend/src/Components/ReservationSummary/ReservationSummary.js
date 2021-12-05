@@ -36,6 +36,7 @@ const ReservationSummary = ({
   rfSeats,
   accordionDefaultOpen,
   acceptOnClickHandler,
+  resPrice,
 }) => {
   return (
     <div>
@@ -50,6 +51,9 @@ const ReservationSummary = ({
           } Summary`}</Typography>
         </AccordionSummary>
         <AccordionDetails>
+          <p style={{ textAlign: "center", fontWeight: "bold" }}>
+            Booking Number: {reservationID}
+          </p>
           <div className={Styles.UserDisplay}>
             <div className={Styles.UserDetailsContainer}>
               <div className={Styles.DisplayComponent}>
@@ -139,9 +143,7 @@ const ReservationSummary = ({
                   <MonetizationOnIcon></MonetizationOnIcon>
                 </div>
                 <p className={Styles.Text}> Total Price:</p>
-                <p className={Styles.ParText}>{`${
-                  parseInt(rfPrice) + parseInt(dfPrice)
-                }`}</p>
+                <p className={Styles.ParText}>{`${resPrice}`}</p>
               </div>
             </div>
           </div>
