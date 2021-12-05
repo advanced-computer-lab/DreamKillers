@@ -3,6 +3,7 @@ const express = require("express");
 const router = express.Router();
 const Flight = require("../Models/flight.model");
 const FlightReservation = require("../Models/flightReservation.model");
+const nodemailer = require('nodemailer');
 
 router.patch("/:flightId", async (req, res) => {
   const flightNumber = req.body.flightNumber;
@@ -138,6 +139,33 @@ router.delete('/:reservationNumber', async (req, res) => {
   if (!reservation) throw new Exception("Reservation Not Found");
 
   const response = await FlightReservation.findOneAndDelete({ _id: req.params.reservationNumber });
+  
+  const user = await User.findById({_id: '617dbe3c2f88f3eba1dd02bb'});
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'EnterYourMailHere@gmail.com',    // MAIL REQUIRED
+      pass: 'EnterPassword'                   // PASS REQUIRED
+    }
+  });
+
+  var mailOptions = {
+    from: 'EnterYourMailHere@gmail.com',      // MAIL REQUIRED
+    to: `${user.mail}`,
+    subject: 'Reservation Cancel Invoice',
+    html: `<h1>You Are Very Awesome!</h1>` +
+          `<button>${user.name}</button>`
+  };
+  
+  await transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+
   if (response) res.status(200).send();
 });
 
