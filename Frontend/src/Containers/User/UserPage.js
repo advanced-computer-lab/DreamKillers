@@ -291,6 +291,7 @@ const UserPage = () => {
                   key={index}
                   reservationID={res._id}
                   reservationNumber={index + 1}
+                  resPrice={res.price}
                   dfNumber={
                     res.departureFlight.flightNumber +
                     ` (${res.departureFlight.departureTerminal} > ${res.departureFlight.arrivalTerminal})`
