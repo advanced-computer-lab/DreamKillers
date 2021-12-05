@@ -34,7 +34,7 @@ export default class App extends Component {
         // A value of null will reset the tooltip to the original while '' will hide the tooltip
         const newTooltip = ["A", "B", "C"].includes(row) ? null : "";
         removeCb(row, number, newTooltip);
-        this.props.decrementSeats(row + number);
+        this.props.deccrementSeats(row + number);
         this.setState({ loading: false });
       }
     );

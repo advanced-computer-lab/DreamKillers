@@ -350,83 +350,85 @@ const UserPage = () => {
                 />
               </div>
             ) : null}
+            {bookedDep && !bookedReturn ? (
+              <div>
+                <Table>
+                  {returnFlights
+                    .reduce(function (
+                      accumulator,
+                      currentValue,
+                      currentIndex,
+                      array
+                    ) {
+                      if (currentIndex % 2 === 0)
+                        accumulator.push(
+                          array.slice(currentIndex, currentIndex + 2)
+                        );
+                      return accumulator;
+                    },
+                    [])
+                    .map((doubleFlight) => {
+                      return (
+                        <TableRow>
+                          {doubleFlight.map((flight) => {
+                            return (
+                              <TableCell>
+                                <FlightCardTwo
+                                  flight={flight}
+                                  button={
+                                    <SeatsModal
+                                      seatNumber={passengerNum}
+                                      cabinClass={cabinClass}
+                                      returnSeatsFunc={(seats) => {
+                                        setReturnSeats(seats);
+                                        bookReturn(flight);
+                                      }}
+                                    />
+                                  }
+                                  width={345}
+                                />
+                              </TableCell>
+                            );
+                          })}{" "}
+                        </TableRow>
+                      );
+                    })}
+                </Table>
+              </div>
+            ) : null}
+            <div>
+              {bookedReturn && returnFlight != {} ? (
+                <div>
+                  <BookedFlightCard
+                    flight={returnFlight}
+                    width={850}
+                    icon={
+                      <AirplaneTicketOutlinedIcon className={Styles.icon} />
+                    }
+                    seats={returnSeats}
+                    price={
+                      passengerNum * returnFlight.price +
+                      childrenNum * 0.25 * returnFlight.price
+                    }
+                  />
+                  <div className={Styles.loginButton}>
+                    <ButtonDK
+                      buttonText="Reserve"
+                      color="#1976D2"
+                      textColor="white"
+                      hoverColor="#1564b3"
+                      onClick={reserve}
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
         )}
-        {bookedDep && !bookedReturn ? (
-          <div>
-            <Table>
-              {returnFlights
-                .reduce(function (
-                  accumulator,
-                  currentValue,
-                  currentIndex,
-                  array
-                ) {
-                  if (currentIndex % 2 === 0)
-                    accumulator.push(
-                      array.slice(currentIndex, currentIndex + 2)
-                    );
-                  return accumulator;
-                },
-                [])
-                .map((doubleFlight) => {
-                  return (
-                    <TableRow>
-                      {doubleFlight.map((flight) => {
-                        return (
-                          <TableCell>
-                            <FlightCardTwo
-                              flight={flight}
-                              button={
-                                <SeatsModal
-                                  seatNumber={passengerNum}
-                                  cabinClass={cabinClass}
-                                  returnSeatsFunc={(seats) => {
-                                    setReturnSeats(seats);
-                                    bookReturn(flight);
-                                  }}
-                                />
-                              }
-                              width={345}
-                            />
-                          </TableCell>
-                        );
-                      })}{" "}
-                    </TableRow>
-                  );
-                })}
-            </Table>
-          </div>
-        ) : null}
-        <div>
-          {bookedReturn && returnFlight != {} ? (
-            <div>
-              <BookedFlightCard
-                flight={returnFlight}
-                width={850}
-                icon={<AirplaneTicketOutlinedIcon className={Styles.icon} />}
-                seats={returnSeats}
-                price={
-                  passengerNum * returnFlight.price +
-                  childrenNum * 0.25 * returnFlight.price
-                }
-              />
-              <div className={Styles.loginButton}>
-                <ButtonDK
-                  buttonText="Reserve"
-                  color="#1976D2"
-                  textColor="white"
-                  hoverColor="#1564b3"
-                  onClick={reserve}
-                />
-              </div>
-            </div>
-          ) : null}
-        </div>
       </div>
       <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          This is a success message!
+          Flight Successfully Reserved
         </Alert>
       </Snackbar>
     </div>

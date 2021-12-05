@@ -22,7 +22,7 @@ export default function UserFlightSearch({ search, reset }) {
   const [depTerminal, setDepterminal] = useState("");
   const [arrTerminal, setArrTerminal] = useState("");
   const [cabinClass, setCabinClass] = useState("");
-  const [depDate, setDepDate] = useState(new Date());
+  const [depDate, setDepDate] = useState(null);
   const [arrDate, setArrDate] = useState(new Date());
   let depterminals = ["CAI", "CAN", "RYA"];
   let arrterminals = ["CAI", "RYA", "CAN"];
@@ -33,8 +33,8 @@ export default function UserFlightSearch({ search, reset }) {
     setDepterminal("");
     setArrTerminal("");
     setCabinClass("");
-    setDepDate("");
-    setArrDate("");
+    setDepDate(null);
+    setArrDate(null);
   };
 
   const searchFunc = () => {
@@ -100,7 +100,7 @@ export default function UserFlightSearch({ search, reset }) {
               <br></br>
               <div className={Styles.dateComp}>
                 <DateTimePickerDK
-                  label="Departure Date *"
+                  label="From *"
                   onChange={(e) => {
                     setDepDate(e);
                   }}
@@ -108,7 +108,7 @@ export default function UserFlightSearch({ search, reset }) {
               </div>
               <div className={Styles.componentHolder}>
                 <DateTimePickerDK
-                  label="Arrival Date *"
+                  label="To *"
                   onChange={(e) => {
                     setArrDate(e);
                   }}

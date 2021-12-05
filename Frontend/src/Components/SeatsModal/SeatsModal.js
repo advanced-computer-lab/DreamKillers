@@ -18,7 +18,8 @@ const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
   };
 
   const deccrementSeats = (seatNumber) => {
-    seatsSelected.remove(seatNumber);
+    // seatsSelected.remove(seatNumber);
+    setSeatsSelected(seatsSelected.filter((item) => item !== seatNumber));
   };
 
   const handleClickOpen = () => {
