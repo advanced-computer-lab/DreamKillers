@@ -50,6 +50,9 @@ const ReservationSummary = ({
           } Summary`}</Typography>
         </AccordionSummary>
         <AccordionDetails>
+          <p style={{ textAlign: "center", fontWeight: "bold" }}>
+            Booking Number: {reservationID}
+          </p>
           <div className={Styles.UserDisplay}>
             <div className={Styles.UserDetailsContainer}>
               <div className={Styles.DisplayComponent}>
