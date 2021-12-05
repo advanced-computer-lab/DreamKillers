@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 const Flight = require("../Models/flight.model");
 const FlightReservation = require("../Models/flightReservation.model");
-const nodemailer = require('nodemailer');
+const User = require("../Models/user.model");
+const nodemailer = require("nodemailer");
 
 router.patch("/:flightId", async (req, res) => {
   const flightNumber = req.body.flightNumber;
@@ -134,39 +135,141 @@ router.post("/reserve", async (req, res) => {
   return res.status(201).send(flightReservation);
 });
 
-router.delete('/:reservationNumber', async (req, res) => {
-  const reservation = await FlightReservation.findById(req.params.reservationNumber);
-  if (!reservation) throw new Exception("Reservation Not Found");
+router.delete("/reservations/:reservationNumber", async (req, res) => {
+  const reservation = await FlightReservation.findOne({
+    _id: req.params.reservationNumber,
+  }).populate("departureFlight returnFlight");
 
-  const response = await FlightReservation.findOneAndDelete({ _id: req.params.reservationNumber });
-  
-  const user = await User.findById({_id: '617dbe3c2f88f3eba1dd02bb'});
+  if (!reservation) return res.status(400).send("Reservation not found");
+
+  const departurePrice = reservation.departureFlight.price;
+  const returnPrice = reservation.returnFlight.price;
+
+  const totalPrice = reservation.price;
+
+  const response = await FlightReservation.findOneAndDelete({
+    _id: req.params.reservationNumber,
+  });
+
+  const user = await User.findById({ _id: "617dbe3c2f88f3eba1dd02bb" });
 
   var transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: {
-      user: 'EnterYourMailHere@gmail.com',    // MAIL REQUIRED
-      pass: 'EnterPassword'                   // PASS REQUIRED
-    }
+      user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
+      pass: "DKairlines123", // PASS REQUIRED
+    },
   });
 
   var mailOptions = {
-    from: 'EnterYourMailHere@gmail.com',      // MAIL REQUIRED
-    to: `${user.mail}`,
-    subject: 'Reservation Cancel Invoice',
-    html: `<h1>You Are Very Awesome!</h1>` +
-          `<button>${user.name}</button>`
+    from: "dkairlinesguc@gmail.com",
+    to: `${user.email}`,
+    subject: "Reservation Cancel Invoice",
+    html: `<div class="container bootdey">
+    <div class="row invoice row-printable">
+        <div class="col-md-10">
+            <!-- col-lg-12 start here -->
+            <div class="panel panel-default plain" id="dash_0">
+                <!-- Start .panel -->
+                <div class="panel-body p30">
+                    <div class="row">
+                        <!-- Start .row -->
+                        <!-- col-lg-6 end here -->
+                        <div class="col-lg-6">
+                            <!-- col-lg-6 start here -->
+                            <div class="invoice-from">
+                                <ul class="list-unstyled text-right">
+                                    <li>Dreamkillers Airlines</li>
+                                    <li>2500 Ridgepoint Dr, Suite 105-C</li>
+                                    <li>Austin TX 78754</li>
+                                    <li>VAT Number EU826113958</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- col-lg-6 end here -->
+                        <div class="col-lg-12">
+                            <!-- col-lg-12 start here -->
+                            <div class="invoice-details mt25">
+                                <div class="well">
+                                    <ul class="list-unstyled mb0">
+                                        <li><strong>Invoice</strong> #936988</li>
+                                        <li><strong>Invoice Date:</strong>${new Date()}</li>
+                                        <li><strong>Status:</strong> <span class="label label-danger">CANCELED</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="invoice-to mt25">
+                                <ul class="list-unstyled">
+                                    <li><strong>Invoiced To</strong></li>
+                                    <li>${user.name}</li>
+                                    <li>${user.email}</li>
+                                    <li>${user.passportNumber}</li>
+                                </ul>
+                            </div>
+                            <div class="invoice-items">
+                                <div class="table-responsive" style="overflow: hidden; outline: none;" tabindex="0">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="per70 text-center">Description</th>
+                                                <th class="per5 text-center">Qty</th>
+                                                <th class="per25 text-center">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Departure Flight</td>
+                                                <td class="text-center">1</td>
+                                                <td class="text-center">${departurePrice}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Return Flight</td>
+                                                <td class="text-center">1</td>
+                                                <td class="text-center">${returnPrice}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Sub Total:</th>
+                                                <th class="text-center">${totalPrice}</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Credit:</th>
+                                                <th class="text-center">$00.00 USD</th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" class="text-right">Total:</th>
+                                                <th class="text-center">${totalPrice}</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="invoice-footer mt25">
+                                <p class="text-center">Generated on ${new Date()}</p>
+                            </div>
+                        </div>
+                        <!-- col-lg-12 end here -->
+                    </div>
+                    <!-- End .row -->
+                </div>
+            </div>
+            <!-- End .panel -->
+        </div>
+        <!-- col-lg-12 end here -->
+    </div>
+    </div>`,
   };
-  
-  await transporter.sendMail(mailOptions, function(error, info){
+
+  await transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
     } else {
-      console.log('Email sent: ' + info.response);
+      console.log("Email sent: " + info.response);
     }
   });
 
-  if (response) res.status(200).send();
+  return res.status(202).send(response);
 });
 
 module.exports = router;
