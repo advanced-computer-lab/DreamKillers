@@ -49,10 +49,12 @@ export default function FlightCardTwo({
                   new Date(flight.arrivalTime).toLocaleTimeString()}
               </div>
               <br></br>
-              <div>
-                {" "}
-                Seats:{seats.toString()} Price: ${price}
-              </div>
+              {seats == null || price == null ? null : (
+                <div>
+                  {" "}
+                  Seats:{seats.toString()} Price: ${price}
+                </div>
+              )}
               <div> </div>
             </Typography>
           </CardContent>
