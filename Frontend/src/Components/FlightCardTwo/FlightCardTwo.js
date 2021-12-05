@@ -41,6 +41,7 @@ export default function FlightCardTwo({ flight, button, width, icon }) {
                   " " +
                   new Date(flight.arrivalTime).toLocaleTimeString()}
               </div>
+              <div>Baggage Allowanace {" " + flight.baggageAllowance}</div>
               <br></br>
               <div className={Styles.ButtonsContainer}></div>
             </Typography>

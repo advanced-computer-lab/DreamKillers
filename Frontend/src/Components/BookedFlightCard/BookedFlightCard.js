@@ -55,7 +55,7 @@ export default function FlightCardTwo({
                   Seats:{seats.toString()} Price: ${price}
                 </div>
               )}
-              <div> </div>
+              <div> Baggage Allowanace {" " + flight.baggageAllowance}</div>
             </Typography>
           </CardContent>
           <CardActions>{button}</CardActions>
