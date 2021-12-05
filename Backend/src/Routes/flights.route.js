@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 const Flight = require("../Models/flight.model");
 const FlightReservation = require("../Models/flightReservation.model");
-const nodemailer = require('nodemailer');
+const User = require("../Models/user.model");
+const nodemailer = require("nodemailer");
 
 router.patch("/:flightId", async (req, res) => {
   const flightNumber = req.body.flightNumber;
@@ -134,30 +135,35 @@ router.post("/reserve", async (req, res) => {
   return res.status(201).send(flightReservation);
 });
 
-router.delete('/:reservationNumber', async (req, res) => {
-  const reservation = await FlightReservation.findById(req.params.reservationNumber);
+router.delete("/reservations/:reservationNumber", async (req, res) => {
+  const reservation = await FlightReservation.findOne({
+    _id: req.params.reservationNumber,
+  }).populate("departureFlight returnFlight");
+
+  if (!reservation) return res.status(400).send("Reservation not found");
+
   const departurePrice = reservation.departureFlight.price;
   const returnPrice = reservation.returnFlight.price;
-  
-  const totalPrice = departureFlight + returnFlight;
 
-  if (!reservation) throw new Exception("Reservation Not Found");
+  const totalPrice = reservation.price;
 
-  const response = await FlightReservation.findOneAndDelete({ _id: req.params.reservationNumber });
-  
-  const user = await User.findById({_id: '617dbe3c2f88f3eba1dd02bb'});
+  const response = await FlightReservation.findOneAndDelete({
+    _id: req.params.reservationNumber,
+  });
+
+  const user = await User.findById({ _id: "617dbe3c2f88f3eba1dd02bb" });
 
   var transporter = nodemailer.createTransport({
-    service: 'gmail',
+    service: "gmail",
     auth: {
-      user: 'EnterYourMailHere@gmail.com',    // MAIL REQUIRED
-      pass: 'EnterPassword'                   // PASS REQUIRED
-    }
+      user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
+      pass: "DKairlines123", // PASS REQUIRED
+    },
   });
 
   var mailOptions = {
-    from: "dkairlinesguc@gmail.com", 
-    to: `falconettolapretso@gmail.com`,
+    from: "dkairlinesguc@gmail.com",
+    to: `${user.email}`,
     subject: "Reservation Cancel Invoice",
     html: `<div class="container bootdey">
     <div class="row invoice row-printable">
@@ -262,6 +268,8 @@ router.delete('/:reservationNumber', async (req, res) => {
       console.log("Email sent: " + info.response);
     }
   });
+
+  return res.status(202).send(response);
 });
 
 module.exports = router;
