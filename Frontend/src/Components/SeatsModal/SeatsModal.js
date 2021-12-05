@@ -8,11 +8,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ButtonDK from "../ButtonDK/ButtonDK";
 import FlightSeatsPicker from "../../Components/FlightSeatsPicker/FlightSeatsPicker";
 import { useState, useEffect } from "react";
+import { Alert, Snackbar } from "@mui/material";
 
 const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
   const [open, setOpen] = React.useState(false);
   const [seatsSelected, setSeatsSelected] = useState([]);
-
+  const [openSnack, setOpenSnack] = useState(false);
   const incrementSeats = (seatNumber) => {
     seatsSelected.push(seatNumber);
   };
@@ -29,6 +30,10 @@ const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
   const handleClose = () => {
     setSeatsSelected([]);
     setOpen(false);
+  };
+
+  const handleCloseBar = () => {
+    setOpenSnack(false);
   };
 
   const sendSeatsString = () => {
@@ -261,12 +266,28 @@ const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
             textColor="white"
             hoverColor="#1564b3"
             onClick={() => {
-              returnSeatsFunc(seatsSelected);
-              handleClose();
+              if (seatsSelected.length != seatNumber) setOpenSnack(true);
+              else {
+                returnSeatsFunc(seatsSelected);
+                handleClose();
+              }
             }}
           />
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={3000}
+        onClose={handleCloseBar}
+      >
+        <Alert
+          onClose={handleCloseBar}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Reserve the same amount of seats as your search
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
