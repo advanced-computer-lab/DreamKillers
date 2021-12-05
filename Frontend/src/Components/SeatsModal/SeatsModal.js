@@ -282,7 +282,7 @@ const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
       >
         <Alert
           onClose={handleCloseBar}
-          severity="success"
+          severity="warning"
           sx={{ width: "100%" }}
         >
           Reserve the same amount of seats as your search
