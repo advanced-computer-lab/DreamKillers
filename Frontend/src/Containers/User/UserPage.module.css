@@ -10,15 +10,21 @@
 
 .Flights {
   position: absolute;
-  width: 1064px;
+  margin-left: 9%;
+  width: 850px;
   height: 672px;
   left: calc(50% - 1064px / 2);
   top: calc(50% - 672px / 2 + 13px);
-
+  overflow-y: scroll;
+  overflow-x: hidden;
   background: #ffffff;
   border: 0.2px solid #000000;
   box-sizing: border-box;
   border-radius: 5px;
+}
+
+.Flights::-webkit-scrollbar {
+  display: none;
 }
 
 .ButtonsContainer {
@@ -65,4 +71,17 @@
 .Edit {
   margin-left: 28em;
   margin-top: 5em;
+}
+
+.flightCards {
+  margin: 25px;
+  padding-left: 5px;
+  display: flex;
+  flex-direction: row;
+}
+
+.loginButton {
+  display: flex;
+  flex-direction: row-reverse;
+  margin: 15px;
 }

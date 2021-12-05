@@ -10,6 +10,7 @@ export default function DropDownDK({
   value,
   onChange,
   isRequired,
+  note,
 }) {
   const handleChange = (event) => {
     onChange(event.target.value);
@@ -27,6 +28,7 @@ export default function DropDownDK({
           select
           label={helperText}
           value={value}
+          helperText={note}
           required={isRequired || false}
           onChange={handleChange}
         >

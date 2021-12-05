@@ -33,8 +33,8 @@ export default function UserFlightSearch({ search, reset }) {
     setDepterminal("");
     setArrTerminal("");
     setCabinClass("");
-    setDepDate("");
-    setArrDate("");
+    setDepDate(new Date());
+    setArrDate(new Date());
   };
 
   const searchFunc = () => {
@@ -77,7 +77,7 @@ export default function UserFlightSearch({ search, reset }) {
               </div>
               <div className={Styles.componentHolder}>
                 <DropDownDK
-                  dropItems={["___"].concat(depterminals)}
+                  dropItems={depterminals}
                   helperText="Departure Terminal"
                   value={depTerminal}
                   onChange={(e) => {
@@ -88,7 +88,7 @@ export default function UserFlightSearch({ search, reset }) {
               </div>
               <div className={Styles.componentHolder}>
                 <DropDownDK
-                  dropItems={["___"].concat(arrterminals)}
+                  dropItems={arrterminals}
                   helperText="Arrival Terminal"
                   value={arrTerminal}
                   onChange={(e) => {
@@ -100,7 +100,7 @@ export default function UserFlightSearch({ search, reset }) {
               <br></br>
               <div className={Styles.dateComp}>
                 <DateTimePickerDK
-                  label="Departure Date *"
+                  label="From *"
                   onChange={(e) => {
                     setDepDate(e);
                   }}
@@ -108,7 +108,7 @@ export default function UserFlightSearch({ search, reset }) {
               </div>
               <div className={Styles.componentHolder}>
                 <DateTimePickerDK
-                  label="Arrival Date *"
+                  label="To *"
                   onChange={(e) => {
                     setArrDate(e);
                   }}
@@ -136,6 +136,7 @@ export default function UserFlightSearch({ search, reset }) {
                       setChildrenNum(e);
                     }}
                     isRequired={true}
+                    note="Ages 0-3"
                   />
                 </div>
               </div>
