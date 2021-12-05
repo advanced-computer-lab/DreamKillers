@@ -62,3 +62,8 @@
   padding-left: 1rem;
   padding-top: 0.53rem;
 }
+
+.CancelButton {
+  display: flex;
+  justify-content: right;
+}

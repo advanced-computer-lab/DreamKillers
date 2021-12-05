@@ -122,7 +122,6 @@ const GuestPage = () => {
                                   hoverColor="#1564b3"
                                   onClick={() => {
                                     bookDeparture(flight);
-                                    console.log(">>", flight);
                                   }}
                                 />
                               }
@@ -210,6 +209,10 @@ const GuestPage = () => {
                   color="#1976D2"
                   textColor="white"
                   hoverColor="#1564b3"
+                  onClick={() => {
+                    window.location.href =
+                      "http://localhost:3000/user/dashboard";
+                  }}
                 />
               </div>
             </div>

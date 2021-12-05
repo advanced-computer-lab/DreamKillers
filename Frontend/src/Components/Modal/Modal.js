@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ButtonDK from "../ButtonDK/ButtonDK";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Modal = ({
   modalTitle,
@@ -20,6 +21,8 @@ const Modal = ({
   acceptButtonColor,
   acceptHoverColor,
   acceptButtonOnClickHandler,
+  isAcceptButtonLoading,
+  modalButtonText = "Delete",
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -34,7 +37,7 @@ const Modal = ({
   return (
     <div>
       <ButtonDK
-        buttonText={"Delete"}
+        buttonText={modalButtonText}
         textColor="white"
         icon={<DeleteIcon />}
         hoverColor="#d42c2c"
