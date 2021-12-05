@@ -12,24 +12,26 @@ Frontend Tasks:
   
 Andrew Ashraf Attia Melouka  46-12721
  Backend Tasks:
-   Flight Model Edit "Baggage allowance"
+   -Flight Model Edit "Baggage allowance"
  FrontEnd Tasks:
-   User Dashboard
-   Guest Dashboard
+   -User Dashboard
+   -Guest Dashboard
    
 Youseff Mohamed Mostafa Elgindy 46-10406
  Backend Tasks:
-  User Get Reservation End Point
+  -User Get Reservation End Point
   
  Frontend Tasks:
-  User Profile Page
-  User Flight Page
+  -User Profile Page
+  -User Flight Page
   
 Yousseif Ahmed Abourefaei 46-13378
  Backend Tasks:
-  
+  -Search for departure and return flights endpoints
+  -get flight details endpoint
  Frontend Task:
-  
+  -reserve flight action
+  -Flight search journey
 
 Mohamed Hossameldin Khalifa 45-12309
  Backend Tasks:
