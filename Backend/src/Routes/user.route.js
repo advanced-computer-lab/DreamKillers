@@ -13,7 +13,7 @@ router.post("/login", async (req, res) => {
     if (userPass === user.password) {
       const token = user.generateAuthToken();
       user.authTokens.push(token);
-      res.header("x-user-auth-token", token);
+      res.header("user-token", token);
       res.status(200).send();
     } else res.status(401).send("Error");
   } else res.status(401).send("Error");

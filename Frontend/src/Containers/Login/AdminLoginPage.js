@@ -4,10 +4,10 @@ import ButtonDK from "../../Components/ButtonDK/ButtonDK";
 import TextBoxDK from "../../Components/TextBoxDK/TextBoxDK";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import Styles from "./LoginPage.module.css";
+import Styles from "./AdminLoginPage.module.css";
 const axios = require("axios");
 
-const LoginPage = ({}) => {
+const AdminLoginPage = ({}) => {
   const [email, setEmailState] = React.useState("");
   const [pass, setPassState] = React.useState("");
 
@@ -62,4 +62,4 @@ const LoginPage = ({}) => {
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;

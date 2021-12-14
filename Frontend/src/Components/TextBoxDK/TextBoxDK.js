@@ -1,6 +1,6 @@
 import TextField from "@mui/material/TextField";
 
-const TextBoxDK = ({ text, onChange, value }) => {
+const TextBoxDK = ({ text, onChange, value, isPassword }) => {
   return (
     <TextField
       id="outlined-basic"
