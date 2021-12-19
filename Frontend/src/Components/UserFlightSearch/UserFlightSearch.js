@@ -34,7 +34,9 @@ export default function UserFlightSearch({ search, reset }) {
     });
   };
 
-  getTerminals();
+  React.useEffect(() => {
+    getTerminals();
+  }, []);
 
   const resetFunc = () => {
     setChildrenNum("");
@@ -70,7 +72,7 @@ export default function UserFlightSearch({ search, reset }) {
       }}
       autoComplete="off"
     >
-      <Card sx={{ maxWidth: 750, bgcolor: "snow" }}>
+      <Card sx={{ maxWidth: 750 }}>
         <CardContent>
           <div className={Styles.container}>
             <div className={Styles.componentHolder}>

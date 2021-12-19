@@ -29,6 +29,7 @@ import Modal from "../../Components/Modal/Modal";
 import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import SeatsModal from "../../Components/SeatsModal/SeatsModal";
 import Footer from "../../Components/Footer/Footer";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
@@ -183,6 +184,15 @@ const UserPage = () => {
     setReturnFlight(flight);
     setBookedReturn(true);
     console.log(departureFlight);
+  };
+
+  const returnBookedDep = () => {
+    setBookedDep(false);
+  };
+
+  const returnBookedReturn = () => {
+    setBookedDep(true);
+    setBookedReturn(false);
   };
 
   const getReservations = () => {
@@ -376,6 +386,16 @@ const UserPage = () => {
                     passengerNum * departureFlight.price +
                     childrenNum * 0.25 * departureFlight.price
                   }
+                  button={
+                    <ButtonDK
+                      variant="contained"
+                      textColor="White"
+                      color="black"
+                      hoverColor="#545454"
+                      onClick={returnBookedDep}
+                      icon={<ArrowBackIcon />}
+                    />
+                  }
                 />
               </div>
             ) : null}
@@ -438,6 +458,16 @@ const UserPage = () => {
                     price={
                       passengerNum * returnFlight.price +
                       childrenNum * 0.25 * returnFlight.price
+                    }
+                    button={
+                      <ButtonDK
+                        variant="contained"
+                        textColor="White"
+                        color="black"
+                        hoverColor="#545454"
+                        onClick={returnBookedReturn}
+                        icon={<ArrowBackIcon />}
+                      />
                     }
                   />
                   <div className={Styles.loginButton}>

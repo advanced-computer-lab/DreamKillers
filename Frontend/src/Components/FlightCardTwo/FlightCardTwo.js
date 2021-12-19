@@ -17,7 +17,7 @@ export default function FlightCardTwo({ flight, button, width, icon }) {
   return (
     <div>
       <div className={Styles.FlightCardContainer}>
-        <Card sx={{ maxWidth: width, bgcolor: "snow" }}>
+        <Card sx={{ maxWidth: width, borderRadius: 3, border: 1 }}>
           <CardContent>
             <Typography className={Styles.FlightCardDescription}>
               {icon}

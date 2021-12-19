@@ -16,6 +16,7 @@ import FlightCard from "../../Components/FlightCard/FlightCard";
 import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import BookedFlightCard from "../../Components/BookedFlightCard/BookedFlightCard";
 import AirplaneTicketOutlinedIcon from "@mui/icons-material/AirplaneTicketOutlined";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Table, TableCell, TableRow } from "@mui/material";
 import Footer from "../../Components/Footer/Footer";
 
@@ -70,6 +71,15 @@ const GuestPage = () => {
     console.log(departureFlight);
   };
 
+  const returnBookedDep = () => {
+    setBookedDep(false);
+  };
+
+  const returnBookedReturn = () => {
+    setBookedDep(true);
+    setBookedReturn(false);
+  };
+
   return (
     <div className={Styles.mainDiv}>
       <ToolBarDK>
@@ -118,9 +128,10 @@ const GuestPage = () => {
                               button={
                                 <ButtonDK
                                   buttonText="Book"
-                                  color="#1976D2"
-                                  textColor="white"
-                                  hoverColor="#1564b3"
+                                  variant="contained"
+                                  textColor="White"
+                                  color="black"
+                                  hoverColor="#545454"
                                   onClick={() => {
                                     bookDeparture(flight);
                                   }}
@@ -143,6 +154,16 @@ const GuestPage = () => {
               flight={departureFlight}
               width={800}
               icon={<AirplaneTicketOutlinedIcon className={Styles.icon} />}
+              button={
+                <ButtonDK
+                  variant="contained"
+                  textColor="White"
+                  color="black"
+                  hoverColor="#545454"
+                  onClick={returnBookedDep}
+                  icon={<ArrowBackIcon />}
+                />
+              }
             />
           </div>
         ) : null}
@@ -175,9 +196,10 @@ const GuestPage = () => {
                                 button={
                                   <ButtonDK
                                     buttonText="Book"
-                                    color="#1976D2"
-                                    textColor="white"
-                                    hoverColor="#1564b3"
+                                    variant="contained"
+                                    textColor="White"
+                                    color="black"
+                                    hoverColor="#545454"
                                     onClick={() => {
                                       bookReturn(flight);
                                     }}
@@ -203,6 +225,16 @@ const GuestPage = () => {
                 flight={returnFlight}
                 width={800}
                 icon={<AirplaneTicketOutlinedIcon className={Styles.icon} />}
+                button={
+                  <ButtonDK
+                    variant="contained"
+                    textColor="White"
+                    color="black"
+                    hoverColor="#545454"
+                    onClick={returnBookedReturn}
+                    icon={<ArrowBackIcon />}
+                  />
+                }
               />
               <div className={Styles.loginButton}>
                 <ButtonDK
