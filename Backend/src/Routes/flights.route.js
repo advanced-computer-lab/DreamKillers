@@ -75,6 +75,21 @@ router.get("/", async (req, res) => {
   res.status(200).send(flights);
 });
 
+router.get("/getTerminals", async (req, res) => {
+  const flights = await Flight.find({});
+  let arrTerminals = [];
+  let depTerminals = [];
+  flights.filter((itm) => {
+    arrTerminals.push(itm.arrivalTerminal);
+    depTerminals.push(itm.departureTerminal);
+  });
+  arrTerminals = [...new Set(arrTerminals)];
+  depTerminals = [...new Set(depTerminals)];
+  arrTerminals.sort();
+  depTerminals.sort();
+  res.status(200).send({ arr: arrTerminals, dep: depTerminals });
+});
+
 router.post("/search", async (req, res) => {
   let flightNumber = req.body.flightNumber;
   let arrivalTime = req.body.arrivalTime;
