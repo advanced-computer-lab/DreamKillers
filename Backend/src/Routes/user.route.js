@@ -3,6 +3,7 @@ const FlightReservation = require("../Models/flightReservation.model");
 const router = express.Router();
 
 const User = require("../Models/user.model");
+const userAuth = require("../Middleware/userAuth");
 
 router.post("/login", async (req, res) => {
   const userEmail = req.body.email;
@@ -12,22 +13,23 @@ router.post("/login", async (req, res) => {
   if (user != null) {
     if (userPass === user.password) {
       const token = user.generateAuthToken();
-      user.authTokens.push(token);
       res.header("user-token", token);
       res.status(200).send();
     } else res.status(401).send("Error");
   } else res.status(401).send("Error");
 });
 
-router.get("/", async (req, res) => {
-  const user = await User.findOne({ _id: "617dbe3c2f88f3eba1dd02bb" });
+router.get("/", userAuth, async (req, res) => {
+  const userID = req.user._id;
+  const user = await User.findOne({ _id: userID });
   if (!user) return res.status(401).send("User Not Found");
   res.status(200).send(user);
 });
 
-router.patch("/edit", async (req, res) => {
+router.patch("/edit", userAuth, async (req, res) => {
+  const userID = req.user._id;
   const userName = req.body.name;
-  //const userOldEmail = "jirhwg@hotmail.com";
+
   const userNewEmail = req.body.newEmail;
 
   const userPass = req.body.password;
@@ -37,7 +39,7 @@ router.patch("/edit", async (req, res) => {
   const userNewPhoneNumber = req.body.newPhoneNumber;
 
   const userAge = req.body.userAge;
-  const user = await User.findOne({ _id: "617dbe3c2f88f3eba1dd02bb" });
+  const user = await User.findOne({ _id: userID });
 
   const userDuplicate = await User.findOne({
     $or: [
@@ -47,10 +49,7 @@ router.patch("/edit", async (req, res) => {
     ],
   });
 
-  console.log(userNewEmail);
-
   if (userDuplicate) return res.status(409).send();
-
   if (userName) user.name = userName;
   if (userNewEmail) user.email = userNewEmail;
   if (userPass) user.password = userPass;

@@ -59,15 +59,23 @@ const UserPage = () => {
     phoneNumber
   ) => {
     axios
-      .patch(`http://localhost:8000/user/edit`, {
-        name: userName,
-        oldEmail: currentUser.email,
-        newEmail: Email,
-        password: Password,
-        newPassportNumber: passportNumber,
-        newPhoneNumber: phoneNumber,
-        userAge: Age,
-      })
+      .patch(
+        `http://localhost:8000/user/edit`,
+        {
+          name: userName,
+          oldEmail: currentUser.email,
+          newEmail: Email,
+          password: Password,
+          newPassportNumber: passportNumber,
+          newPhoneNumber: phoneNumber,
+          userAge: Age,
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
       .then((res) => {
         setEditTriggered(!editTriggered);
         displaySnackBar("User information edited successfully");

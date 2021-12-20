@@ -33,7 +33,9 @@ const UserLoginPage = ({}) => {
       })
       .then((res) => {
         if (res.status == 200) {
-          console.log("loggedin");
+          const token = res.headers["user-token"];
+          localStorage.setItem("user-token", token);
+          localStorage.setItem("loggedin", true);
           window.location.href = "http://localhost:3000/user/dashboard";
         }
       })
