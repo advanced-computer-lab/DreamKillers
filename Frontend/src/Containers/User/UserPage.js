@@ -85,7 +85,11 @@ const UserPage = () => {
   let currentUser = {};
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/user`)
+      .get(`http://localhost:8000/user`, {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         currentUser = res.data;
         fillUser();
