@@ -26,6 +26,14 @@ const flightReservationSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  returnSeats: {
+    type: String,
+    required: true,
+  },
+  departureSeats: {
+    type: String,
+    required: true,
+  },
 });
 
 const FlightReservation = mongoose.model(
