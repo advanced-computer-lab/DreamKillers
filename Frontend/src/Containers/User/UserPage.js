@@ -141,6 +141,8 @@ const UserPage = () => {
           (passengerNum * returnFlight.price +
             childrenNum * 0.25 * returnFlight.price),
         user: "617dbe3c2f88f3eba1dd02bb",
+        depSeats: depSeats.toString(),
+        returnSeats: returnSeats.toString(),
       })
       .then((res) => {
         console.log(res.status);
@@ -187,6 +189,7 @@ const UserPage = () => {
   };
 
   const returnBookedDep = () => {
+    setBookedReturn(false);
     setBookedDep(false);
   };
 
@@ -315,8 +318,8 @@ const UserPage = () => {
                   rfDateTime={res.returnFlight.departureTime}
                   rfPrice={res.returnFlight.price}
                   cabin={res.cabinClass}
-                  dfSeats={"A1 A2 A3"}
-                  rfSeats={"C2 C3 C4"}
+                  dfSeats={res.departureSeats}
+                  rfSeats={res.returnSeats}
                   acceptOnClickHandler={onClickCancelReservation}
                 ></ReservationSummary>
               );
@@ -380,6 +383,7 @@ const UserPage = () => {
                 <BookedFlightCard
                   flight={departureFlight}
                   width={850}
+                  cabinClass={cabinClass}
                   icon={<AirplaneTicketOutlinedIcon className={Styles.icon} />}
                   seats={depSeats}
                   price={
@@ -396,7 +400,24 @@ const UserPage = () => {
                       icon={<ArrowBackIcon />}
                     />
                   }
+                  seatsButton={
+                    <SeatsModal
+                      seatNumber={passengerNum}
+                      cabinClass={cabinClass}
+                      returnSeatsFunc={(seats) => {
+                        setDepSeats(seats);
+                      }}
+                      selectedSeats={depSeats.toString()}
+                      modifiedButton={{
+                        variant: "contained",
+                        textColor: "White",
+                        color: "Green",
+                        hoverColor: "#545454",
+                      }}
+                    />
+                  }
                 />
+                {console.log(depSeats.toString())}
               </div>
             ) : null}
             {bookedDep && !bookedReturn ? (
@@ -451,6 +472,7 @@ const UserPage = () => {
                   <BookedFlightCard
                     flight={returnFlight}
                     width={850}
+                    cabinClass={cabinClass}
                     icon={
                       <AirplaneTicketOutlinedIcon className={Styles.icon} />
                     }
@@ -467,6 +489,22 @@ const UserPage = () => {
                         hoverColor="#545454"
                         onClick={returnBookedReturn}
                         icon={<ArrowBackIcon />}
+                      />
+                    }
+                    seatsButton={
+                      <SeatsModal
+                        seatNumber={passengerNum}
+                        cabinClass={cabinClass}
+                        returnSeatsFunc={(seats) => {
+                          setReturnSeats(seats);
+                        }}
+                        selectedSeats={returnSeats}
+                        modifiedButton={{
+                          variant: "contained",
+                          textColor: "White",
+                          color: "Green",
+                          hoverColor: "#545454",
+                        }}
                       />
                     }
                   />

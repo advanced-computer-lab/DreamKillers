@@ -38,7 +38,6 @@ const GuestPage = () => {
     setCabinClass(cabin);
     setBookedDep(false);
     setBookedReturn(false);
-    console.log(flights);
   };
 
   const reset = () => {
@@ -52,7 +51,6 @@ const GuestPage = () => {
   const bookDeparture = (flight) => {
     setDepartureFlight(flight);
     setBookedDep(true);
-    console.log("depart", departureFlight);
     axios
       .post("http://localhost:8000/userFlights/searchOnReturn", {
         flight: flight,
@@ -61,22 +59,21 @@ const GuestPage = () => {
       })
       .then((res) => {
         setReturnFlights(res.data);
-        console.log(res.data);
       });
   };
 
   const bookReturn = (flight) => {
     setReturnFlight(flight);
     setBookedReturn(true);
-    console.log(departureFlight);
   };
 
   const returnBookedDep = () => {
     setBookedDep(false);
+    setBookedReturn(false);
   };
 
   const returnBookedReturn = () => {
-    setBookedDep(true);
+    //setBookedDep(true);
     setBookedReturn(false);
   };
 
@@ -154,6 +151,7 @@ const GuestPage = () => {
               flight={departureFlight}
               width={800}
               icon={<AirplaneTicketOutlinedIcon className={Styles.icon} />}
+              cabinClass={cabinClass}
               button={
                 <ButtonDK
                   variant="contained"
@@ -225,6 +223,7 @@ const GuestPage = () => {
                 flight={returnFlight}
                 width={800}
                 icon={<AirplaneTicketOutlinedIcon className={Styles.icon} />}
+                cabinClass={cabinClass}
                 button={
                   <ButtonDK
                     variant="contained"
