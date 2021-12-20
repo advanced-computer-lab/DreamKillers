@@ -30,6 +30,7 @@ export default function BookedFlightCard({
     hours = Math.floor(hours);
     return hours + "h " + min + "m";
   };
+
   const getSeats = () => {
     let res = "";
 

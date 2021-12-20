@@ -40,7 +40,10 @@ const ReservationSummary = ({
 }) => {
   return (
     <div>
-      <Accordion expanded={accordionDefaultOpen} sx={{ border: 1, borderRadius: 2, borderColor: "lightgray" }}>
+      <Accordion
+        expanded={accordionDefaultOpen}
+        sx={{ border: 1, borderRadius: 2, borderColor: "lightgray" }}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -50,7 +53,9 @@ const ReservationSummary = ({
             reservationNumber != null ? reservationNumber : ""
           } Summary`}</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ border: 1, borderRadius: 1, borderColor: "lightgray" }}>
+        <AccordionDetails
+          sx={{ border: 1, borderRadius: 1, borderColor: "lightgray" }}
+        >
           <p style={{ textAlign: "center", fontWeight: "bold" }}>
             Booking Number: {reservationID}
           </p>
@@ -163,7 +168,7 @@ const ReservationSummary = ({
               acceptButtonOnClickHandler={() =>
                 acceptOnClickHandler(reservationID)
               }
-            ></Modal>
+            />
           </div>
         </AccordionDetails>
       </Accordion>

@@ -131,8 +131,8 @@ const UserPage = () => {
   const reserve = () => {
     axios
       .post("http://localhost:8000/flights/reserve", {
-        departureFlight: departureFlight._id,
-        returnFlight: returnFlight._id,
+        departureFlight: departureFlight,
+        returnFlight: returnFlight,
         cabinClass: cabinClass,
         passengersNumber: passengerNum,
         price:
