@@ -137,6 +137,8 @@ router.post("/reserve", async (req, res) => {
   const passengersNumber = req.body.passengersNumber;
   const price = req.body.price;
   const userID = req.body.user;
+  const depSeats = req.body.depSeats;
+  const returnSeats = req.body.returnSeats;
 
   const flightReservation = new FlightReservation({
     departureFlight: depFlight,
@@ -145,6 +147,8 @@ router.post("/reserve", async (req, res) => {
     cabinClass: cabinClass,
     passengersNumber: passengersNumber,
     price: price,
+    returnSeats: returnSeats,
+    departureSeats: depSeats,
   });
   await flightReservation.save();
   return res.status(201).send(flightReservation);
