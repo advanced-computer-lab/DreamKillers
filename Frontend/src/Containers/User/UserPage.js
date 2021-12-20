@@ -141,8 +141,8 @@ const UserPage = () => {
           (passengerNum * returnFlight.price +
             childrenNum * 0.25 * returnFlight.price),
         user: "617dbe3c2f88f3eba1dd02bb",
-        depSeats: depSeats.toString(),
-        returnSeats: returnSeats.toString(),
+        depSeats: depSeats.sort().toString(),
+        returnSeats: returnSeats.sort().toString(),
       })
       .then((res) => {
         console.log(res.status);

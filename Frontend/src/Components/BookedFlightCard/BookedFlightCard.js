@@ -32,7 +32,8 @@ export default function BookedFlightCard({
   };
   const getSeats = () => {
     let res = "";
-    seats.forEach((seat) => {
+
+    seats.sort().forEach((seat) => {
       res += seat + ",";
     });
     return res.substring(0, res.length - 1);
