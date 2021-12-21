@@ -21,6 +21,7 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import ButtonDK from "../ButtonDK/ButtonDK";
 import { flexbox } from "@mui/system";
 import Modal from "../Modal/Modal";
+import EditReservationModal from "../EditReservationModal/EditReservationModal";
 
 const ReservationSummary = ({
   reservationID,
@@ -37,6 +38,7 @@ const ReservationSummary = ({
   accordionDefaultOpen,
   acceptOnClickHandler,
   resPrice,
+  refreshFunc,
 }) => {
   return (
     <div>
@@ -152,23 +154,31 @@ const ReservationSummary = ({
               </div>
             </div>
           </div>
-          <div className={Styles.CancelButton}>
-            <Modal
-              modalTitle="Cancel Reservation"
-              modalText="Are you sure you want to cancel this reservation? Your action is irreversible"
-              cancelText="Dismiss"
-              cancelTextColor="#FFFFFF"
-              cancelButtonColor="#00bcf5"
-              cancelHoverColor="#00bcf5"
-              acceptText="Confirm"
-              acceptTextColor="#FFFFFF"
-              acceptButtonColor="#e01d10"
-              acceptHoverColor="#FF0000"
-              modalButtonText="Cancel Reservation"
-              acceptButtonOnClickHandler={() =>
-                acceptOnClickHandler(reservationID)
-              }
-            />
+          <div className={Styles.Buttons}>
+            <div className={Styles.Button}>
+              <EditReservationModal
+                reservationID={reservationID}
+                refreshFunc={refreshFunc}
+              />
+            </div>
+            <div className={Styles.Button}>
+              <Modal
+                modalTitle="Cancel Reservation"
+                modalText="Are you sure you want to cancel this reservation? Your action is irreversible"
+                cancelText="Dismiss"
+                cancelTextColor="#FFFFFF"
+                cancelButtonColor="#00bcf5"
+                cancelHoverColor="#00bcf5"
+                acceptText="Confirm"
+                acceptTextColor="#FFFFFF"
+                acceptButtonColor="#e01d10"
+                acceptHoverColor="#FF0000"
+                modalButtonText="Cancel Reservation"
+                acceptButtonOnClickHandler={() =>
+                  acceptOnClickHandler(reservationID)
+                }
+              />
+            </div>
           </div>
         </AccordionDetails>
       </Accordion>

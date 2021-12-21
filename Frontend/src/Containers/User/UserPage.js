@@ -203,6 +203,7 @@ const UserPage = () => {
       .get("http://localhost:8000/user/reservations")
       .then((res) => {
         setReservations(res.data);
+        console.log("refreshed");
       })
       .catch((e) => console.log(e));
   };
@@ -321,6 +322,7 @@ const UserPage = () => {
                   dfSeats={res.departureSeats}
                   rfSeats={res.returnSeats}
                   acceptOnClickHandler={onClickCancelReservation}
+                  refreshFunc={getReservations}
                 ></ReservationSummary>
               );
             })}
