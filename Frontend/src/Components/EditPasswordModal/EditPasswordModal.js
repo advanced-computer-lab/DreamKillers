@@ -9,7 +9,7 @@ import Slide from "@mui/material/Slide";
 import ButtonDK from "../ButtonDK/ButtonDK";
 import TextBoxDK from "../TextBoxDK/TextBoxDK";
 import DropDownDK from "../DropDownDK/DropDownDK";
-import Styles from "./UserEditModal.module.css";
+import Styles from "./EditPasswordModal.module.css";
 import DateTimePickerDK from "../DateTimePickerDK/DateTimePickerDK";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -18,13 +18,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function UserEditModal({
-  userNameState,
-  EmailState,
+export default function EditPasswordModal({
   PasswordState,
-  passportNumberState,
-  AgeState,
-  phoneNumberState,
   mainButtonText,
   mainButtonTextColor,
   mainButtonColor,
@@ -36,12 +31,9 @@ export default function UserEditModal({
   onAcceptOnClickHandler,
 }) {
   const [open, setOpen] = React.useState(false);
-  const [userName, setUserName] = React.useState("");
-  const [Email, setEmail] = React.useState("");
-  const [Password, setPassword] = React.useState("");
-  const [passportNumber, setPassportNumber] = React.useState("");
-  const [Age, setAge] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [oldPassword, setOldPassword] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -54,29 +46,17 @@ export default function UserEditModal({
     setOpen(false);
   };
 
-  const onChangeUserNameHandler = (e) => {
-    setUserName(e.target.value);
+  const onChangeOldPasswordHandler = (e) => {
+    setOldPassword(e.target.value);
   };
-  const onChangeEmailHandler = (e) => {
-    setEmail(e.target.value);
-  };
-  const onChangePasswordHandler = (e) => {
-    setPassword(e.target.value);
-  };
-  const onChangePassportNumberHandler = (e) => {
-    setPassportNumber(e.target.value);
-  };
-  const onChangeAgeHandler = (e) => {
-    setAge(e.target.value);
-  };
-  const onChangePhoneNumberHandler = (e) => {
-    setPhoneNumber(e.target.value);
+  const onChangeNewPasswordHandler = (e) => {
+    setNewPassword(e.target.value);
   };
 
   return (
     <div>
       <ButtonDK
-        buttonText={mainButtonText}
+        buttonText={"Edit Password"}
         color={mainButtonColor}
         textColor={mainButtonTextColor}
         hoverColor={mainButtonHoverColor}
@@ -99,25 +79,10 @@ export default function UserEditModal({
 
           <div className={Styles.Container}>
             <div className={Styles.TextBox}>
-              <TextBoxDK text="User Name" onChange={onChangeUserNameHandler} />
+              <TextBoxDK text="Old Password" onChange={onChangeOldPasswordHandler} />
             </div>
             <div className={Styles.TextBox}>
-              <TextBoxDK text="Email" onChange={onChangeEmailHandler} />
-            </div>
-            <div className={Styles.TextBox}>
-              <TextBoxDK
-                text="Passport Number"
-                onChange={onChangePassportNumberHandler}
-              />
-            </div>
-            <div className={Styles.TextBox}>
-              <TextBoxDK text="Age" onChange={onChangeAgeHandler} />
-            </div>
-            <div className={Styles.TextBox}>
-              <TextBoxDK
-                text="Phone Number"
-                onChange={onChangePhoneNumberHandler}
-              />
+              <TextBoxDK text="New Password" onChange={onChangeNewPasswordHandler} />
             </div>
           </div>
         </DialogContent>
@@ -137,12 +102,8 @@ export default function UserEditModal({
             onClick={() => {
               handleClose();
               onAcceptOnClickHandler(
-                userName,
-                Email,
-                Password,
-                passportNumber,
-                Age,
-                phoneNumber
+                oldPassword,
+                newPassword
               );
             }}
           />

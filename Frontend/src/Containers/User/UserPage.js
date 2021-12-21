@@ -30,6 +30,8 @@ import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import SeatsModal from "../../Components/SeatsModal/SeatsModal";
 import Footer from "../../Components/Footer/Footer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditPasswordModal from "../../Components/EditPasswordModal/EditPasswordModal";
+import LockIcon from '@mui/icons-material/Lock';
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
@@ -68,6 +70,21 @@ const UserPage = () => {
         newPassportNumber: passportNumber,
         newPhoneNumber: phoneNumber,
         userAge: Age,
+      })
+      .then((res) => {
+        setEditTriggered(!editTriggered);
+        displaySnackBar("User information edited successfully");
+      })
+      .catch((e) => console.log(e));
+  };
+  const onAcceptEditPasswordOnClickHandler = (
+    oldPassword,
+    newPassword
+  ) => {
+    axios
+      .patch(`http://localhost:8000/user/editPassword`, {
+        oldPassword: oldPassword,
+        newPassword: newPassword,
       })
       .then((res) => {
         setEditTriggered(!editTriggered);
@@ -295,6 +312,14 @@ const UserPage = () => {
                 Age={currentUser.age}
                 phoneNumber={currentUser.phoneNumber}
               ></UserEditModal>
+              <EditPasswordModal 
+              icon={<LockIcon />}
+              title={"Enter Your Old & New Passwords"}
+              mainButtonColor={"orange"}
+                mainButtonTextColor={"black"}
+                mainButtonHoverColor={"orange"}
+                acceptButtonText={"Edit"}
+                onAcceptOnClickHandler={onAcceptEditPasswordOnClickHandler}></EditPasswordModal>
             </div>
           </>
         ) : selectedTab == 1 ? (
