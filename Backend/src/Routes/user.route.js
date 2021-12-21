@@ -62,6 +62,28 @@ router.patch("/edit", async (req, res) => {
   res.status(200).send(response);
 });
 
+router.patch("/editPassword", async (req, res) => {
+
+  const oldPass = req.body.oldPassword;
+  const newPass = req.body.newPassword;
+  const user = await User.findOne({ _id: "617dbe3c2f88f3eba1dd02bb" });
+  
+  if (user != null) {
+    if (oldPass === user.password) {
+       user.password = newPass;
+       const response = await user.save();
+       return res.status(200).send(response);
+    }
+    else{
+       return res.status(401).send();
+    }
+  }
+  else{
+     return res.status(401).send();
+  }
+});
+
+
 router.get("/reservations", async (req, res) => {
   const userID = "617dbe3c2f88f3eba1dd02bb";
   const reservations = await FlightReservation.find({ user: userID }).populate(
