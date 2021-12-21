@@ -82,9 +82,9 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
         console.log(res.status);
         if (res.status == 201)
           displaySnackBar("Your flight is successfully Edited");
+        refreshFunc();
       });
     reset();
-    refreshFunc();
     handleTotalClose();
   };
 
