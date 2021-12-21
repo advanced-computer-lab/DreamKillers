@@ -35,7 +35,11 @@ const UserPage = () => {
 
   const onClickCancelReservation = (reservationID) => {
     axios
-      .delete(`http://localhost:8000/flights/reservations/${reservationID}`)
+      .delete(`http://localhost:8000/flights/reservations/${reservationID}`, {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         getReservations();
         displaySnackBar("Your reservation was successfully cancelled");
@@ -141,18 +145,25 @@ const UserPage = () => {
 
   const reserve = () => {
     axios
-      .post("http://localhost:8000/flights/reserve", {
-        departureFlight: departureFlight._id,
-        returnFlight: returnFlight._id,
-        cabinClass: cabinClass,
-        passengersNumber: passengerNum,
-        price:
-          passengerNum * departureFlight.price +
-          childrenNum * 0.25 * departureFlight.price +
-          (passengerNum * returnFlight.price +
-            childrenNum * 0.25 * returnFlight.price),
-        user: "617dbe3c2f88f3eba1dd02bb",
-      })
+      .post(
+        "http://localhost:8000/flights/reserve",
+        {
+          departureFlight: departureFlight._id,
+          returnFlight: returnFlight._id,
+          cabinClass: cabinClass,
+          passengersNumber: passengerNum,
+          price:
+            passengerNum * departureFlight.price +
+            childrenNum * 0.25 * departureFlight.price +
+            (passengerNum * returnFlight.price +
+              childrenNum * 0.25 * returnFlight.price),
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
       .then((res) => {
         console.log(res.status);
         if (res.status == 201)
@@ -199,7 +210,11 @@ const UserPage = () => {
 
   const getReservations = () => {
     axios
-      .get("http://localhost:8000/user/reservations")
+      .get("http://localhost:8000/user/reservations", {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         setReservations(res.data);
       })

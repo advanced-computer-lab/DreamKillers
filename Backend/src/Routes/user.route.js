@@ -61,8 +61,8 @@ router.patch("/edit", userAuth, async (req, res) => {
   res.status(200).send(response);
 });
 
-router.get("/reservations", async (req, res) => {
-  const userID = "617dbe3c2f88f3eba1dd02bb";
+router.get("/reservations", userAuth, async (req, res) => {
+  const userID = req.user._id;
   const reservations = await FlightReservation.find({ user: userID }).populate(
     "departureFlight returnFlight"
   );

@@ -105,9 +105,6 @@ export default function UserEditModal({
               <TextBoxDK text="Email" onChange={onChangeEmailHandler} />
             </div>
             <div className={Styles.TextBox}>
-              <TextBoxDK text="Password" onChange={onChangePasswordHandler} />
-            </div>
-            <div className={Styles.TextBox}>
               <TextBoxDK
                 text="Passport Number"
                 onChange={onChangePassportNumberHandler}

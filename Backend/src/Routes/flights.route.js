@@ -5,6 +5,7 @@ const Flight = require("../Models/flight.model");
 const FlightReservation = require("../Models/flightReservation.model");
 const User = require("../Models/user.model");
 const nodemailer = require("nodemailer");
+const userAuth = require("../Middleware/userAuth");
 
 router.patch("/:flightId", async (req, res) => {
   const flightNumber = req.body.flightNumber;
@@ -115,13 +116,13 @@ router.post("/search", async (req, res) => {
   res.send(result);
 });
 
-router.post("/reserve", async (req, res) => {
+router.post("/reserve", userAuth, async (req, res) => {
   const depFlight = req.body.departureFlight;
   const retFlight = req.body.returnFlight;
   const cabinClass = req.body.cabinClass;
   const passengersNumber = req.body.passengersNumber;
   const price = req.body.price;
-  const userID = req.body.user;
+  const userID = req.user._id;
 
   const flightReservation = new FlightReservation({
     departureFlight: depFlight,
@@ -135,37 +136,41 @@ router.post("/reserve", async (req, res) => {
   return res.status(201).send(flightReservation);
 });
 
-router.delete("/reservations/:reservationNumber", async (req, res) => {
-  const reservation = await FlightReservation.findOne({
-    _id: req.params.reservationNumber,
-  }).populate("departureFlight returnFlight");
+router.delete(
+  "/reservations/:reservationNumber",
+  userAuth,
+  async (req, res) => {
+    const userID = req.user._id;
+    const reservation = await FlightReservation.findOne({
+      _id: req.params.reservationNumber,
+    }).populate("departureFlight returnFlight");
 
-  if (!reservation) return res.status(400).send("Reservation not found");
+    if (!reservation) return res.status(400).send("Reservation not found");
 
-  const departurePrice = reservation.departureFlight.price;
-  const returnPrice = reservation.returnFlight.price;
+    const departurePrice = reservation.departureFlight.price;
+    const returnPrice = reservation.returnFlight.price;
 
-  const totalPrice = reservation.price;
+    const totalPrice = reservation.price;
 
-  const response = await FlightReservation.findOneAndDelete({
-    _id: req.params.reservationNumber,
-  });
+    const response = await FlightReservation.findOneAndDelete({
+      _id: req.params.reservationNumber,
+    });
 
-  const user = await User.findById({ _id: "617dbe3c2f88f3eba1dd02bb" });
+    const user = await User.findById({ _id: userID });
 
-  var transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
-      pass: "DKairlines123", // PASS REQUIRED
-    },
-  });
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
+        pass: "DKairlines123", // PASS REQUIRED
+      },
+    });
 
-  var mailOptions = {
-    from: "dkairlinesguc@gmail.com",
-    to: `${user.email}`,
-    subject: "Reservation Cancel Invoice",
-    html: `<div class="container bootdey">
+    var mailOptions = {
+      from: "dkairlinesguc@gmail.com",
+      to: `${user.email}`,
+      subject: "Reservation Cancel Invoice",
+      html: `<div class="container bootdey">
     <div class="row invoice row-printable">
         <div class="col-md-10">
             <!-- col-lg-12 start here -->
@@ -259,17 +264,18 @@ router.delete("/reservations/:reservationNumber", async (req, res) => {
         <!-- col-lg-12 end here -->
     </div>
     </div>`,
-  };
+    };
 
-  await transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+    await transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
 
-  return res.status(202).send(response);
-});
+    return res.status(202).send(response);
+  }
+);
 
 module.exports = router;
