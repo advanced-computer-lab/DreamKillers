@@ -28,9 +28,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    authTokens: {
-      type: [String],
-    },
   },
   { timestamps: true }
 );
