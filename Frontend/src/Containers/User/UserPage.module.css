@@ -3,10 +3,10 @@
   height: 100vh;
 
   /* background image setup */
-  background-image: url('AirplaneUser.png');
+  background-image: url("AirplaneUser.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  
+
   background-size: cover;
 }
 
@@ -83,8 +83,12 @@
   padding-left: 1em;
 }
 .Edit {
-  margin-left: 24em;
-  margin-top: 5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding-top: 5rem;
+  /* margin-left: 24em;
+  margin-top: 5em; */
 }
 
 .flightCards {
