@@ -1,16 +1,14 @@
-import * as React from "react";
-import ButtonDK from "../../Components/ButtonDK/ButtonDK";
-import FlightContainer from "../../Components/FlightContainer/FlightContainer";
-import Styles from "./UserPage.module.css";
-import FlightEditModal from "../../Components/FlightEditModal/FlightEditModal";
-import ToolBarDK from "../../Components/ToolBarDK/ToolBarDK";
-import FlightSearchModal from "../../Components/FlightSearchModal/FlightSearchModal";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import axios from "axios";
+import React from "react";
+import FlightSearchModal from "../FlightSearchModal/FlightSearchModal";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import ButtonDK from "../ButtonDK/ButtonDK";
+import DeleteIcon from "@mui/icons-material/Delete";
+import UserFlightSearch from "../UserFlightSearch/UserFlightSearch";
 import { useEffect, useState } from "react";
-import { icon } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlane, faUser, faBook } from "@fortawesome/free-solid-svg-icons";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import EmailIcon from "@mui/icons-material/Email";
@@ -22,89 +20,25 @@ import UserEditModal from "../../Components/UserEditModal/UserEditModal.js";
 import BookedFlightCard from "../../Components/BookedFlightCard/BookedFlightCard";
 import AirplaneTicketOutlinedIcon from "@mui/icons-material/AirplaneTicketOutlined";
 import EditIcon from "@mui/icons-material/Edit";
-import ReservationSummary from "../../Components/ReservationSummary/ReservationSummary";
-import UserFlightSearch from "../../Components/UserFlightSearch/UserFlightSearch";
 import { Alert, Table, TableCell, TableRow } from "@mui/material";
-import Modal from "../../Components/Modal/Modal";
 import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import SeatsModal from "../../Components/SeatsModal/SeatsModal";
 import Footer from "../../Components/Footer/Footer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import axios from "axios";
+import Styles from "./EditReservationModal.module.css";
 
-const UserPage = () => {
-  const [editTriggered, setEditTriggered] = React.useState(false);
+export default function EditReservationModal({ reservationID, refreshFunc }) {
+  const [open, setOpen] = React.useState(false);
 
-  const onClickCancelReservation = (reservationID) => {
-    axios
-      .delete(`http://localhost:8000/flights/reservations/${reservationID}`)
-      .then((res) => {
-        getReservations();
-        displaySnackBar("Your reservation was successfully cancelled");
-      })
-      .catch((e) => console.log(e));
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const [openSnack, setOpenSnack] = React.useState(false);
-  const [snackBarText, setSnackBarText] = React.useState();
-
-  const handleClose = () => {
-    setOpenSnack(false);
+  const handleTotalClose = () => {
+    setOpen(false);
+    reset();
   };
-
-  const onAcceptEditOnClickHandler = (
-    userName,
-    Email,
-    Password,
-    passportNumber,
-    Age,
-    phoneNumber
-  ) => {
-    axios
-      .patch(`http://localhost:8000/user/edit`, {
-        name: userName,
-        oldEmail: currentUser.email,
-        newEmail: Email,
-        password: Password,
-        newPassportNumber: passportNumber,
-        newPhoneNumber: phoneNumber,
-        userAge: Age,
-      })
-      .then((res) => {
-        setEditTriggered(!editTriggered);
-        displaySnackBar("User information edited successfully");
-      })
-      .catch((e) => console.log(e));
-  };
-  let currentUser = {};
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8000/user`)
-      .then((res) => {
-        currentUser = res.data;
-        fillUser();
-      })
-      .catch((e) => console.log(e));
-  }, [editTriggered]);
-  const fillUser = () => {
-    setUserName(currentUser.name);
-    setOldEmail(currentUser.email);
-    setPassword(currentUser.password);
-    setOldPassportNumber(currentUser.passportNumber);
-    setAge(currentUser.age);
-    setOldPhoneNumber(currentUser.phoneNumber);
-  };
-
-  const [userName, setUserName] = React.useState("");
-  const [oldEmail, setOldEmail] = React.useState("");
-  const [Email, setEmail] = React.useState("");
-  const [Password, setPassword] = React.useState("");
-  const [oldPassportNumber, setOldPassportNumber] = React.useState("");
-  const [passportNumber, setPassportNumber] = React.useState("");
-  const [Age, setAge] = React.useState("");
-  const [oldPhoneNumber, setOldPhoneNumber] = React.useState("");
-  const [phoneNumber, setPhoneNumber] = React.useState("");
-  const [selectedTab, setSelectedTab] = React.useState(0);
-  const [reservations, setReservations] = React.useState([]);
 
   const [flights, setFlights] = useState([]);
   const [departureFlight, setDepartureFlight] = useState({});
@@ -130,7 +64,7 @@ const UserPage = () => {
 
   const reserve = () => {
     axios
-      .post("http://localhost:8000/flights/reserve", {
+      .patch(`http://localhost:8000/flights/editReservation/${reservationID}`, {
         departureFlight: departureFlight,
         returnFlight: returnFlight,
         cabinClass: cabinClass,
@@ -147,14 +81,11 @@ const UserPage = () => {
       .then((res) => {
         console.log(res.status);
         if (res.status == 201)
-          displaySnackBar("Your flight is successfully reserved");
+          displaySnackBar("Your flight is successfully Edited");
+        refreshFunc();
       });
     reset();
-  };
-
-  const displaySnackBar = (message) => {
-    setSnackBarText(message);
-    setOpenSnack(true);
+    handleTotalClose();
   };
 
   const reset = () => {
@@ -198,136 +129,38 @@ const UserPage = () => {
     setBookedReturn(false);
   };
 
-  const getReservations = () => {
-    axios
-      .get("http://localhost:8000/user/reservations")
-      .then((res) => {
-        setReservations(res.data);
-        console.log("refreshed");
-      })
-      .catch((e) => console.log(e));
+  const [openSnack, setOpenSnack] = React.useState(false);
+  const [snackBarText, setSnackBarText] = React.useState();
+
+  const handleClose = () => {
+    setOpenSnack(false);
   };
 
-  useEffect(() => {
-    getReservations();
-  }, [selectedTab]);
+  const displaySnackBar = (message) => {
+    setSnackBarText(message);
+    setOpenSnack(true);
+  };
 
   return (
-    <div className={Styles.mainDiv}>
-      <ToolBarDK
-        dashboard={"user"}
-        dashBoardItemOnClick={(index) => {
-          console.log(index);
-          setSelectedTab(index);
-        }}
-        selectedTab={selectedTab}
-      ></ToolBarDK>
-      <div className={Styles.Flights}>
-        {selectedTab == 2 ? (
-          <>
-            <div className={Styles.UserDisplay}>
-              <div className={Styles.UserDetailsContainer}>
-                <div className={Styles.DisplayComponent}>
-                  <div className={Styles.Icon}>
-                    <FontAwesomeIcon icon={faUser} color={"black"} size="2x" />
-                  </div>
-                  <p className={Styles.Text}> User Name:</p>
-                  <p className={Styles.ParText}> {userName}</p>
-                </div>
-
-                <div className={Styles.DisplayComponent}>
-                  <div className={Styles.Icon}>
-                    <EmailIcon fontSize="large" />
-                  </div>
-                  <p className={Styles.Text}> E-mail:</p>
-                  <p className={Styles.ParText}> {oldEmail}</p>
-                </div>
-
-                <div className={Styles.DisplayComponent}>
-                  <div className={Styles.Icon}>
-                    <VpnKeyIcon fontSize="large" />
-                  </div>
-                  <p className={Styles.Text}> Password:</p>
-                  <p className={Styles.ParText}> {Password}</p>
-                </div>
-              </div>
-
-              <div className={Styles.UserDetailsContainer}>
-                <div className={Styles.DisplayComponent}>
-                  <div className={Styles.Icon}>
-                    <AirplaneTicketIcon fontSize="large" />
-                  </div>
-                  <p className={Styles.Text}> Passport Number:</p>
-                  <p className={Styles.ParText}> {oldPassportNumber}</p>
-                </div>
-
-                <div className={Styles.DisplayComponent}>
-                  <div className={Styles.Icon}>
-                    <BadgeIcon fontSize="large" />
-                  </div>
-                  <p className={Styles.Text}> Age:</p>
-                  <p className={Styles.ParText}> {Age}</p>
-                </div>
-
-                <div className={Styles.DisplayComponent}>
-                  <div className={Styles.Icon}>
-                    <PhoneIphoneIcon fontSize="large" />
-                  </div>
-                  <p className={Styles.Text}> Phone Number:</p>
-                  <p className={Styles.ParText}> {oldPhoneNumber}</p>
-                </div>
-              </div>
-            </div>
-            <div className={Styles.Edit}>
-              <UserEditModal
-                mainButtonText={"Edit"}
-                mainButtonColor={"orange"}
-                mainButtonTextColor={"black"}
-                mainButtonHoverColor={"orange"}
-                icon={<EditIcon />}
-                acceptButtonText={"Edit"}
-                title={"Edit the attributes of profile you want to edit"}
-                userName={currentUser.name}
-                onAcceptOnClickHandler={onAcceptEditOnClickHandler}
-                Email={currentUser.email}
-                Password={currentUser.password}
-                passportNumber={currentUser.passportNumber}
-                Age={currentUser.age}
-                phoneNumber={currentUser.phoneNumber}
-              ></UserEditModal>
-            </div>
-          </>
-        ) : selectedTab == 1 ? (
-          <>
-            {reservations.map((res, index) => {
-              return (
-                <ReservationSummary
-                  key={index}
-                  reservationID={res._id}
-                  reservationNumber={index + 1}
-                  resPrice={res.price}
-                  dfNumber={
-                    res.departureFlight.flightNumber +
-                    ` (${res.departureFlight.departureTerminal} > ${res.departureFlight.arrivalTerminal})`
-                  }
-                  dfDateTime={res.departureFlight.departureTime}
-                  dfPrice={res.departureFlight.price}
-                  rfNumber={
-                    res.returnFlight.flightNumber +
-                    ` (${res.returnFlight.departureTerminal} > ${res.returnFlight.arrivalTerminal})`
-                  }
-                  rfDateTime={res.returnFlight.departureTime}
-                  rfPrice={res.returnFlight.price}
-                  cabin={res.cabinClass}
-                  dfSeats={res.departureSeats}
-                  rfSeats={res.returnSeats}
-                  acceptOnClickHandler={onClickCancelReservation}
-                  refreshFunc={getReservations}
-                ></ReservationSummary>
-              );
-            })}
-          </>
-        ) : (
+    <div>
+      <ButtonDK
+        buttonText={"Edit"}
+        textColor="white"
+        icon={<EditIcon />}
+        hoverColor="darkOrange"
+        color="orange"
+        onClick={handleClickOpen}
+      />
+      <Dialog
+        open={open}
+        onClose={handleTotalClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle id="alert-dialog-title">{"Title"}</DialogTitle>
+        <DialogContent sx={{ width: 750 }}>
           <div>
             <div className={Styles.ButtonsContainer}>
               <UserFlightSearch search={search} reset={reset} />
@@ -523,16 +356,17 @@ const UserPage = () => {
               ) : null}
             </div>
           </div>
-        )}
-      </div>
-      <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          {snackBarText}
-        </Alert>
-      </Snackbar>
-      <Footer />
+        </DialogContent>
+        <DialogActions>
+          <ButtonDK
+            buttonText="Cancel"
+            textColor="white"
+            color="red"
+            hoverColor="black"
+            onClick={handleTotalClose}
+          />
+        </DialogActions>
+      </Dialog>
     </div>
   );
-};
-
-export default UserPage;
+}

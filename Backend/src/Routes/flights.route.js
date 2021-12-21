@@ -4,6 +4,7 @@ const router = express.Router();
 const Flight = require("../Models/flight.model");
 const FlightReservation = require("../Models/flightReservation.model");
 const User = require("../Models/user.model");
+const fs = require("fs");
 const nodemailer = require("nodemailer");
 
 router.patch("/:flightId", async (req, res) => {
@@ -130,6 +131,14 @@ router.post("/search", async (req, res) => {
   res.send(result);
 });
 
+const getDuration = (date1, date2) => {
+  var difference = Math.abs(new Date(date1) - new Date(date2));
+  let hours = difference / (1000 * 3600);
+  let min = (hours % 1) * 60;
+  hours = Math.floor(hours);
+  return hours + "h " + min + "m";
+};
+
 router.post("/reserve", async (req, res) => {
   const depFlight = req.body.departureFlight;
   const retFlight = req.body.returnFlight;
@@ -139,10 +148,10 @@ router.post("/reserve", async (req, res) => {
   const userID = req.body.user;
   const depSeats = req.body.depSeats;
   const returnSeats = req.body.returnSeats;
-
+  console.log(new Date(depFlight.departureTime).toDateString());
   const flightReservation = new FlightReservation({
-    departureFlight: depFlight,
-    returnFlight: retFlight,
+    departureFlight: depFlight._id,
+    returnFlight: retFlight._id,
     user: userID,
     cabinClass: cabinClass,
     passengersNumber: passengersNumber,
@@ -151,7 +160,168 @@ router.post("/reserve", async (req, res) => {
     departureSeats: depSeats,
   });
   await flightReservation.save();
+
+  const user = await User.findById({ _id: "617dbe3c2f88f3eba1dd02bb" });
+
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
+      pass: "DKairlines123", // PASS REQUIRED
+    },
+  });
+
+  var mailOptions = {
+    from: "dkairlinesguc@gmail.com",
+    to: `${user.email}`,
+    subject: "Reservation Invoice",
+    html: ``, //get from template
+    attachments: [
+      {
+        filename: "bee.png",
+        path: __dirname + "/images/bee.png",
+        cid: "bee",
+      },
+      {
+        filename: "depart.png",
+        path: __dirname + "/images/depart.png",
+        cid: "depart",
+      },
+      {
+        filename: "facebook.png",
+        path: __dirname + "/images/facebook.png",
+        cid: "facebook",
+      },
+      {
+        filename: "googleplus.png",
+        path: __dirname + "/images/googleplus.png",
+        cid: "googleplus",
+      },
+      {
+        filename: "instagram.png",
+        path: __dirname + "/images/instagram.png",
+        cid: "instagram",
+      },
+      {
+        filename: "plane.png",
+        path: __dirname + "/images/plane.png",
+        cid: "plane",
+      },
+      {
+        filename: "top.png",
+        path: __dirname + "/images/top.png",
+        cid: "top",
+      },
+      {
+        filename: "twitter.png",
+        path: __dirname + "/images/twitter.png",
+        cid: "twitter",
+      },
+    ],
+  };
+
+  await transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+
   return res.status(201).send(flightReservation);
+});
+
+router.patch("/editReservation/:reservationNumber", async (req, res) => {
+  const reservation = await FlightReservation.findOne({
+    _id: req.params.reservationNumber,
+  });
+
+  const depFlight = req.body.departureFlight;
+  const retFlight = req.body.returnFlight;
+  const cabinClass = req.body.cabinClass;
+  const passengersNumber = req.body.passengersNumber;
+  const price = req.body.price;
+  const depSeats = req.body.depSeats;
+  const returnSeats = req.body.returnSeats;
+
+  reservation.departureFlight = depFlight._id;
+  reservation.returnFlight = retFlight._id;
+  reservation.cabinClass = cabinClass;
+  reservation.passengersNumber = passengersNumber;
+  reservation.price = price;
+  reservation.returnSeats = returnSeats;
+  reservation.departureSeats = depSeats;
+
+  const response = await reservation.save();
+
+  const user = await User.findById({ _id: reservation.user });
+
+  var transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
+      pass: "DKairlines123", // PASS REQUIRED
+    },
+  });
+
+  var mailOptions = {
+    from: "dkairlinesguc@gmail.com",
+    to: `${user.email}`,
+    subject: "Reservation Invoice",
+    html: ``, //get from template
+    attachments: [
+      {
+        filename: "bee.png",
+        path: __dirname + "/images/bee.png",
+        cid: "bee",
+      },
+      {
+        filename: "depart.png",
+        path: __dirname + "/images/depart.png",
+        cid: "depart",
+      },
+      {
+        filename: "facebook.png",
+        path: __dirname + "/images/facebook.png",
+        cid: "facebook",
+      },
+      {
+        filename: "googleplus.png",
+        path: __dirname + "/images/googleplus.png",
+        cid: "googleplus",
+      },
+      {
+        filename: "instagram.png",
+        path: __dirname + "/images/instagram.png",
+        cid: "instagram",
+      },
+      {
+        filename: "plane.png",
+        path: __dirname + "/images/plane.png",
+        cid: "plane",
+      },
+      {
+        filename: "top.png",
+        path: __dirname + "/images/top.png",
+        cid: "top",
+      },
+      {
+        filename: "twitter.png",
+        path: __dirname + "/images/twitter.png",
+        cid: "twitter",
+      },
+    ],
+  };
+
+  await transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+
+  return res.status(201).send(response);
 });
 
 router.delete("/reservations/:reservationNumber", async (req, res) => {
