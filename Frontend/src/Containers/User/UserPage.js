@@ -91,10 +91,18 @@ const UserPage = () => {
   };
   const onAcceptEditPasswordOnClickHandler = (oldPassword, newPassword) => {
     axios
-      .patch(`http://localhost:8000/user/editPassword`, {
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-      })
+      .patch(
+        `http://localhost:8000/user/editPassword`,
+        {
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
       .then((res) => {
         setEditTriggered(!editTriggered);
         displaySnackBar("User information edited successfully");
@@ -289,7 +297,7 @@ const UserPage = () => {
                     <VpnKeyIcon fontSize="large" />
                   </div>
                   <p className={Styles.Text}> Password:</p>
-                  <p className={Styles.ParText}> {Password}</p>
+                  <p className={Styles.ParText}> {"*********"}</p>
                 </div>
               </div>
 
