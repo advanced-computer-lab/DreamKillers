@@ -40,6 +40,7 @@ const ReservationSummary = ({
   resPrice,
   refreshFunc,
   userName,
+  departureFlight,
 }) => {
   return (
     <div>
@@ -160,7 +161,10 @@ const ReservationSummary = ({
               <EditReservationModal
                 reservationID={reservationID}
                 refreshFunc={refreshFunc}
-                userNam={userName}
+                userName={userName}
+                dfseats={dfSeats}
+                rfseats={rfSeats}
+                previouseDepartuer={departureFlight}
               />
             </div>
             <div className={Styles.Button}>

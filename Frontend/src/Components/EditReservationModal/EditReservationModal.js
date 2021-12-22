@@ -34,6 +34,8 @@ export default function EditReservationModal({
   userName,
   dfseats,
   rfseats,
+  previouseDepartuer,
+  previousReturn,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -68,6 +70,45 @@ export default function EditReservationModal({
     setBookedDep(false);
     setBookedReturn(false);
     console.log(flights);
+  };
+
+  const removeBookedSeats = (onFlightSeats, bookedSeats) => {
+    let seatsArr = bookedSeats.split(",");
+
+    console.log("HERE");
+    seatsArr.forEach((seat) => {
+      let row = seat.substr(0, 1).charCodeAt(0) - 65;
+      let col = parseInt(seat.substring(1));
+
+      switch (col) {
+        case 1:
+          col = 0;
+          break;
+        case 2:
+          col = 1;
+          break;
+        case 3:
+          col = 3;
+          break;
+        case 4:
+          col = 4;
+          break;
+        case 5:
+          col = 6;
+          break;
+        case 6:
+          col = 7;
+          break;
+      }
+      console.log(onFlightSeats[row][col]);
+      let newToolTip = onFlightSeats[row][col]["tooltip"].split(" ");
+
+      onFlightSeats[row][col].isReserved = false;
+      onFlightSeats[row][col]["occupied"] = false;
+      onFlightSeats[row][col]["tooltip"] = newToolTip[0] + " " + newToolTip[1];
+    });
+
+    return onFlightSeats;
   };
 
   const computeSeats = (seats, reservedSeats) => {
@@ -248,20 +289,41 @@ export default function EditReservationModal({
                           {doubleFlight.map((flight) => {
                             return (
                               <TableCell>
-                                {console.log(passengerNum)}
+                                {console.log(
+                                  "condition",
+                                  flight._id == previouseDepartuer._id,
+                                  flight,
+                                  previouseDepartuer
+                                )}
                                 <FlightCardTwo
                                   flight={flight}
                                   button={
-                                    <SeatsModal
-                                      seatNumber={passengerNum}
-                                      cabinClass={cabinClass}
-                                      returnSeatsFunc={(seats) => {
-                                        setDepSeats(seats);
-                                        bookDeparture(flight);
-                                      }}
-                                      rowProp={flight.reservedSeats}
-                                      setSeatRows={setReservedDepSeats}
-                                    />
+                                    flight._id == previouseDepartuer._id ? (
+                                      <SeatsModal
+                                        seatNumber={passengerNum}
+                                        cabinClass={cabinClass}
+                                        returnSeatsFunc={(seats) => {
+                                          setDepSeats(seats);
+                                          bookDeparture(flight);
+                                        }}
+                                        rowProp={removeBookedSeats(
+                                          flight.reservedSeats,
+                                          dfseats
+                                        )}
+                                        setSeatRows={setReservedDepSeats}
+                                      />
+                                    ) : (
+                                      <SeatsModal
+                                        seatNumber={passengerNum}
+                                        cabinClass={cabinClass}
+                                        returnSeatsFunc={(seats) => {
+                                          setDepSeats(seats);
+                                          bookDeparture(flight);
+                                        }}
+                                        rowProp={flight.reservedSeats}
+                                        setSeatRows={setReservedDepSeats}
+                                      />
+                                    )
                                   }
                                   width={345}
                                 />
@@ -343,16 +405,32 @@ export default function EditReservationModal({
                                 <FlightCardTwo
                                   flight={flight}
                                   button={
-                                    <SeatsModal
-                                      seatNumber={passengerNum}
-                                      cabinClass={cabinClass}
-                                      returnSeatsFunc={(seats) => {
-                                        setReturnSeats(seats);
-                                        bookReturn(flight);
-                                      }}
-                                      rowProp={flight.reservedSeats}
-                                      setSeatRows={setReservedReturnSeats}
-                                    />
+                                    flight._id == previousReturn._id ? (
+                                      <SeatsModal
+                                        seatNumber={passengerNum}
+                                        cabinClass={cabinClass}
+                                        returnSeatsFunc={(seats) => {
+                                          setReturnSeats(seats);
+                                          bookReturn(flight);
+                                        }}
+                                        rowProp={removeBookedSeats(
+                                          flight.reservedSeats,
+                                          rfseats
+                                        )}
+                                        setSeatRows={setReservedDepSeats}
+                                      />
+                                    ) : (
+                                      <SeatsModal
+                                        seatNumber={passengerNum}
+                                        cabinClass={cabinClass}
+                                        returnSeatsFunc={(seats) => {
+                                          setReturnSeats(seats);
+                                          bookReturn(flight);
+                                        }}
+                                        rowProp={flight.reservedSeats}
+                                        setSeatRows={setReservedDepSeats}
+                                      />
+                                    )
                                   }
                                   width={345}
                                 />

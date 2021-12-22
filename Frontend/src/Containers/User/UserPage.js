@@ -426,6 +426,7 @@ const UserPage = () => {
                   cabin={res.cabinClass}
                   dfSeats={res.departureSeats}
                   rfSeats={res.returnSeats}
+                  departureFlight={res.departureFlight}
                   acceptOnClickHandler={onClickCancelReservation}
                   refreshFunc={getReservations}
                 ></ReservationSummary>
