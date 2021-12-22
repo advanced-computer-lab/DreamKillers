@@ -39,6 +39,7 @@ const ReservationSummary = ({
   acceptOnClickHandler,
   resPrice,
   refreshFunc,
+  userName,
 }) => {
   return (
     <div>
@@ -159,6 +160,7 @@ const ReservationSummary = ({
               <EditReservationModal
                 reservationID={reservationID}
                 refreshFunc={refreshFunc}
+                userNam={userName}
               />
             </div>
             <div className={Styles.Button}>

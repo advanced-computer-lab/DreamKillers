@@ -92,6 +92,21 @@ router.get("/getTerminals", async (req, res) => {
   res.status(200).send({ arr: arrTerminals, dep: depTerminals });
 });
 
+router.patch("/updateSeats/:flightId", async (req, res) => {
+  const flight = await Flight.findById(req.params.flightId);
+  const newSeats = req.body.newSeats;
+  const cabinClass = req.body.cabinClass;
+  const passengerNum = req.body.passengerNum;
+
+  flight.reservedSeats = newSeats;
+  if (cabinClass == "Economy") flight.economySeats -= passengerNum;
+  else flight.businessSeats -= passengerNum;
+
+  const response = await flight.save();
+
+  res.status(200).send(response);
+});
+
 router.post("/search", async (req, res) => {
   let flightNumber = req.body.flightNumber;
   let arrivalTime = req.body.arrivalTime;
@@ -132,15 +147,16 @@ router.post("/search", async (req, res) => {
   res.send(result);
 });
 
-router.post("/reserve", userAuth, async (req, res) => {
-  const getDuration = (date1, date2) => {
-    var difference = Math.abs(new Date(date1) - new Date(date2));
-    let hours = difference / (1000 * 3600);
-    let min = (hours % 1) * 60;
-    hours = Math.floor(hours);
-    return hours + "h " + min + "m";
-  };
+const getDuration = (date1, date2) => {
+  var difference = Math.abs(new Date(date1) - new Date(date2));
+  let hours = difference / (1000 * 3600);
+  let min = (hours % 1) * 60;
+  hours = Math.floor(hours);
+  min = Math.floor(min);
+  return hours + "h " + min + "m";
+};
 
+router.post("/reserve", userAuth, async (req, res) => {
   const depFlight = req.body.departureFlight;
   const retFlight = req.body.returnFlight;
   const cabinClass = req.body.cabinClass;
@@ -149,7 +165,6 @@ router.post("/reserve", userAuth, async (req, res) => {
   const userID = req.user._id;
   const depSeats = req.body.depSeats;
   const returnSeats = req.body.returnSeats;
-  console.log(new Date(depFlight.departureTime).toDateString());
   const flightReservation = new FlightReservation({
     departureFlight: depFlight._id,
     returnFlight: retFlight._id,
@@ -2034,13 +2049,13 @@ router.patch("/editReservation/:reservationNumber", async (req, res) => {
     ],
   };
 
-  await transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+  //   await transporter.sendMail(mailOptions, function (error, info) {
+  //     if (error) {
+  //       console.log(error);
+  //     } else {
+  //       console.log("Email sent: " + info.response);
+  //     }
+  //   });
 
   return res.status(201).send(response);
 });

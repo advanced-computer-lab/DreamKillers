@@ -28,7 +28,13 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import Styles from "./EditReservationModal.module.css";
 
-export default function EditReservationModal({ reservationID, refreshFunc }) {
+export default function EditReservationModal({
+  reservationID,
+  refreshFunc,
+  userName,
+  dfseats,
+  rfseats,
+}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -51,6 +57,8 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
   const [cabinClass, setCabinClass] = useState(0);
   const [depSeats, setDepSeats] = useState([]);
   const [returnSeats, setReturnSeats] = useState([]);
+  const [reservedDepSeats, setReservedDepSeats] = useState([]);
+  const [reservedReturnSeats, setReservedReturnSeats] = useState([]);
 
   const search = (data, num, children, cabin) => {
     setFlights(data);
@@ -60,6 +68,49 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
     setBookedDep(false);
     setBookedReturn(false);
     console.log(flights);
+  };
+
+  const computeSeats = (seats, reservedSeats) => {
+    seats.forEach((seat) => {
+      let row = seat.substr(0, 1).charCodeAt(0) - 65;
+      let col = parseInt(seat.substring(1));
+
+      switch (col) {
+        case 1:
+          col = 0;
+          break;
+        case 2:
+          col = 1;
+          break;
+        case 3:
+          col = 3;
+          break;
+        case 4:
+          col = 4;
+          break;
+        case 5:
+          col = 6;
+          break;
+        case 6:
+          col = 7;
+          break;
+      }
+
+      console.log(row, reservedSeats);
+
+      reservedSeats[row][col].isReserved = true;
+      reservedSeats[row][col]["occupied"] = true;
+      reservedSeats[row][col]["tooltip"] = "Reserved by " + userName;
+    });
+    return reservedSeats;
+  };
+
+  const updateSeats = (flightId, seats) => {
+    axios.patch(`http://localhost:8000/flights//updateSeats/${flightId}`, {
+      newSeats: seats,
+      cabinClass: cabinClass,
+      passengerNum: passengerNum,
+    });
   };
 
   const reserve = () => {
@@ -79,6 +130,14 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
         returnSeats: returnSeats.sort().toString(),
       })
       .then((res) => {
+        updateSeats(
+          departureFlight._id,
+          computeSeats(depSeats, reservedDepSeats)
+        );
+        updateSeats(
+          returnFlight._id,
+          computeSeats(returnSeats, reservedReturnSeats)
+        );
         console.log(res.status);
         if (res.status == 201)
           displaySnackBar("Your flight is successfully Edited");
@@ -200,6 +259,8 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
                                         setDepSeats(seats);
                                         bookDeparture(flight);
                                       }}
+                                      rowProp={flight.reservedSeats}
+                                      setSeatRows={setReservedDepSeats}
                                     />
                                   }
                                   width={345}
@@ -249,10 +310,11 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
                         color: "Green",
                         hoverColor: "#545454",
                       }}
+                      rowProp={departureFlight.reservedSeats}
+                      setSeatRows={setReservedDepSeats}
                     />
                   }
                 />
-                {console.log(depSeats.toString())}
               </div>
             ) : null}
             {bookedDep && !bookedReturn ? (
@@ -288,6 +350,8 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
                                         setReturnSeats(seats);
                                         bookReturn(flight);
                                       }}
+                                      rowProp={flight.reservedSeats}
+                                      setSeatRows={setReservedReturnSeats}
                                     />
                                   }
                                   width={345}
@@ -340,6 +404,8 @@ export default function EditReservationModal({ reservationID, refreshFunc }) {
                           color: "Green",
                           hoverColor: "#545454",
                         }}
+                        rowProp={returnFlight.reservedSeats}
+                        setSeatRows={setReservedReturnSeats}
                       />
                     }
                   />
