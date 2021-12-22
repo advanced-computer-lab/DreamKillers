@@ -31,14 +31,18 @@ import SeatsModal from "../../Components/SeatsModal/SeatsModal";
 import Footer from "../../Components/Footer/Footer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditPasswordModal from "../../Components/EditPasswordModal/EditPasswordModal";
-import LockIcon from '@mui/icons-material/Lock';
+import LockIcon from "@mui/icons-material/Lock";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
 
   const onClickCancelReservation = (reservationID) => {
     axios
-      .delete(`http://localhost:8000/flights/reservations/${reservationID}`)
+      .delete(`http://localhost:8000/flights/reservations/${reservationID}`, {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         getReservations();
         displaySnackBar("Your reservation was successfully cancelled");
@@ -62,25 +66,30 @@ const UserPage = () => {
     phoneNumber
   ) => {
     axios
-      .patch(`http://localhost:8000/user/edit`, {
-        name: userName,
-        oldEmail: currentUser.email,
-        newEmail: Email,
-        password: Password,
-        newPassportNumber: passportNumber,
-        newPhoneNumber: phoneNumber,
-        userAge: Age,
-      })
+      .patch(
+        `http://localhost:8000/user/edit`,
+        {
+          name: userName,
+          oldEmail: currentUser.email,
+          newEmail: Email,
+          password: Password,
+          newPassportNumber: passportNumber,
+          newPhoneNumber: phoneNumber,
+          userAge: Age,
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
       .then((res) => {
         setEditTriggered(!editTriggered);
         displaySnackBar("User information edited successfully");
       })
       .catch((e) => console.log(e));
   };
-  const onAcceptEditPasswordOnClickHandler = (
-    oldPassword,
-    newPassword
-  ) => {
+  const onAcceptEditPasswordOnClickHandler = (oldPassword, newPassword) => {
     axios
       .patch(`http://localhost:8000/user/editPassword`, {
         oldPassword: oldPassword,
@@ -95,7 +104,11 @@ const UserPage = () => {
   let currentUser = {};
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/user`)
+      .get(`http://localhost:8000/user`, {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         currentUser = res.data;
         fillUser();
@@ -147,20 +160,27 @@ const UserPage = () => {
 
   const reserve = () => {
     axios
-      .post("http://localhost:8000/flights/reserve", {
-        departureFlight: departureFlight,
-        returnFlight: returnFlight,
-        cabinClass: cabinClass,
-        passengersNumber: passengerNum,
-        price:
-          passengerNum * departureFlight.price +
-          childrenNum * 0.25 * departureFlight.price +
-          (passengerNum * returnFlight.price +
-            childrenNum * 0.25 * returnFlight.price),
-        user: "617dbe3c2f88f3eba1dd02bb",
-        depSeats: depSeats.sort().toString(),
-        returnSeats: returnSeats.sort().toString(),
-      })
+      .post(
+        "http://localhost:8000/flights/reserve",
+        {
+          departureFlight: departureFlight,
+          returnFlight: returnFlight,
+          cabinClass: cabinClass,
+          passengersNumber: passengerNum,
+          price:
+            passengerNum * departureFlight.price +
+            childrenNum * 0.25 * departureFlight.price +
+            (passengerNum * returnFlight.price +
+              childrenNum * 0.25 * returnFlight.price),
+          depSeats: depSeats.sort().toString(),
+          returnSeats: returnSeats.sort().toString(),
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
       .then((res) => {
         console.log(res.status);
         if (res.status == 201)
@@ -217,7 +237,11 @@ const UserPage = () => {
 
   const getReservations = () => {
     axios
-      .get("http://localhost:8000/user/reservations")
+      .get("http://localhost:8000/user/reservations", {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         setReservations(res.data);
         console.log("refreshed");
@@ -312,14 +336,15 @@ const UserPage = () => {
                 Age={currentUser.age}
                 phoneNumber={currentUser.phoneNumber}
               ></UserEditModal>
-              <EditPasswordModal 
-              icon={<LockIcon />}
-              title={"Enter Your Old & New Passwords"}
-              mainButtonColor={"orange"}
+              <EditPasswordModal
+                icon={<LockIcon />}
+                title={"Enter Your Old & New Passwords"}
+                mainButtonColor={"orange"}
                 mainButtonTextColor={"black"}
                 mainButtonHoverColor={"orange"}
                 acceptButtonText={"Edit"}
-                onAcceptOnClickHandler={onAcceptEditPasswordOnClickHandler}></EditPasswordModal>
+                onAcceptOnClickHandler={onAcceptEditPasswordOnClickHandler}
+              ></EditPasswordModal>
             </div>
           </>
         ) : selectedTab == 1 ? (
