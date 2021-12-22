@@ -25,6 +25,47 @@ router.get("/", async (req, res) => {
   res.status(200).send(user);
 });
 
+router.post("/signup", async (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const passportNumber = req.body.passportNumber;
+  const age = req.body.age;
+  const phoneNumber = req.body.phoneNumber;
+
+  if (!name || !email || !password || !passportNumber || !age || !phoneNumber) {
+    return res.status(400).send("Missing parameter");
+  }
+
+  const userDuplicate = await User.findOne({
+    $or: [
+      { email: email },
+      { passportNumber: passportNumber },
+      { phoneNumber: phoneNumber },
+    ],
+  });
+
+  if (userDuplicate) {
+    return res.status(409).send();
+  }
+
+  const user = new User({
+    name: name,
+    email: email,
+    password: password,
+    passportNumber: passportNumber,
+    age: age,
+    phoneNumber: phoneNumber,
+  });
+
+  try {
+    const response = await user.save();
+    return res.status(201).send(response);
+  } catch (e) {
+    return res.status(400).send();
+  }
+});
+
 router.patch("/edit", async (req, res) => {
   const userName = req.body.name;
   //const userOldEmail = "jirhwg@hotmail.com";
@@ -63,26 +104,22 @@ router.patch("/edit", async (req, res) => {
 });
 
 router.patch("/editPassword", async (req, res) => {
-
   const oldPass = req.body.oldPassword;
   const newPass = req.body.newPassword;
   const user = await User.findOne({ _id: "617dbe3c2f88f3eba1dd02bb" });
-  
+
   if (user != null) {
     if (oldPass === user.password) {
-       user.password = newPass;
-       const response = await user.save();
-       return res.status(200).send(response);
+      user.password = newPass;
+      const response = await user.save();
+      return res.status(200).send(response);
+    } else {
+      return res.status(401).send();
     }
-    else{
-       return res.status(401).send();
-    }
-  }
-  else{
-     return res.status(401).send();
+  } else {
+    return res.status(401).send();
   }
 });
-
 
 router.get("/reservations", async (req, res) => {
   const userID = "617dbe3c2f88f3eba1dd02bb";
