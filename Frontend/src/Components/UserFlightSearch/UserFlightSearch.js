@@ -24,8 +24,19 @@ export default function UserFlightSearch({ search, reset }) {
   const [cabinClass, setCabinClass] = useState("");
   const [depDate, setDepDate] = useState(new Date());
   const [arrDate, setArrDate] = useState(new Date());
-  let depterminals = ["CAI", "CAN", "RYA"];
-  let arrterminals = ["CAI", "RYA", "CAN"];
+  const [depterminals, setDepTerminals] = useState([]);
+  const [arrterminals, setArrterminals] = useState([]);
+
+  const getTerminals = () => {
+    axios.get("http://localhost:8000/flights/getTerminals").then((res) => {
+      setDepTerminals(res.data.dep);
+      setArrterminals(res.data.arr);
+    });
+  };
+
+  React.useEffect(() => {
+    getTerminals();
+  }, []);
 
   const resetFunc = () => {
     setChildrenNum("");
@@ -35,6 +46,7 @@ export default function UserFlightSearch({ search, reset }) {
     setCabinClass("");
     setDepDate(new Date());
     setArrDate(new Date());
+    getTerminals();
   };
 
   const searchFunc = () => {
@@ -60,7 +72,7 @@ export default function UserFlightSearch({ search, reset }) {
       }}
       autoComplete="off"
     >
-      <Card sx={{ maxWidth: 750, bgcolor: "snow" }}>
+      <Card sx={{ maxWidth: 750 }}>
         <CardContent>
           <div className={Styles.container}>
             <div className={Styles.componentHolder}>

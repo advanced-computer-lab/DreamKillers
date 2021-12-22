@@ -63,7 +63,12 @@
   padding-top: 0.53rem;
 }
 
-.CancelButton {
+.Buttons {
   display: flex;
+  flex-direction: row;
   justify-content: right;
+}
+
+.Button {
+  margin: 2;
 }

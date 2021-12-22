@@ -7,10 +7,16 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ButtonDK from "../ButtonDK/ButtonDK";
 import FlightSeatsPicker from "../../Components/FlightSeatsPicker/FlightSeatsPicker";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { useState, useEffect } from "react";
 import { Alert, Snackbar } from "@mui/material";
 
-const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
+const SeatsModal = ({
+  seatNumber,
+  cabinClass,
+  returnSeatsFunc,
+  modifiedButton,
+}) => {
   const [open, setOpen] = React.useState(false);
   const [seatsSelected, setSeatsSelected] = useState([]);
   const [openSnack, setOpenSnack] = useState(false);
@@ -226,13 +232,23 @@ const SeatsModal = ({ seatNumber, cabinClass, returnSeatsFunc }) => {
 
   return (
     <div>
-      <ButtonDK
-        buttonText={"Book"}
-        textColor="white"
-        hoverColor="#545454"
-        color="black"
-        onClick={handleClickOpen}
-      />
+      {modifiedButton == null ? (
+        <ButtonDK
+          buttonText={"Book"}
+          textColor="white"
+          hoverColor="#545454"
+          color="black"
+          onClick={handleClickOpen}
+        />
+      ) : (
+        <ButtonDK
+          textColor={modifiedButton.textColor}
+          hoverColor={modifiedButton.hoverColor}
+          color={modifiedButton.color}
+          onClick={handleClickOpen}
+          icon={<EventSeatIcon />}
+        />
+      )}
       <Dialog
         open={open}
         onClose={handleClose}

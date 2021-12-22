@@ -29,6 +29,9 @@ import Modal from "../../Components/Modal/Modal";
 import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import SeatsModal from "../../Components/SeatsModal/SeatsModal";
 import Footer from "../../Components/Footer/Footer";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditPasswordModal from "../../Components/EditPasswordModal/EditPasswordModal";
+import LockIcon from "@mui/icons-material/Lock";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
@@ -80,6 +83,18 @@ const UserPage = () => {
           },
         }
       )
+      .then((res) => {
+        setEditTriggered(!editTriggered);
+        displaySnackBar("User information edited successfully");
+      })
+      .catch((e) => console.log(e));
+  };
+  const onAcceptEditPasswordOnClickHandler = (oldPassword, newPassword) => {
+    axios
+      .patch(`http://localhost:8000/user/editPassword`, {
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      })
       .then((res) => {
         setEditTriggered(!editTriggered);
         displaySnackBar("User information edited successfully");
@@ -148,8 +163,8 @@ const UserPage = () => {
       .post(
         "http://localhost:8000/flights/reserve",
         {
-          departureFlight: departureFlight._id,
-          returnFlight: returnFlight._id,
+          departureFlight: departureFlight,
+          returnFlight: returnFlight,
           cabinClass: cabinClass,
           passengersNumber: passengerNum,
           price:
@@ -157,6 +172,8 @@ const UserPage = () => {
             childrenNum * 0.25 * departureFlight.price +
             (passengerNum * returnFlight.price +
               childrenNum * 0.25 * returnFlight.price),
+          depSeats: depSeats.sort().toString(),
+          returnSeats: returnSeats.sort().toString(),
         },
         {
           headers: {
@@ -208,6 +225,16 @@ const UserPage = () => {
     console.log(departureFlight);
   };
 
+  const returnBookedDep = () => {
+    setBookedReturn(false);
+    setBookedDep(false);
+  };
+
+  const returnBookedReturn = () => {
+    setBookedDep(true);
+    setBookedReturn(false);
+  };
+
   const getReservations = () => {
     axios
       .get("http://localhost:8000/user/reservations", {
@@ -217,6 +244,7 @@ const UserPage = () => {
       })
       .then((res) => {
         setReservations(res.data);
+        console.log("refreshed");
       })
       .catch((e) => console.log(e));
   };
@@ -308,6 +336,15 @@ const UserPage = () => {
                 Age={currentUser.age}
                 phoneNumber={currentUser.phoneNumber}
               ></UserEditModal>
+              <EditPasswordModal
+                icon={<LockIcon />}
+                title={"Enter Your Old & New Passwords"}
+                mainButtonColor={"orange"}
+                mainButtonTextColor={"black"}
+                mainButtonHoverColor={"orange"}
+                acceptButtonText={"Edit"}
+                onAcceptOnClickHandler={onAcceptEditPasswordOnClickHandler}
+              ></EditPasswordModal>
             </div>
           </>
         ) : selectedTab == 1 ? (
@@ -332,9 +369,10 @@ const UserPage = () => {
                   rfDateTime={res.returnFlight.departureTime}
                   rfPrice={res.returnFlight.price}
                   cabin={res.cabinClass}
-                  dfSeats={"A1 A2 A3"}
-                  rfSeats={"C2 C3 C4"}
+                  dfSeats={res.departureSeats}
+                  rfSeats={res.returnSeats}
                   acceptOnClickHandler={onClickCancelReservation}
+                  refreshFunc={getReservations}
                 ></ReservationSummary>
               );
             })}
@@ -397,13 +435,41 @@ const UserPage = () => {
                 <BookedFlightCard
                   flight={departureFlight}
                   width={850}
+                  cabinClass={cabinClass}
                   icon={<AirplaneTicketOutlinedIcon className={Styles.icon} />}
                   seats={depSeats}
                   price={
                     passengerNum * departureFlight.price +
                     childrenNum * 0.25 * departureFlight.price
                   }
+                  button={
+                    <ButtonDK
+                      variant="contained"
+                      textColor="White"
+                      color="black"
+                      hoverColor="#545454"
+                      onClick={returnBookedDep}
+                      icon={<ArrowBackIcon />}
+                    />
+                  }
+                  seatsButton={
+                    <SeatsModal
+                      seatNumber={passengerNum}
+                      cabinClass={cabinClass}
+                      returnSeatsFunc={(seats) => {
+                        setDepSeats(seats);
+                      }}
+                      selectedSeats={depSeats.toString()}
+                      modifiedButton={{
+                        variant: "contained",
+                        textColor: "White",
+                        color: "Green",
+                        hoverColor: "#545454",
+                      }}
+                    />
+                  }
                 />
+                {console.log(depSeats.toString())}
               </div>
             ) : null}
             {bookedDep && !bookedReturn ? (
@@ -458,6 +524,7 @@ const UserPage = () => {
                   <BookedFlightCard
                     flight={returnFlight}
                     width={850}
+                    cabinClass={cabinClass}
                     icon={
                       <AirplaneTicketOutlinedIcon className={Styles.icon} />
                     }
@@ -465,6 +532,32 @@ const UserPage = () => {
                     price={
                       passengerNum * returnFlight.price +
                       childrenNum * 0.25 * returnFlight.price
+                    }
+                    button={
+                      <ButtonDK
+                        variant="contained"
+                        textColor="White"
+                        color="black"
+                        hoverColor="#545454"
+                        onClick={returnBookedReturn}
+                        icon={<ArrowBackIcon />}
+                      />
+                    }
+                    seatsButton={
+                      <SeatsModal
+                        seatNumber={passengerNum}
+                        cabinClass={cabinClass}
+                        returnSeatsFunc={(seats) => {
+                          setReturnSeats(seats);
+                        }}
+                        selectedSeats={returnSeats}
+                        modifiedButton={{
+                          variant: "contained",
+                          textColor: "White",
+                          color: "Green",
+                          hoverColor: "#545454",
+                        }}
+                      />
                     }
                   />
                   <div className={Styles.loginButton}>
