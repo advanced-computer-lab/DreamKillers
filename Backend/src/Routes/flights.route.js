@@ -1096,13 +1096,13 @@ router.post("/reserve", userAuth, async (req, res) => {
     ],
   };
 
-  await transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+  //   await transporter.sendMail(mailOptions, function (error, info) {
+  //     if (error) {
+  //       console.log(error);
+  //     } else {
+  //       console.log("Email sent: " + info.response);
+  //     }
+  //   });
 
   return res.status(201).send(flightReservation);
 });
@@ -2060,6 +2060,43 @@ router.patch("/editReservation/:reservationNumber", async (req, res) => {
   return res.status(201).send(response);
 });
 
+const removeBookedSeats = (onFlightSeats, bookedSeats) => {
+  let seatsArr = bookedSeats.split(",");
+
+  seatsArr.forEach((seat) => {
+    let row = seat.substr(0, 1).charCodeAt(0) - 65;
+    let col = parseInt(seat.substring(1));
+
+    switch (col) {
+      case 1:
+        col = 0;
+        break;
+      case 2:
+        col = 1;
+        break;
+      case 3:
+        col = 3;
+        break;
+      case 4:
+        col = 4;
+        break;
+      case 5:
+        col = 6;
+        break;
+      case 6:
+        col = 7;
+        break;
+    }
+
+    onFlightSeats[row][col].isReserved = false;
+    onFlightSeats[row][col]["occupied"] = false;
+    onFlightSeats[row][col]["tooltip"] =
+      row >= 2 ? "Economy Class" : "Bussiness Class";
+  });
+
+  return onFlightSeats;
+};
+
 router.delete(
   "/reservations/:reservationNumber",
   userAuth,
@@ -2073,6 +2110,35 @@ router.delete(
 
     const departurePrice = reservation.departureFlight.price;
     const returnPrice = reservation.returnFlight.price;
+
+    const departureFlight = await Flight.findById(
+      reservation.departureFlight._id
+    );
+    const returnFlight = await Flight.findById(reservation.returnFlight._id);
+
+    departureFlight.reservedSeats = removeBookedSeats(
+      departureFlight.reservedSeats,
+      reservation.departureSeats
+    );
+
+    returnFlight.reservedSeats = removeBookedSeats(
+      returnFlight.reservedSeats,
+      reservation.returnSeats
+    );
+
+    if (reservation.cabinClass == "Economy") {
+      departureFlight.economySeats +=
+        reservation.departureSeats.split(",").length;
+      returnFlight.economySeats += reservation.departureSeats.split(",").length;
+    } else {
+      departureFlight.businessSeats +=
+        reservation.departureSeats.split(",").length;
+      returnFlight.businessSeats +=
+        reservation.departureSeats.split(",").length;
+    }
+
+    await departureFlight.save();
+    await returnFlight.save();
 
     const totalPrice = reservation.price;
 
@@ -2190,13 +2256,13 @@ router.delete(
     </div>`,
     };
 
-    await transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+    //  await transporter.sendMail(mailOptions, function (error, info) {
+    //    if (error) {
+    //      console.log(error);
+    //    } else {
+    //      console.log("Email sent: " + info.response);
+    //    }
+    //  });
 
     return res.status(202).send(response);
   }

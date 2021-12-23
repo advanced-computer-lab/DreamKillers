@@ -36,14 +36,70 @@ import LockIcon from "@mui/icons-material/Lock";
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
 
-  const onClickCancelReservation = (reservationID) => {
+  const removeBookedSeats = (onFlightSeats, bookedSeats) => {
+    let seatsArr = bookedSeats.split(",");
+    seatsArr.forEach((seat) => {
+      let row = seat.substr(0, 1).charCodeAt(0) - 65;
+      let col = parseInt(seat.substring(1));
+
+      switch (col) {
+        case 1:
+          col = 0;
+          break;
+        case 2:
+          col = 1;
+          break;
+        case 3:
+          col = 3;
+          break;
+        case 4:
+          col = 4;
+          break;
+        case 5:
+          col = 6;
+          break;
+        case 6:
+          col = 7;
+          break;
+      }
+      console.log(onFlightSeats[row][col]);
+      let newToolTip = onFlightSeats[row][col]["tooltip"].split(" ");
+
+      onFlightSeats[row][col].isReserved = false;
+      onFlightSeats[row][col]["occupied"] = false;
+      onFlightSeats[row][col]["tooltip"] =
+        row >= 2 ? "Economy Class" : "Bussiness Class";
+    });
+
+    return onFlightSeats;
+  };
+
+  const onClickCancelReservation = (
+    reservationID,
+    dep,
+    ret,
+    dfseats,
+    rfseats
+  ) => {
     axios
       .delete(`http://localhost:8000/flights/reservations/${reservationID}`, {
         headers: {
           "user-token": localStorage.getItem("user-token"),
         },
       })
-      .then((res) => {
+      .then(() => {
+        const inverse = 0 - passengerNum;
+        console.log(inverse);
+        updateSeats(
+          dep._id,
+          removeBookedSeats(dep.reservedSeats, dfseats),
+          inverse
+        );
+        updateSeats(
+          ret._id,
+          removeBookedSeats(ret.reservedSeats, rfseats),
+          inverse
+        );
         getReservations();
         displaySnackBar("Your reservation was successfully cancelled");
       })
@@ -157,7 +213,6 @@ const UserPage = () => {
     setCabinClass(cabin);
     setBookedDep(false);
     setBookedReturn(false);
-    console.log(flights);
   };
 
   const computeSeats = (seats, reservedSeats) => {
@@ -190,16 +245,24 @@ const UserPage = () => {
 
       reservedSeats[row][col].isReserved = true;
       reservedSeats[row][col]["occupied"] = true;
-      reservedSeats[row][col]["tooltip"] = "Reserved by " + userName;
+      reservedSeats[row][col]["tooltip"] = "Reserved";
     });
     return reservedSeats;
   };
 
-  const updateSeats = (flightId, seats) => {
+  const updateSeats1 = (flightId, seats) => {
     axios.patch(`http://localhost:8000/flights//updateSeats/${flightId}`, {
       newSeats: seats,
       cabinClass: cabinClass,
       passengerNum: passengerNum,
+    });
+  };
+
+  const updateSeats = (flightId, seats, passeneger) => {
+    axios.patch(`http://localhost:8000/flights//updateSeats/${flightId}`, {
+      newSeats: seats,
+      cabinClass: cabinClass,
+      passengerNum: passeneger,
     });
   };
 
@@ -227,11 +290,11 @@ const UserPage = () => {
         }
       )
       .then((res) => {
-        updateSeats(
+        updateSeats1(
           departureFlight._id,
           computeSeats(depSeats, reservedDepSeats)
         );
-        updateSeats(
+        updateSeats1(
           returnFlight._id,
           computeSeats(returnSeats, reservedReturnSeats)
         );
@@ -427,6 +490,7 @@ const UserPage = () => {
                   dfSeats={res.departureSeats}
                   rfSeats={res.returnSeats}
                   departureFlight={res.departureFlight}
+                  returnFlight={res.returnFlight}
                   acceptOnClickHandler={onClickCancelReservation}
                   refreshFunc={getReservations}
                 ></ReservationSummary>
