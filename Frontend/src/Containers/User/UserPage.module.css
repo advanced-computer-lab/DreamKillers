@@ -103,3 +103,10 @@
   flex-direction: row-reverse;
   margin: 15px;
 }
+
+.logoutButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  padding-right: 5rem;
+}

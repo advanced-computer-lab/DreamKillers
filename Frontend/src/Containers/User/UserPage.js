@@ -32,6 +32,7 @@ import Footer from "../../Components/Footer/Footer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditPasswordModal from "../../Components/EditPasswordModal/EditPasswordModal";
 import LockIcon from "@mui/icons-material/Lock";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
@@ -382,6 +383,30 @@ const UserPage = () => {
     getReservations();
   }, [selectedTab]);
 
+  const onClickLogoutHandler = () => {
+    const token = localStorage.getItem("user-token");
+    axios
+      .post(
+        "http://localhost:8000/user/logout",
+        {},
+        {
+          headers: {
+            "user-token": token,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status == 200) {
+          localStorage.removeItem("user-token");
+          localStorage.removeItem("loggedin");
+          window.location.href = "http://localhost:3000/user/login";
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div className={Styles.mainDiv}>
       <ToolBarDK
@@ -448,32 +473,45 @@ const UserPage = () => {
                 </div>
               </div>
             </div>
-            <div className={Styles.Edit}>
-              <UserEditModal
-                mainButtonText={"Edit"}
-                mainButtonColor={"orange"}
-                mainButtonTextColor={"black"}
-                mainButtonHoverColor={"orange"}
-                icon={<EditIcon />}
-                acceptButtonText={"Edit"}
-                title={"Edit the attributes of profile you want to edit"}
-                userName={currentUser.name}
-                onAcceptOnClickHandler={onAcceptEditOnClickHandler}
-                Email={currentUser.email}
-                Password={currentUser.password}
-                passportNumber={currentUser.passportNumber}
-                Age={currentUser.age}
-                phoneNumber={currentUser.phoneNumber}
-              ></UserEditModal>
-              <EditPasswordModal
-                icon={<LockIcon />}
-                title={"Enter Your Old & New Passwords"}
-                mainButtonColor={"orange"}
-                mainButtonTextColor={"black"}
-                mainButtonHoverColor={"orange"}
-                acceptButtonText={"Edit"}
-                onAcceptOnClickHandler={onAcceptEditPasswordOnClickHandler}
-              ></EditPasswordModal>
+
+            <div className={Styles.ActionsBar}>
+              <div className={Styles.Edit}>
+                <UserEditModal
+                  mainButtonText={"Edit"}
+                  mainButtonColor={"orange"}
+                  mainButtonTextColor={"black"}
+                  mainButtonHoverColor={"orange"}
+                  icon={<EditIcon />}
+                  acceptButtonText={"Edit"}
+                  title={"Edit the attributes of profile you want to edit"}
+                  userName={currentUser.name}
+                  onAcceptOnClickHandler={onAcceptEditOnClickHandler}
+                  Email={currentUser.email}
+                  Password={currentUser.password}
+                  passportNumber={currentUser.passportNumber}
+                  Age={currentUser.age}
+                  phoneNumber={currentUser.phoneNumber}
+                ></UserEditModal>
+                <EditPasswordModal
+                  icon={<LockIcon />}
+                  title={"Enter Your Old & New Passwords"}
+                  mainButtonColor={"orange"}
+                  mainButtonTextColor={"black"}
+                  mainButtonHoverColor={"orange"}
+                  acceptButtonText={"Edit"}
+                  onAcceptOnClickHandler={onAcceptEditPasswordOnClickHandler}
+                ></EditPasswordModal>
+              </div>
+              <div className={Styles.logoutButton}>
+                <ButtonDK
+                  buttonText={"Logout"}
+                  color={"#FF0000"}
+                  textColor={"#FFFFFF"}
+                  hoverColor={"#FF0000"}
+                  icon={<LogoutIcon></LogoutIcon>}
+                  onClick={() => onClickLogoutHandler()}
+                ></ButtonDK>
+              </div>
             </div>
           </>
         ) : selectedTab == 1 ? (

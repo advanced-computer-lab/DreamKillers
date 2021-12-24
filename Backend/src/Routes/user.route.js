@@ -1,5 +1,6 @@
 const express = require("express");
 const FlightReservation = require("../Models/flightReservation.model");
+const RevokedUserToken = require("../Models/revokedUserToken.model");
 const router = express.Router();
 
 const User = require("../Models/user.model");
@@ -21,6 +22,17 @@ router.post("/login", async (req, res) => {
       res.status(200).send();
     } else res.status(401).send("Error");
   } else res.status(401).send("Error");
+});
+
+router.post("/logout", userAuth, async (req, res) => {
+  const revokedToken = new RevokedUserToken({
+    token: req.header("user-token"),
+  });
+  const result = await revokedToken.save();
+
+  if (!result) return res.status(400).send();
+
+  return res.status(200).send();
 });
 
 router.get("/", userAuth, async (req, res) => {
