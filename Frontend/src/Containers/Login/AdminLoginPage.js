@@ -27,7 +27,9 @@ const AdminLoginPage = ({}) => {
       })
       .then((res) => {
         if (res.status == 200) {
-          console.log("loggedin");
+          const token = res.headers["admin-token"];
+          localStorage.setItem("admin-token", token);
+          localStorage.setItem("adminLoggedin", true);
           window.location.href = "http://localhost:3000/admin/dashboard";
         }
       })

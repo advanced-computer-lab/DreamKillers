@@ -7,8 +7,9 @@ const User = require("../Models/user.model");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
 const userAuth = require("../Middleware/userAuth");
+const adminAuth = require("../Middleware/adminAuth");
 
-router.patch("/:flightId", async (req, res) => {
+router.patch("/:flightId", adminAuth, async (req, res) => {
   const flightNumber = req.body.flightNumber;
   const businessSeats = req.body.businessSeats;
   const economySeats = req.body.economySeats;
@@ -36,7 +37,7 @@ router.patch("/:flightId", async (req, res) => {
   res.status(200).send(response);
 });
 
-router.delete("/:flightId", async (req, res) => {
+router.delete("/:flightId", adminAuth, async (req, res) => {
   const flight = await Flight.findById(req.params.flightId);
   if (!flight) throw new Exception("Flight Not Found");
 
@@ -45,7 +46,7 @@ router.delete("/:flightId", async (req, res) => {
   if (response) res.status(202).send();
 });
 
-router.post("/", async (req, res) => {
+router.post("/", adminAuth, async (req, res) => {
   const flightNumber = req.body.flightNumber;
   const departureTime = req.body.departureTime;
   const arrivalTime = req.body.arrivalTime;
@@ -71,7 +72,7 @@ router.post("/", async (req, res) => {
   else res.status(400).send();
 });
 
-router.get("/", async (req, res) => {
+router.get("/", adminAuth, async (req, res) => {
   const flights = await Flight.find({});
 
   res.status(200).send(flights);
@@ -92,7 +93,7 @@ router.get("/getTerminals", async (req, res) => {
   res.status(200).send({ arr: arrTerminals, dep: depTerminals });
 });
 
-router.post("/search", async (req, res) => {
+router.post("/search", adminAuth, async (req, res) => {
   let flightNumber = req.body.flightNumber;
   let arrivalTime = req.body.arrivalTime;
   let departureTime = req.body.departureTime;

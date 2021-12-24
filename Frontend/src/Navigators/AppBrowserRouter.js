@@ -8,6 +8,7 @@ import SignUp from "../Containers/Signup/Signup";
 
 function AppBrowserRouter({}) {
   const isLoggedIn = localStorage.getItem("loggedin");
+  const isAdminLoggedIn = localStorage.getItem("adminLoggedin");
 
   return (
     <BrowserRouter>
@@ -31,8 +32,22 @@ function AppBrowserRouter({}) {
             isLoggedIn ? <Redirect to="/user/dashboard" /> : <SignUp />
           }
         />
-        <Route path="/admin/dashboard" component={AdminPage} />
-        <Route path="/admin/login" component={AdminLoginPage} />
+        <Route
+          path="/admin/dashboard"
+          render={() =>
+            isAdminLoggedIn ? <AdminPage /> : <Redirect to="/admin/login" />
+          }
+        />
+        <Route
+          path="/admin/login"
+          render={() =>
+            isAdminLoggedIn ? (
+              <Redirect to="/admin/dashboard" />
+            ) : (
+              <AdminLoginPage />
+            )
+          }
+        />
 
         <Route path="/" render={() => <Redirect to="/guest/dashboard" />} />
       </Switch>
