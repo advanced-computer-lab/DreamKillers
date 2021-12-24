@@ -188,7 +188,8 @@ const ReservationSummary = ({
                     departureFlight,
                     returnFlight,
                     dfSeats,
-                    rfSeats
+                    rfSeats,
+                    cabin
                   )
                 }
               />

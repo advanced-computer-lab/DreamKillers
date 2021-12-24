@@ -79,7 +79,8 @@ const UserPage = () => {
     dep,
     ret,
     dfseats,
-    rfseats
+    rfseats,
+    cabin
   ) => {
     axios
       .delete(`http://localhost:8000/flights/reservations/${reservationID}`, {
@@ -88,17 +89,19 @@ const UserPage = () => {
         },
       })
       .then(() => {
-        const inverse = 0 - passengerNum;
+        const inverse = 0 - dfseats.split(",").length;
         console.log(inverse);
         updateSeats(
           dep._id,
           removeBookedSeats(dep.reservedSeats, dfseats),
-          inverse
+          inverse,
+          cabin
         );
         updateSeats(
           ret._id,
           removeBookedSeats(ret.reservedSeats, rfseats),
-          inverse
+          inverse,
+          cabin
         );
         getReservations();
         displaySnackBar("Your reservation was successfully cancelled");
@@ -258,10 +261,10 @@ const UserPage = () => {
     });
   };
 
-  const updateSeats = (flightId, seats, passeneger) => {
+  const updateSeats = (flightId, seats, passeneger, cabin) => {
     axios.patch(`http://localhost:8000/flights//updateSeats/${flightId}`, {
       newSeats: seats,
-      cabinClass: cabinClass,
+      cabinClass: cabin,
       passengerNum: passeneger,
     });
   };
@@ -313,6 +316,7 @@ const UserPage = () => {
     setFlights([]);
     setDepartureFlight({});
     setReturnFlight({});
+    setReturnFlights([]);
     setBookedReturn(false);
     setBookedDep(false);
     setReservedDepSeats([]);

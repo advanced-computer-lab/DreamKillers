@@ -1096,13 +1096,13 @@ router.post("/reserve", userAuth, async (req, res) => {
     ],
   };
 
-  //   await transporter.sendMail(mailOptions, function (error, info) {
-  //     if (error) {
-  //       console.log(error);
-  //     } else {
-  //       console.log("Email sent: " + info.response);
-  //     }
-  //   });
+  await transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 
   return res.status(201).send(flightReservation);
 });
@@ -2049,13 +2049,13 @@ router.patch("/editReservation/:reservationNumber", async (req, res) => {
     ],
   };
 
-  //   await transporter.sendMail(mailOptions, function (error, info) {
-  //     if (error) {
-  //       console.log(error);
-  //     } else {
-  //       console.log("Email sent: " + info.response);
-  //     }
-  //   });
+  await transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 
   return res.status(201).send(response);
 });
@@ -2125,17 +2125,6 @@ router.delete(
       returnFlight.reservedSeats,
       reservation.returnSeats
     );
-
-    if (reservation.cabinClass == "Economy") {
-      departureFlight.economySeats +=
-        reservation.departureSeats.split(",").length;
-      returnFlight.economySeats += reservation.departureSeats.split(",").length;
-    } else {
-      departureFlight.businessSeats +=
-        reservation.departureSeats.split(",").length;
-      returnFlight.businessSeats +=
-        reservation.departureSeats.split(",").length;
-    }
 
     await departureFlight.save();
     await returnFlight.save();
@@ -2256,13 +2245,13 @@ router.delete(
     </div>`,
     };
 
-    //  await transporter.sendMail(mailOptions, function (error, info) {
-    //    if (error) {
-    //      console.log(error);
-    //    } else {
-    //      console.log("Email sent: " + info.response);
-    //    }
-    //  });
+    await transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
 
     return res.status(202).send(response);
   }
