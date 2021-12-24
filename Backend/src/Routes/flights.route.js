@@ -93,6 +93,21 @@ router.get("/getTerminals", async (req, res) => {
   res.status(200).send({ arr: arrTerminals, dep: depTerminals });
 });
 
+router.patch("/updateSeats/:flightId", async (req, res) => {
+  const flight = await Flight.findById(req.params.flightId);
+  const newSeats = req.body.newSeats;
+  const cabinClass = req.body.cabinClass;
+  const passengerNum = req.body.passengerNum;
+
+  flight.reservedSeats = newSeats;
+  if (cabinClass == "Economy") flight.economySeats -= passengerNum;
+  else flight.businessSeats -= passengerNum;
+
+  const response = await flight.save();
+
+  res.status(200).send(response);
+});
+
 router.post("/search", adminAuth, async (req, res) => {
   let flightNumber = req.body.flightNumber;
   let arrivalTime = req.body.arrivalTime;
@@ -133,15 +148,16 @@ router.post("/search", adminAuth, async (req, res) => {
   res.send(result);
 });
 
-router.post("/reserve", userAuth, async (req, res) => {
-  const getDuration = (date1, date2) => {
-    var difference = Math.abs(new Date(date1) - new Date(date2));
-    let hours = difference / (1000 * 3600);
-    let min = (hours % 1) * 60;
-    hours = Math.floor(hours);
-    return hours + "h " + min + "m";
-  };
+const getDuration = (date1, date2) => {
+  var difference = Math.abs(new Date(date1) - new Date(date2));
+  let hours = difference / (1000 * 3600);
+  let min = (hours % 1) * 60;
+  hours = Math.floor(hours);
+  min = Math.floor(min);
+  return hours + "h " + min + "m";
+};
 
+router.post("/reserve", userAuth, async (req, res) => {
   const depFlight = req.body.departureFlight;
   const retFlight = req.body.returnFlight;
   const cabinClass = req.body.cabinClass;
@@ -150,7 +166,6 @@ router.post("/reserve", userAuth, async (req, res) => {
   const userID = req.user._id;
   const depSeats = req.body.depSeats;
   const returnSeats = req.body.returnSeats;
-  console.log(new Date(depFlight.departureTime).toDateString());
   const flightReservation = new FlightReservation({
     departureFlight: depFlight._id,
     returnFlight: retFlight._id,
@@ -2046,6 +2061,43 @@ router.patch("/editReservation/:reservationNumber", async (req, res) => {
   return res.status(201).send(response);
 });
 
+const removeBookedSeats = (onFlightSeats, bookedSeats) => {
+  let seatsArr = bookedSeats.split(",");
+
+  seatsArr.forEach((seat) => {
+    let row = seat.substr(0, 1).charCodeAt(0) - 65;
+    let col = parseInt(seat.substring(1));
+
+    switch (col) {
+      case 1:
+        col = 0;
+        break;
+      case 2:
+        col = 1;
+        break;
+      case 3:
+        col = 3;
+        break;
+      case 4:
+        col = 4;
+        break;
+      case 5:
+        col = 6;
+        break;
+      case 6:
+        col = 7;
+        break;
+    }
+
+    onFlightSeats[row][col].isReserved = false;
+    onFlightSeats[row][col]["occupied"] = false;
+    onFlightSeats[row][col]["tooltip"] =
+      row >= 2 ? "Economy Class" : "Bussiness Class";
+  });
+
+  return onFlightSeats;
+};
+
 router.delete(
   "/reservations/:reservationNumber",
   userAuth,
@@ -2059,6 +2111,24 @@ router.delete(
 
     const departurePrice = reservation.departureFlight.price;
     const returnPrice = reservation.returnFlight.price;
+
+    const departureFlight = await Flight.findById(
+      reservation.departureFlight._id
+    );
+    const returnFlight = await Flight.findById(reservation.returnFlight._id);
+
+    departureFlight.reservedSeats = removeBookedSeats(
+      departureFlight.reservedSeats,
+      reservation.departureSeats
+    );
+
+    returnFlight.reservedSeats = removeBookedSeats(
+      returnFlight.reservedSeats,
+      reservation.returnSeats
+    );
+
+    await departureFlight.save();
+    await returnFlight.save();
 
     const totalPrice = reservation.price;
 

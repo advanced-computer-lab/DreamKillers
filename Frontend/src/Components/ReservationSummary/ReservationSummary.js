@@ -39,6 +39,9 @@ const ReservationSummary = ({
   acceptOnClickHandler,
   resPrice,
   refreshFunc,
+  userName,
+  departureFlight,
+  returnFlight,
 }) => {
   return (
     <div>
@@ -159,6 +162,11 @@ const ReservationSummary = ({
               <EditReservationModal
                 reservationID={reservationID}
                 refreshFunc={refreshFunc}
+                userName={userName}
+                dfseats={dfSeats}
+                rfseats={rfSeats}
+                previouseDeparture={departureFlight}
+                previousReturn={returnFlight}
               />
             </div>
             <div className={Styles.Button}>
@@ -175,7 +183,14 @@ const ReservationSummary = ({
                 acceptHoverColor="#FF0000"
                 modalButtonText="Cancel Reservation"
                 acceptButtonOnClickHandler={() =>
-                  acceptOnClickHandler(reservationID)
+                  acceptOnClickHandler(
+                    reservationID,
+                    departureFlight,
+                    returnFlight,
+                    dfSeats,
+                    rfSeats,
+                    cabin
+                  )
                 }
               />
             </div>

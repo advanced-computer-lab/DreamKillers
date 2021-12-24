@@ -4,8 +4,7 @@ import AdminLoginPage from "../Containers/Login/AdminLoginPage";
 import UserPage from "../Containers/User/UserPage";
 import GuestPage from "../Containers/Guest/GuestPage";
 import UserLoginPage from "../Containers/Login/UserLoginPage";
-import SignUp from "../Containers/Signup/Signup";
-
+import Signup from "../Containers/SignUp/Signup";
 function AppBrowserRouter({}) {
   const isLoggedIn = localStorage.getItem("loggedin");
   const isAdminLoggedIn = localStorage.getItem("adminLoggedin");
@@ -29,7 +28,7 @@ function AppBrowserRouter({}) {
         <Route
           path="/user/signup"
           render={() =>
-            isLoggedIn ? <Redirect to="/user/dashboard" /> : <SignUp />
+            isLoggedIn ? <Redirect to="/user/dashboard" /> : <Signup />
           }
         />
         <Route
