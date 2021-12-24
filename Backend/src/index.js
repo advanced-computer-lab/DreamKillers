@@ -8,7 +8,7 @@ require("dotenv").config();
 //Application Variables
 const app = express();
 const corsOptions = {
-  exposedHeaders: "user-token",
+  exposedHeaders: ["user-token", "admin-token"],
 };
 app.use(cors(corsOptions));
 

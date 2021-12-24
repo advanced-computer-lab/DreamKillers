@@ -30,3 +30,15 @@
 .Button {
   padding-right: 1em;
 }
+
+.mainDiv {
+  width: 100vw;
+  height: 100vh;
+
+  /* background image setup */
+  background-image: url("Glacier-themed-airplane-Icelandair.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+  background-size: cover;
+}

@@ -7,8 +7,9 @@ const User = require("../Models/user.model");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
 const userAuth = require("../Middleware/userAuth");
+const adminAuth = require("../Middleware/adminAuth");
 
-router.patch("/:flightId", async (req, res) => {
+router.patch("/:flightId", adminAuth, async (req, res) => {
   const flightNumber = req.body.flightNumber;
   const businessSeats = req.body.businessSeats;
   const economySeats = req.body.economySeats;
@@ -36,7 +37,7 @@ router.patch("/:flightId", async (req, res) => {
   res.status(200).send(response);
 });
 
-router.delete("/:flightId", async (req, res) => {
+router.delete("/:flightId", adminAuth, async (req, res) => {
   const flight = await Flight.findById(req.params.flightId);
   if (!flight) throw new Exception("Flight Not Found");
 
@@ -45,7 +46,7 @@ router.delete("/:flightId", async (req, res) => {
   if (response) res.status(202).send();
 });
 
-router.post("/", async (req, res) => {
+router.post("/", adminAuth, async (req, res) => {
   const flightNumber = req.body.flightNumber;
   const departureTime = req.body.departureTime;
   const arrivalTime = req.body.arrivalTime;
@@ -71,7 +72,7 @@ router.post("/", async (req, res) => {
   else res.status(400).send();
 });
 
-router.get("/", async (req, res) => {
+router.get("/", adminAuth, async (req, res) => {
   const flights = await Flight.find({});
 
   res.status(200).send(flights);
@@ -107,7 +108,7 @@ router.patch("/updateSeats/:flightId", async (req, res) => {
   res.status(200).send(response);
 });
 
-router.post("/search", async (req, res) => {
+router.post("/search", adminAuth, async (req, res) => {
   let flightNumber = req.body.flightNumber;
   let arrivalTime = req.body.arrivalTime;
   let departureTime = req.body.departureTime;
@@ -1107,44 +1108,47 @@ router.post("/reserve", userAuth, async (req, res) => {
   return res.status(201).send(flightReservation);
 });
 
-router.patch("/editReservation/:reservationNumber", async (req, res) => {
-  const reservation = await FlightReservation.findOne({
-    _id: req.params.reservationNumber,
-  });
+router.patch(
+  "/editReservation/:reservationNumber",
+  userAuth,
+  async (req, res) => {
+    const reservation = await FlightReservation.findOne({
+      _id: req.params.reservationNumber,
+    });
 
-  const depFlight = req.body.departureFlight;
-  const retFlight = req.body.returnFlight;
-  const cabinClass = req.body.cabinClass;
-  const passengersNumber = req.body.passengersNumber;
-  const price = req.body.price;
-  const depSeats = req.body.depSeats;
-  const returnSeats = req.body.returnSeats;
+    const depFlight = req.body.departureFlight;
+    const retFlight = req.body.returnFlight;
+    const cabinClass = req.body.cabinClass;
+    const passengersNumber = req.body.passengersNumber;
+    const price = req.body.price;
+    const depSeats = req.body.depSeats;
+    const returnSeats = req.body.returnSeats;
 
-  reservation.departureFlight = depFlight._id;
-  reservation.returnFlight = retFlight._id;
-  reservation.cabinClass = cabinClass;
-  reservation.passengersNumber = passengersNumber;
-  reservation.price = price;
-  reservation.returnSeats = returnSeats;
-  reservation.departureSeats = depSeats;
+    reservation.departureFlight = depFlight._id;
+    reservation.returnFlight = retFlight._id;
+    reservation.cabinClass = cabinClass;
+    reservation.passengersNumber = passengersNumber;
+    reservation.price = price;
+    reservation.returnSeats = returnSeats;
+    reservation.departureSeats = depSeats;
 
-  const response = await reservation.save();
+    const response = await reservation.save();
 
-  const user = await User.findById({ _id: reservation.user });
+    const user = await User.findById({ _id: reservation.user });
 
-  var transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
-      pass: "DKairlines123", // PASS REQUIRED
-    },
-  });
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "dkairlinesguc@gmail.com", // MAIL REQUIRED
+        pass: "DKairlines123", // PASS REQUIRED
+      },
+    });
 
-  var mailOptions = {
-    from: "dkairlinesguc@gmail.com",
-    to: `${user.email}`,
-    subject: "Reservation Invoice",
-    html: `<!DOCTYPE html>
+    var mailOptions = {
+      from: "dkairlinesguc@gmail.com",
+      to: `${user.email}`,
+      subject: "Reservation Invoice",
+      html: `<!DOCTYPE html>
     <html lang="en" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:v="urn:schemas-microsoft-com:vml">
        <head>
           <title></title>
@@ -1264,8 +1268,8 @@ router.patch("/editReservation/:reservationNumber", async (req, res) => {
                                                           <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Your trip to <span style="color:#0b1560;"><strong>${
                                                             depFlight.departureTerminal
                                                           }</strong></span> starts on <span style="color:#0b1560;"><strong><span style="">${new Date(
-      depFlight.departureTime
-    ).toDateString()}</span></strong></span>. Make your trip easier, and check in online now for yourself and your travel companions. </span></p>
+        depFlight.departureTime
+      ).toDateString()}</span></strong></span>. Make your trip easier, and check in online now for yourself and your travel companions. </span></p>
                                                        </div>
                                                     </div>
                                                  </td>
@@ -1306,10 +1310,10 @@ router.patch("/editReservation/:reservationNumber", async (req, res) => {
                                                           <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 22.5px;"><span style="font-size:15px;">Your first flight from <span style="color:#800080;"><strong>${
                                                             depFlight.departureTerminal
                                                           }</strong></span> to <span style="color:#0b1560;"><strong>${
-      depFlight.arrivalTerminal
-    }</strong></span> departs at <span style="color:#0b1560;"><strong>${new Date(
-      depFlight.departureTime
-    ).toLocaleTimeString()}</strong></span></span></p>
+        depFlight.arrivalTerminal
+      }</strong></span> departs at <span style="color:#0b1560;"><strong>${new Date(
+        depFlight.departureTime
+      ).toLocaleTimeString()}</strong></span></span></p>
                                                        </div>
                                                     </div>
                                                  </td>
@@ -2005,60 +2009,61 @@ router.patch("/editReservation/:reservationNumber", async (req, res) => {
                    <!-- End -->
        </body>
     </html>`, //get from template
-    attachments: [
-      {
-        filename: "bee.png",
-        path: __dirname + "/images/bee.png",
-        cid: "bee",
-      },
-      {
-        filename: "depart.png",
-        path: __dirname + "/images/depart.png",
-        cid: "depart",
-      },
-      {
-        filename: "facebook.png",
-        path: __dirname + "/images/facebook.png",
-        cid: "facebook",
-      },
-      {
-        filename: "googleplus.png",
-        path: __dirname + "/images/googleplus.png",
-        cid: "googleplus",
-      },
-      {
-        filename: "instagram.png",
-        path: __dirname + "/images/instagram.png",
-        cid: "instagram",
-      },
-      {
-        filename: "plane.png",
-        path: __dirname + "/images/plane.png",
-        cid: "plane",
-      },
-      {
-        filename: "top.png",
-        path: __dirname + "/images/top.png",
-        cid: "top",
-      },
-      {
-        filename: "twitter.png",
-        path: __dirname + "/images/twitter.png",
-        cid: "twitter",
-      },
-    ],
-  };
+      attachments: [
+        {
+          filename: "bee.png",
+          path: __dirname + "/images/bee.png",
+          cid: "bee",
+        },
+        {
+          filename: "depart.png",
+          path: __dirname + "/images/depart.png",
+          cid: "depart",
+        },
+        {
+          filename: "facebook.png",
+          path: __dirname + "/images/facebook.png",
+          cid: "facebook",
+        },
+        {
+          filename: "googleplus.png",
+          path: __dirname + "/images/googleplus.png",
+          cid: "googleplus",
+        },
+        {
+          filename: "instagram.png",
+          path: __dirname + "/images/instagram.png",
+          cid: "instagram",
+        },
+        {
+          filename: "plane.png",
+          path: __dirname + "/images/plane.png",
+          cid: "plane",
+        },
+        {
+          filename: "top.png",
+          path: __dirname + "/images/top.png",
+          cid: "top",
+        },
+        {
+          filename: "twitter.png",
+          path: __dirname + "/images/twitter.png",
+          cid: "twitter",
+        },
+      ],
+    };
 
-  await transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+    await transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
 
-  return res.status(201).send(response);
-});
+    return res.status(201).send(response);
+  }
+);
 
 const removeBookedSeats = (onFlightSeats, bookedSeats) => {
   let seatsArr = bookedSeats.split(",");

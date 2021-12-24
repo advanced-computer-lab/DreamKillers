@@ -4,9 +4,10 @@ import AdminLoginPage from "../Containers/Login/AdminLoginPage";
 import UserPage from "../Containers/User/UserPage";
 import GuestPage from "../Containers/Guest/GuestPage";
 import UserLoginPage from "../Containers/Login/UserLoginPage";
-import Signup from "../Containers/SignUp/Signup";
+import Signup from "../Containers/Signup/Signup";
 function AppBrowserRouter({}) {
   const isLoggedIn = localStorage.getItem("loggedin");
+  const isAdminLoggedIn = localStorage.getItem("adminLoggedin");
 
   return (
     <BrowserRouter>
@@ -30,8 +31,22 @@ function AppBrowserRouter({}) {
             isLoggedIn ? <Redirect to="/user/dashboard" /> : <Signup />
           }
         />
-        <Route path="/admin/dashboard" component={AdminPage} />
-        <Route path="/admin/login" component={AdminLoginPage} />
+        <Route
+          path="/admin/dashboard"
+          render={() =>
+            isAdminLoggedIn ? <AdminPage /> : <Redirect to="/admin/login" />
+          }
+        />
+        <Route
+          path="/admin/login"
+          render={() =>
+            isAdminLoggedIn ? (
+              <Redirect to="/admin/dashboard" />
+            ) : (
+              <AdminLoginPage />
+            )
+          }
+        />
 
         <Route path="/" render={() => <Redirect to="/guest/dashboard" />} />
       </Switch>

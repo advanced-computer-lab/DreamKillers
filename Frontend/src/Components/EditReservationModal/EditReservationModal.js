@@ -156,21 +156,29 @@ export default function EditReservationModal({
   };
 
   const reserve = () => {
+    const token = localStorage.getItem("user-token");
     axios
-      .patch(`http://localhost:8000/flights/editReservation/${reservationID}`, {
-        departureFlight: departureFlight,
-        returnFlight: returnFlight,
-        cabinClass: cabinClass,
-        passengersNumber: passengerNum,
-        price:
-          passengerNum * departureFlight.price +
-          childrenNum * 0.25 * departureFlight.price +
-          (passengerNum * returnFlight.price +
-            childrenNum * 0.25 * returnFlight.price),
-        user: "617dbe3c2f88f3eba1dd02bb",
-        depSeats: depSeats.sort().toString(),
-        returnSeats: returnSeats.sort().toString(),
-      })
+      .patch(
+        `http://localhost:8000/flights/editReservation/${reservationID}`,
+        {
+          departureFlight: departureFlight,
+          returnFlight: returnFlight,
+          cabinClass: cabinClass,
+          passengersNumber: passengerNum,
+          price:
+            passengerNum * departureFlight.price +
+            childrenNum * 0.25 * departureFlight.price +
+            (passengerNum * returnFlight.price +
+              childrenNum * 0.25 * returnFlight.price),
+          depSeats: depSeats.sort().toString(),
+          returnSeats: returnSeats.sort().toString(),
+        },
+        {
+          headers: {
+            "user-token": token,
+          },
+        }
+      )
       .then((res) => {
         updateSeats(
           departureFlight._id,
