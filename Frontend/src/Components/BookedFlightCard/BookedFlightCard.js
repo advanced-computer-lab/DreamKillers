@@ -28,6 +28,7 @@ export default function BookedFlightCard({
     let hours = difference / (1000 * 3600);
     let min = (hours % 1) * 60;
     hours = Math.floor(hours);
+    min = Math.floor(min);
     return hours + "h " + min + "m";
   };
 

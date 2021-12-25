@@ -11,7 +11,7 @@ router.post("/login", async (req, res) => {
   if (admin != null) {
     if (adminPass === admin.password) {
       const token = admin.generateAuthToken();
-      res.header("x-admin-auth-token", token);
+      res.header("admin-token", token);
       res.status(200).send();
     } else res.status(401).send("Error");
   } else res.status(401).send("Error");

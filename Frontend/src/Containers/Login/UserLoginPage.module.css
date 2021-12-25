@@ -1,0 +1,55 @@
+.Page {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-content: center;
+
+  /* backgroun image setup */
+  background-image: url("AirplaneImage.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+.PageItems {
+  /* background-image: url("https://wallpaperaccess.com/full/3919997.jpg"); */
+  height: 980px;
+  align-content: center;
+  width: 20em;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+
+  padding: 1em 2em 1em 2em;
+  border-radius: 0.5em;
+  background-color: rgb(246, 246, 246);
+}
+
+.SignInText {
+  text-align: center;
+  font-size: large;
+}
+
+.SignInTitle {
+  text-align: center;
+  font-size: xx-large;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.SignInButton {
+  padding: 0;
+  height: 10em;
+}
+
+.LockIcon {
+  font-size: xx-large;
+  align-self: center;
+}
+
+.AirPlaneImage {
+  width: 1920px;
+  height: 720px;
+}

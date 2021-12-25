@@ -4,10 +4,10 @@ import ButtonDK from "../../Components/ButtonDK/ButtonDK";
 import TextBoxDK from "../../Components/TextBoxDK/TextBoxDK";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import Styles from "./LoginPage.module.css";
+import Styles from "./AdminLoginPage.module.css";
 const axios = require("axios");
 
-const LoginPage = ({}) => {
+const AdminLoginPage = ({}) => {
   const [email, setEmailState] = React.useState("");
   const [pass, setPassState] = React.useState("");
 
@@ -27,7 +27,9 @@ const LoginPage = ({}) => {
       })
       .then((res) => {
         if (res.status == 200) {
-          console.log("loggedin");
+          const token = res.headers["admin-token"];
+          localStorage.setItem("admin-token", token);
+          localStorage.setItem("adminLoggedin", true);
           window.location.href = "http://localhost:3000/admin/dashboard";
         }
       })
@@ -62,4 +64,4 @@ const LoginPage = ({}) => {
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;

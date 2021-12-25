@@ -30,14 +30,80 @@ import FlightCardTwo from "../../Components/FlightCardTwo/FlightCardTwo";
 import SeatsModal from "../../Components/SeatsModal/SeatsModal";
 import Footer from "../../Components/Footer/Footer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditPasswordModal from "../../Components/EditPasswordModal/EditPasswordModal";
+import LockIcon from "@mui/icons-material/Lock";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
 
-  const onClickCancelReservation = (reservationID) => {
+  const removeBookedSeats = (onFlightSeats, bookedSeats) => {
+    let seatsArr = bookedSeats.split(",");
+    seatsArr.forEach((seat) => {
+      let row = seat.substr(0, 1).charCodeAt(0) - 65;
+      let col = parseInt(seat.substring(1));
+
+      switch (col) {
+        case 1:
+          col = 0;
+          break;
+        case 2:
+          col = 1;
+          break;
+        case 3:
+          col = 3;
+          break;
+        case 4:
+          col = 4;
+          break;
+        case 5:
+          col = 6;
+          break;
+        case 6:
+          col = 7;
+          break;
+      }
+      console.log(onFlightSeats[row][col]);
+      let newToolTip = onFlightSeats[row][col]["tooltip"].split(" ");
+
+      onFlightSeats[row][col].isReserved = false;
+      onFlightSeats[row][col]["occupied"] = false;
+      onFlightSeats[row][col]["tooltip"] =
+        row >= 2 ? "Economy Class" : "Bussiness Class";
+    });
+
+    return onFlightSeats;
+  };
+
+  const onClickCancelReservation = (
+    reservationID,
+    dep,
+    ret,
+    dfseats,
+    rfseats,
+    cabin
+  ) => {
     axios
-      .delete(`http://localhost:8000/flights/reservations/${reservationID}`)
-      .then((res) => {
+      .delete(`http://localhost:8000/flights/reservations/${reservationID}`, {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
+      .then(() => {
+        const inverse = 0 - dfseats.split(",").length;
+        console.log(inverse);
+        updateSeats(
+          dep._id,
+          removeBookedSeats(dep.reservedSeats, dfseats),
+          inverse,
+          cabin
+        );
+        updateSeats(
+          ret._id,
+          removeBookedSeats(ret.reservedSeats, rfseats),
+          inverse,
+          cabin
+        );
         getReservations();
         displaySnackBar("Your reservation was successfully cancelled");
       })
@@ -60,15 +126,43 @@ const UserPage = () => {
     phoneNumber
   ) => {
     axios
-      .patch(`http://localhost:8000/user/edit`, {
-        name: userName,
-        oldEmail: currentUser.email,
-        newEmail: Email,
-        password: Password,
-        newPassportNumber: passportNumber,
-        newPhoneNumber: phoneNumber,
-        userAge: Age,
+      .patch(
+        `http://localhost:8000/user/edit`,
+        {
+          name: userName,
+          oldEmail: currentUser.email,
+          newEmail: Email,
+          password: Password,
+          newPassportNumber: passportNumber,
+          newPhoneNumber: phoneNumber,
+          userAge: Age,
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
+      .then((res) => {
+        setEditTriggered(!editTriggered);
+        displaySnackBar("User information edited successfully");
       })
+      .catch((e) => console.log(e));
+  };
+  const onAcceptEditPasswordOnClickHandler = (oldPassword, newPassword) => {
+    axios
+      .patch(
+        `http://localhost:8000/user/editPassword`,
+        {
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
       .then((res) => {
         setEditTriggered(!editTriggered);
         displaySnackBar("User information edited successfully");
@@ -78,7 +172,11 @@ const UserPage = () => {
   let currentUser = {};
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/user`)
+      .get(`http://localhost:8000/user`, {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         currentUser = res.data;
         fillUser();
@@ -117,6 +215,8 @@ const UserPage = () => {
   const [cabinClass, setCabinClass] = useState(0);
   const [depSeats, setDepSeats] = useState([]);
   const [returnSeats, setReturnSeats] = useState([]);
+  const [reservedDepSeats, setReservedDepSeats] = useState([]);
+  const [reservedReturnSeats, setReservedReturnSeats] = useState([]);
 
   const search = (data, num, children, cabin) => {
     setFlights(data);
@@ -125,27 +225,91 @@ const UserPage = () => {
     setCabinClass(cabin);
     setBookedDep(false);
     setBookedReturn(false);
-    console.log(flights);
+  };
+
+  const computeSeats = (seats, reservedSeats) => {
+    seats.forEach((seat) => {
+      let row = seat.substr(0, 1).charCodeAt(0) - 65;
+      let col = parseInt(seat.substring(1));
+
+      switch (col) {
+        case 1:
+          col = 0;
+          break;
+        case 2:
+          col = 1;
+          break;
+        case 3:
+          col = 3;
+          break;
+        case 4:
+          col = 4;
+          break;
+        case 5:
+          col = 6;
+          break;
+        case 6:
+          col = 7;
+          break;
+      }
+
+      console.log(row, reservedSeats);
+
+      reservedSeats[row][col].isReserved = true;
+      reservedSeats[row][col]["occupied"] = true;
+      reservedSeats[row][col]["tooltip"] = "Reserved";
+    });
+    return reservedSeats;
+  };
+
+  const updateSeats1 = (flightId, seats) => {
+    axios.patch(`http://localhost:8000/flights//updateSeats/${flightId}`, {
+      newSeats: seats,
+      cabinClass: cabinClass,
+      passengerNum: passengerNum,
+    });
+  };
+
+  const updateSeats = (flightId, seats, passeneger, cabin) => {
+    axios.patch(`http://localhost:8000/flights//updateSeats/${flightId}`, {
+      newSeats: seats,
+      cabinClass: cabin,
+      passengerNum: passeneger,
+    });
   };
 
   const reserve = () => {
     axios
-      .post("http://localhost:8000/flights/reserve", {
-        departureFlight: departureFlight,
-        returnFlight: returnFlight,
-        cabinClass: cabinClass,
-        passengersNumber: passengerNum,
-        price:
-          passengerNum * departureFlight.price +
-          childrenNum * 0.25 * departureFlight.price +
-          (passengerNum * returnFlight.price +
-            childrenNum * 0.25 * returnFlight.price),
-        user: "617dbe3c2f88f3eba1dd02bb",
-        depSeats: depSeats.sort().toString(),
-        returnSeats: returnSeats.sort().toString(),
-      })
+      .post(
+        "http://localhost:8000/flights/reserve",
+        {
+          departureFlight: departureFlight,
+          returnFlight: returnFlight,
+          cabinClass: cabinClass,
+          passengersNumber: passengerNum,
+          price:
+            passengerNum * departureFlight.price +
+            childrenNum * 0.25 * departureFlight.price +
+            (passengerNum * returnFlight.price +
+              childrenNum * 0.25 * returnFlight.price),
+          depSeats: depSeats.sort().toString(),
+          returnSeats: returnSeats.sort().toString(),
+        },
+        {
+          headers: {
+            "user-token": localStorage.getItem("user-token"),
+          },
+        }
+      )
       .then((res) => {
-        console.log(res.status);
+        updateSeats1(
+          departureFlight._id,
+          computeSeats(depSeats, reservedDepSeats)
+        );
+        updateSeats1(
+          returnFlight._id,
+          computeSeats(returnSeats, reservedReturnSeats)
+        );
         if (res.status == 201)
           displaySnackBar("Your flight is successfully reserved");
       });
@@ -161,8 +325,11 @@ const UserPage = () => {
     setFlights([]);
     setDepartureFlight({});
     setReturnFlight({});
+    setReturnFlights([]);
     setBookedReturn(false);
     setBookedDep(false);
+    setReservedDepSeats([]);
+    setReservedReturnSeats([]);
   };
 
   const bookDeparture = (flight) => {
@@ -200,7 +367,11 @@ const UserPage = () => {
 
   const getReservations = () => {
     axios
-      .get("http://localhost:8000/user/reservations")
+      .get("http://localhost:8000/user/reservations", {
+        headers: {
+          "user-token": localStorage.getItem("user-token"),
+        },
+      })
       .then((res) => {
         setReservations(res.data);
         console.log("refreshed");
@@ -211,6 +382,30 @@ const UserPage = () => {
   useEffect(() => {
     getReservations();
   }, [selectedTab]);
+
+  const onClickLogoutHandler = () => {
+    const token = localStorage.getItem("user-token");
+    axios
+      .post(
+        "http://localhost:8000/user/logout",
+        {},
+        {
+          headers: {
+            "user-token": token,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status == 200) {
+          localStorage.removeItem("user-token");
+          localStorage.removeItem("loggedin");
+          window.location.href = "http://localhost:3000/user/login";
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   return (
     <div className={Styles.mainDiv}>
@@ -248,7 +443,7 @@ const UserPage = () => {
                     <VpnKeyIcon fontSize="large" />
                   </div>
                   <p className={Styles.Text}> Password:</p>
-                  <p className={Styles.ParText}> {Password}</p>
+                  <p className={Styles.ParText}> {"*********"}</p>
                 </div>
               </div>
 
@@ -278,23 +473,45 @@ const UserPage = () => {
                 </div>
               </div>
             </div>
-            <div className={Styles.Edit}>
-              <UserEditModal
-                mainButtonText={"Edit"}
-                mainButtonColor={"orange"}
-                mainButtonTextColor={"black"}
-                mainButtonHoverColor={"orange"}
-                icon={<EditIcon />}
-                acceptButtonText={"Edit"}
-                title={"Edit the attributes of profile you want to edit"}
-                userName={currentUser.name}
-                onAcceptOnClickHandler={onAcceptEditOnClickHandler}
-                Email={currentUser.email}
-                Password={currentUser.password}
-                passportNumber={currentUser.passportNumber}
-                Age={currentUser.age}
-                phoneNumber={currentUser.phoneNumber}
-              ></UserEditModal>
+
+            <div className={Styles.ActionsBar}>
+              <div className={Styles.Edit}>
+                <UserEditModal
+                  mainButtonText={"Edit"}
+                  mainButtonColor={"orange"}
+                  mainButtonTextColor={"black"}
+                  mainButtonHoverColor={"orange"}
+                  icon={<EditIcon />}
+                  acceptButtonText={"Edit"}
+                  title={"Edit the attributes of profile you want to edit"}
+                  userName={currentUser.name}
+                  onAcceptOnClickHandler={onAcceptEditOnClickHandler}
+                  Email={currentUser.email}
+                  Password={currentUser.password}
+                  passportNumber={currentUser.passportNumber}
+                  Age={currentUser.age}
+                  phoneNumber={currentUser.phoneNumber}
+                ></UserEditModal>
+                <EditPasswordModal
+                  icon={<LockIcon />}
+                  title={"Enter Your Old & New Passwords"}
+                  mainButtonColor={"orange"}
+                  mainButtonTextColor={"black"}
+                  mainButtonHoverColor={"orange"}
+                  acceptButtonText={"Edit"}
+                  onAcceptOnClickHandler={onAcceptEditPasswordOnClickHandler}
+                ></EditPasswordModal>
+              </div>
+              <div className={Styles.logoutButton}>
+                <ButtonDK
+                  buttonText={"Logout"}
+                  color={"#FF0000"}
+                  textColor={"#FFFFFF"}
+                  hoverColor={"#FF0000"}
+                  icon={<LogoutIcon></LogoutIcon>}
+                  onClick={() => onClickLogoutHandler()}
+                ></ButtonDK>
+              </div>
             </div>
           </>
         ) : selectedTab == 1 ? (
@@ -302,6 +519,7 @@ const UserPage = () => {
             {reservations.map((res, index) => {
               return (
                 <ReservationSummary
+                  userName={userName}
                   key={index}
                   reservationID={res._id}
                   reservationNumber={index + 1}
@@ -321,6 +539,8 @@ const UserPage = () => {
                   cabin={res.cabinClass}
                   dfSeats={res.departureSeats}
                   rfSeats={res.returnSeats}
+                  departureFlight={res.departureFlight}
+                  returnFlight={res.returnFlight}
                   acceptOnClickHandler={onClickCancelReservation}
                   refreshFunc={getReservations}
                 ></ReservationSummary>
@@ -356,7 +576,7 @@ const UserPage = () => {
                           {doubleFlight.map((flight) => {
                             return (
                               <TableCell>
-                                {console.log(passengerNum)}
+                                {console.log(flight.reservedSeats)}
                                 <FlightCardTwo
                                   flight={flight}
                                   button={
@@ -367,6 +587,8 @@ const UserPage = () => {
                                         setDepSeats(seats);
                                         bookDeparture(flight);
                                       }}
+                                      rowProp={flight.reservedSeats}
+                                      setSeatRows={setReservedDepSeats}
                                     />
                                   }
                                   width={345}
@@ -416,6 +638,8 @@ const UserPage = () => {
                         color: "Green",
                         hoverColor: "#545454",
                       }}
+                      rowProp={departureFlight.reservedSeats}
+                      setSeatRows={setReservedDepSeats}
                     />
                   }
                 />
@@ -455,6 +679,8 @@ const UserPage = () => {
                                         setReturnSeats(seats);
                                         bookReturn(flight);
                                       }}
+                                      rowProp={flight.reservedSeats}
+                                      setSeatRows={setReservedReturnSeats}
                                     />
                                   }
                                   width={345}
@@ -507,6 +733,8 @@ const UserPage = () => {
                           color: "Green",
                           hoverColor: "#545454",
                         }}
+                        rowProp={returnFlight.reservedSeats}
+                        setSeatRows={setReservedReturnSeats}
                       />
                     }
                   />

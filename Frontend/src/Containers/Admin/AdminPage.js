@@ -14,10 +14,16 @@ const AdminPage = () => {
   const [depterminals, setDepterminal] = useState([]);
 
   const searchFunc = (query) => {
-    axios.post("http://localhost:8000/flights/search", query).then((res) => {
-      setFlights(res.data);
-      console.log(res.data);
-    });
+    axios
+      .post("http://localhost:8000/flights/search", query, {
+        headers: {
+          "admin-token": localStorage.getItem("admin-token"),
+        },
+      })
+      .then((res) => {
+        setFlights(res.data);
+        console.log(res.data);
+      });
   };
 
   const onAcceptEditOnClickHandler = (
@@ -31,15 +37,23 @@ const AdminPage = () => {
     departureTime
   ) => {
     axios
-      .patch(`http://localhost:8000/flights/${flightID}`, {
-        flightNumber: flightNumber,
-        departureTime: departureTime,
-        arrivalTime: arrivalTime,
-        departureTerminal: departureTerminal,
-        arrivalTerminal: arrivalTerminal,
-        businessSeats: businessSeats,
-        economySeats: economySeats,
-      })
+      .patch(
+        `http://localhost:8000/flights/${flightID}`,
+        {
+          flightNumber: flightNumber,
+          departureTime: departureTime,
+          arrivalTime: arrivalTime,
+          departureTerminal: departureTerminal,
+          arrivalTerminal: arrivalTerminal,
+          businessSeats: businessSeats,
+          economySeats: economySeats,
+        },
+        {
+          headers: {
+            "admin-token": localStorage.getItem("admin-token"),
+          },
+        }
+      )
       .then((res) => {
         console.log("Success");
         getFlights();
@@ -49,7 +63,11 @@ const AdminPage = () => {
 
   const getFlights = () => {
     axios
-      .get("http://localhost:8000/flights")
+      .get("http://localhost:8000/flights", {
+        headers: {
+          "admin-token": localStorage.getItem("admin-token"),
+        },
+      })
       .then((res) => {
         setFlights(res.data);
         let arr = res.data.map((flight) => {
@@ -65,13 +83,18 @@ const AdminPage = () => {
   };
 
   const deleteFlight = (flightID) => {
-    console.log(flightID);
-    axios.delete(`http://localhost:8000/flights/${flightID}`).then((res) => {
-      if (res.status == 202) {
-        console.log("Deleted");
-        getFlights();
-      } else console.log("Not deleted");
-    });
+    axios
+      .delete(`http://localhost:8000/flights/${flightID}`, {
+        headers: {
+          "admin-token": localStorage.getItem("admin-token"),
+        },
+      })
+      .then((res) => {
+        if (res.status == 202) {
+          console.log("Deleted");
+          getFlights();
+        } else console.log("Not deleted");
+      });
   };
 
   const createFlight = (
@@ -95,7 +118,11 @@ const AdminPage = () => {
     };
     console.log(query);
     axios
-      .post(`http://localhost:8000/flights/`, query)
+      .post(`http://localhost:8000/flights/`, query, {
+        headers: {
+          "admin-token": localStorage.getItem("admin-token"),
+        },
+      })
       .then((res) => {
         console.log(res.data);
         getFlights();
@@ -108,7 +135,7 @@ const AdminPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className={Styles.mainDiv}>
       <ToolBarDK></ToolBarDK>
       <div className={Styles.Flights}>
         <br></br>
