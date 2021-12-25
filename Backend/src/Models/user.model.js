@@ -28,6 +28,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    homeAddress: {
+      type: String,
+    },
+    countryCode: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
