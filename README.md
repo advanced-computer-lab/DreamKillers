@@ -47,10 +47,10 @@ After that, the features are divided into 2 categories depending on the type of 
 # **Code Examples**
 
 # **Installation**
--Clone or download the zip file(dont forget to extract) of this project and then you have to download the dependancies
--For starters, you need to insall npm and node.
-Then, all you have to do is go to both FrontEnd and BackEnd files through your terminal and write `npm install` and npm will download all the dependancies you need
--All you have left is to make your own .env file with the your api keys
+- Clone or download the zip file(dont forget to extract) of this project and then you have to download the dependancies
+- For starters, you need to insall npm and node.
+- Then, all you have to do is go to both FrontEnd and BackEnd files through your terminal and write `npm install` and npm will download all the dependancies you need
+- All you have left is to make your own .env file with the your api keys
 # **API reference**
 - Mongoose.js https://mongoosejs.com/
 - Stipe.js https://stripe.com/docs/js
