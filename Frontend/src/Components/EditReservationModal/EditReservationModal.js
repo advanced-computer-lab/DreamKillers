@@ -169,6 +169,7 @@ export default function EditReservationModal({
 
   const reserve = (invoice) => {
     const token = localStorage.getItem("user-token");
+
     axios
       .patch(
         `http://localhost:8000/flights/editReservation/${reservationID}`,
@@ -188,6 +189,7 @@ export default function EditReservationModal({
         }
       )
       .then((res) => {
+        openInvoice(invoice);
         updateSeats(
           departureFlight._id,
           computeSeats(depSeats.sort(), reservedDepSeats),
@@ -272,6 +274,18 @@ export default function EditReservationModal({
   const displaySnackBar = (message) => {
     setSnackBarText(message);
     setOpenSnack(true);
+  };
+
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
+  const [invoice, setInvoice] = useState("");
+
+  const CloseInvoice = () => {
+    setInvoiceOpen(false);
+  };
+
+  const openInvoice = (msg) => {
+    setInvoiceOpen(true);
+    setInvoice(msg);
   };
 
   return (
@@ -541,6 +555,19 @@ export default function EditReservationModal({
             onClick={handleTotalClose}
           />
         </DialogActions>
+      </Dialog>
+      <Dialog
+        open={invoiceOpen}
+        onClose={CloseInvoice}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title"></DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <a href={invoice}>Your Payment Invoice</a>
+          </DialogContentText>
+        </DialogContent>
       </Dialog>
       <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
