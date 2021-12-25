@@ -42,6 +42,7 @@ const ReservationSummary = ({
   userName,
   departureFlight,
   returnFlight,
+  email,
 }) => {
   return (
     <div>
@@ -62,7 +63,7 @@ const ReservationSummary = ({
           sx={{ border: 1, borderRadius: 1, borderColor: "lightgray" }}
         >
           <p style={{ textAlign: "center", fontWeight: "bold" }}>
-            Booking Number: {reservationID}
+            {userName} Booking Number: {reservationID}
           </p>
           <div className={Styles.UserDisplay}>
             <div className={Styles.UserDetailsContainer}>
@@ -167,6 +168,8 @@ const ReservationSummary = ({
                 rfseats={rfSeats}
                 previouseDeparture={departureFlight}
                 previousReturn={returnFlight}
+                email={email}
+                originalPrice={resPrice}
               />
             </div>
             <div className={Styles.Button}>

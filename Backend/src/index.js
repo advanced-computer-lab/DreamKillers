@@ -18,6 +18,7 @@ const userRouter = require("./Routes/user.route");
 const flightRouter = require("./Routes/flights.route");
 const adminRouter = require("./Routes/admin.route");
 const userFlightsRouter = require("./Routes/userFlights.route");
+const paymentRouter = require("./Routes/payment.route");
 //DB Connection
 mongoose
   .connect(process.env.mongouri, {
@@ -34,6 +35,7 @@ app.use("/user", userRouter);
 app.use("/flights", flightRouter);
 app.use("/admin", adminRouter);
 app.use("/userFlights", userFlightsRouter);
+app.use("/payment", paymentRouter);
 
 //Host app on localhost
 app.listen(port, () => {
