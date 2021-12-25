@@ -17,7 +17,9 @@ and CamelCase was used to name components. The code was formatted with prettier 
 
 # **Screenshots**
 
-![GitHub Logo](https://d1m75rqqgidzqn.cloudfront.net/images/logo.png) Format:
+![Admin Login](images/adminLogin.png?raw=true "Admin Login")
+![User Page](images/user.png?raw=true "User Page")
+
 
 # **Tech/Framework used**
 
