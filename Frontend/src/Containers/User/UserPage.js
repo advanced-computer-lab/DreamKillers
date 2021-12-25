@@ -33,6 +33,12 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EditPasswordModal from "../../Components/EditPasswordModal/EditPasswordModal";
 import LockIcon from "@mui/icons-material/Lock";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PaymentModal from "../Payment/PaymentModal";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const UserPage = () => {
   const [editTriggered, setEditTriggered] = React.useState(false);
@@ -227,6 +233,15 @@ const UserPage = () => {
     setBookedReturn(false);
   };
 
+  const getPrice = () => {
+    return (
+      passengerNum * departureFlight.price +
+      childrenNum * 0.25 * departureFlight.price +
+      (passengerNum * returnFlight.price +
+        childrenNum * 0.25 * returnFlight.price)
+    );
+  };
+
   const computeSeats = (seats, reservedSeats) => {
     seats.forEach((seat) => {
       let row = seat.substr(0, 1).charCodeAt(0) - 65;
@@ -278,7 +293,8 @@ const UserPage = () => {
     });
   };
 
-  const reserve = () => {
+  const reserve = (invoice) => {
+    openInvoice(invoice);
     axios
       .post(
         "http://localhost:8000/flights/reserve",
@@ -287,11 +303,7 @@ const UserPage = () => {
           returnFlight: returnFlight,
           cabinClass: cabinClass,
           passengersNumber: passengerNum,
-          price:
-            passengerNum * departureFlight.price +
-            childrenNum * 0.25 * departureFlight.price +
-            (passengerNum * returnFlight.price +
-              childrenNum * 0.25 * returnFlight.price),
+          price: getPrice(),
           depSeats: depSeats.sort().toString(),
           returnSeats: returnSeats.sort().toString(),
         },
@@ -319,6 +331,18 @@ const UserPage = () => {
   const displaySnackBar = (message) => {
     setSnackBarText(message);
     setOpenSnack(true);
+  };
+
+  const [invoiceOpen, setInvoiceOpen] = useState(false);
+  const [invoice, setInvoice] = useState("");
+
+  const CloseInvoice = () => {
+    setInvoiceOpen(false);
+  };
+
+  const openInvoice = (msg) => {
+    setInvoiceOpen(true);
+    setInvoice(msg);
   };
 
   const reset = () => {
@@ -543,6 +567,7 @@ const UserPage = () => {
                   returnFlight={res.returnFlight}
                   acceptOnClickHandler={onClickCancelReservation}
                   refreshFunc={getReservations}
+                  email={currentUser.email}
                 ></ReservationSummary>
               );
             })}
@@ -739,12 +764,10 @@ const UserPage = () => {
                     }
                   />
                   <div className={Styles.loginButton}>
-                    <ButtonDK
-                      buttonText="Reserve"
-                      color="orange"
-                      textColor="black"
-                      hoverColor="orange"
-                      onClick={reserve}
+                    <PaymentModal
+                      email={currentUser.email}
+                      price={getPrice()}
+                      reserveFunc={reserve}
                     />
                   </div>
                 </div>
@@ -758,6 +781,19 @@ const UserPage = () => {
           {snackBarText}
         </Alert>
       </Snackbar>
+      <Dialog
+        open={invoiceOpen}
+        onClose={CloseInvoice}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title"></DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            <a href={invoice}>Your Payment Invoice</a>
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
       <Footer />
     </div>
   );

@@ -4,7 +4,7 @@ import AdminLoginPage from "../Containers/Login/AdminLoginPage";
 import UserPage from "../Containers/User/UserPage";
 import GuestPage from "../Containers/Guest/GuestPage";
 import UserLoginPage from "../Containers/Login/UserLoginPage";
-import Signup from "../Containers/Signup/Signup";
+import Signup from "../Containers/SignUp/Signup";
 function AppBrowserRouter({}) {
   const isLoggedIn = localStorage.getItem("loggedin");
   const isAdminLoggedIn = localStorage.getItem("adminLoggedin");

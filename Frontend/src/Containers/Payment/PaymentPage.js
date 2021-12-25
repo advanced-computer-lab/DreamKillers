@@ -1,21 +1,11 @@
-import { useState } from 'react';
-import './PaymentPage.module.css';
-import StripeContainer from '../../Components/StripeElements/StripeContainer';
+import { useState } from "react";
+import "./PaymentPage.module.css";
+import StripeContainer from "../../Components/StripeElements/StripeContainer";
+import ButtonDK from "../../Components/ButtonDK/ButtonDK";
 
 const PaymentPage = () => {
-	const [showItem, setShowItem] = useState(false);
-	return (
-		<div className='paymentPage'>
-			{showItem ? (
-				<StripeContainer />
-			) : (
-				<>
-					<h3>$10.00</h3>
-					<button onClick={() => setShowItem(true)}>Purchase Your Flight</button>
-				</>
-			)}
-		</div>
-	);
-}
+  //const [showItem, setShowItem] = useState(false);
+  return <div className="paymentPage"></div>;
+};
 
 export default PaymentPage;

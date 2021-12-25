@@ -10,35 +10,22 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ButtonDK from "../../Components/ButtonDK/ButtonDK";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CircularProgress from "@mui/material/CircularProgress";
-import PaymentIcon from '@mui/icons-material/Payment';
+import PaymentIcon from "@mui/icons-material/Payment";
+import StripeContainer from "../../Components/StripeElements/StripeContainer";
 
+const PaymentModal = ({ modalTitle, reserveFunc, email, price }) => {
+  const [open, setOpen] = React.useState(false);
 
-const PaymentModal = ({
-    modalTitle,
-    modalText,
-    cancelText,
-    cancelTextColor,
-    cancelButtonColor,
-    cancelHoverColor,
-    acceptText,
-    acceptTextColor,
-    acceptButtonColor,
-    acceptHoverColor,
-    acceptButtonOnClickHandler,
-    isAcceptButtonLoading,
-}) => {
-    const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    return (
-<div>
+  return (
+    <div>
       <ButtonDK
         buttonText={"Reserve"}
         textColor="black"
@@ -57,14 +44,17 @@ const PaymentModal = ({
         <DialogTitle id="alert-dialog-title">{modalTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <PaymentPage />
+            <StripeContainer
+              email={email}
+              price={price}
+              reserveFunc={reserveFunc}
+            />
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-        </DialogActions>
+        <DialogActions></DialogActions>
       </Dialog>
     </div>
-    )
-}
+  );
+};
 
 export default PaymentModal;

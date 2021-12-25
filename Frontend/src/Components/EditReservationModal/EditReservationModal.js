@@ -27,6 +27,7 @@ import Footer from "../../Components/Footer/Footer";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
 import Styles from "./EditReservationModal.module.css";
+import PaymentModal from "../../Containers/Payment/PaymentModal";
 
 export default function EditReservationModal({
   reservationID,
@@ -36,6 +37,8 @@ export default function EditReservationModal({
   rfseats,
   previouseDeparture,
   previousReturn,
+  email,
+  originalPrice,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -155,7 +158,16 @@ export default function EditReservationModal({
     });
   };
 
-  const reserve = () => {
+  const getPrice = () => {
+    return (
+      passengerNum * departureFlight.price +
+      childrenNum * 0.25 * departureFlight.price +
+      (passengerNum * returnFlight.price +
+        childrenNum * 0.25 * returnFlight.price)
+    );
+  };
+
+  const reserve = (invoice) => {
     const token = localStorage.getItem("user-token");
     axios
       .patch(
@@ -165,11 +177,7 @@ export default function EditReservationModal({
           returnFlight: returnFlight,
           cabinClass: cabinClass,
           passengersNumber: passengerNum,
-          price:
-            passengerNum * departureFlight.price +
-            childrenNum * 0.25 * departureFlight.price +
-            (passengerNum * returnFlight.price +
-              childrenNum * 0.25 * returnFlight.price),
+          price: getPrice(),
           depSeats: depSeats.sort().toString(),
           returnSeats: returnSeats.sort().toString(),
         },
@@ -513,12 +521,10 @@ export default function EditReservationModal({
                     }
                   />
                   <div className={Styles.loginButton}>
-                    <ButtonDK
-                      buttonText="Reserve"
-                      color="orange"
-                      textColor="black"
-                      hoverColor="orange"
-                      onClick={reserve}
+                    <PaymentModal
+                      email={email}
+                      price={Math.abs(originalPrice - getPrice())}
+                      reserveFunc={reserve}
                     />
                   </div>
                 </div>
