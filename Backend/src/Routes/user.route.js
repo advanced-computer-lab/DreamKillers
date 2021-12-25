@@ -49,8 +49,19 @@ router.post("/signup", async (req, res) => {
   const passportNumber = req.body.passportNumber;
   const age = req.body.age;
   const phoneNumber = req.body.phoneNumber;
+  const homeAddress = req.body.homeAddress;
+  const countryCode = req.body.countryCode;
 
-  if (!name || !email || !password || !passportNumber || !age || !phoneNumber) {
+  if (
+    !name ||
+    !email ||
+    !password ||
+    !passportNumber ||
+    !age ||
+    !phoneNumber ||
+    !homeAddress ||
+    !countryCode
+  ) {
     return res.status(400).send("Missing parameter");
   }
 
@@ -76,6 +87,8 @@ router.post("/signup", async (req, res) => {
     passportNumber: passportNumber,
     age: age,
     phoneNumber: phoneNumber,
+    homeAddress: homeAddress,
+    countryCode: countryCode,
   });
 
   try {
