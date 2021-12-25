@@ -1,4 +1,5 @@
 import Styles from "./ReservationSummary.module.css";
+import React from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -22,6 +23,9 @@ import ButtonDK from "../ButtonDK/ButtonDK";
 import { flexbox } from "@mui/system";
 import Modal from "../Modal/Modal";
 import EditReservationModal from "../EditReservationModal/EditReservationModal";
+import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import { Alert } from "@mui/material";
 
 const ReservationSummary = ({
   reservationID,
@@ -44,6 +48,29 @@ const ReservationSummary = ({
   returnFlight,
   email,
 }) => {
+  const onClickMailSend = () => {
+    axios
+      .post(`http://localhost:8000/flights/reservation/sendMail`, {
+        reservationID: reservationID,
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          displaySnackBar("Mail sent successfully");
+        }
+      })
+      .catch((e) => {});
+  };
+
+  const [openSnack, setOpenSnack] = React.useState(false);
+  const [snackBarText, setSnackBarText] = React.useState();
+  const handleClose = () => {
+    setOpenSnack(false);
+  };
+
+  const displaySnackBar = (message) => {
+    setSnackBarText(message);
+    setOpenSnack(true);
+  };
   return (
     <div>
       <Accordion
@@ -159,6 +186,16 @@ const ReservationSummary = ({
             </div>
           </div>
           <div className={Styles.Buttons}>
+            <ButtonDK
+              buttonText={"Mail"}
+              color={"orange"}
+              hoverColor={"darkOrange"}
+              textColor={"white"}
+              icon={<EmailIcon></EmailIcon>}
+              onClick={() => {
+                onClickMailSend();
+              }}
+            ></ButtonDK>
             <div className={Styles.Button}>
               <EditReservationModal
                 reservationID={reservationID}
@@ -200,6 +237,11 @@ const ReservationSummary = ({
           </div>
         </AccordionDetails>
       </Accordion>
+      <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {snackBarText}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
