@@ -24,12 +24,16 @@ Youseff Mohamed Mostafa Elgindy 46-10406
   
 Yousseif Ahmed Abourefaei 46-13378
  Backend Tasks:
+ -Email user upon reservation
   
  Frontend Task:
+ -Reverse reservation process
+ -edit reservation
   
 
 Mohamed Hossameldin Khalifa 45-12309
  Backend Tasks:
-  
+  -payment Endpoint and stripe api calls
  Frontend Tasks:
+  -payment Component
   
