@@ -294,7 +294,6 @@ const UserPage = () => {
   };
 
   const reserve = (invoice) => {
-    openInvoice(invoice);
     axios
       .post(
         "http://localhost:8000/flights/reserve",
@@ -314,6 +313,7 @@ const UserPage = () => {
         }
       )
       .then((res) => {
+        openInvoice(invoice);
         updateSeats1(
           departureFlight._id,
           computeSeats(depSeats, reservedDepSeats)
