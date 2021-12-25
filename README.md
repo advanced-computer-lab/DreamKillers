@@ -44,7 +44,6 @@ After that, the features are divided into 2 categories depending on the type of 
   - The user can select the seat(s) he/she wants to book
   - The user can manage his/her reservations as in editing or deleting them
   - The user is updated by an email upon any reservation or cancellation
-# **Code Examples**
 
 # **Installation**
 - Clone or download the zip file(dont forget to extract) of this project and then you have to download the dependancies
